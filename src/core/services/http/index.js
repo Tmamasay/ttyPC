@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import { Toast, Dialog } from 'vant'
-import { getToken } from '../cache'
+import { getToken, getRefreshToken } from '../cache'
 import RESTFUL_ERROR_CODE_MAP from '@/constants/restful_error_code'
 
 function errorReport(url, error, requestOptions, response) {
@@ -58,9 +58,12 @@ instance.interceptors.request.use(
       message: '加载中...',
       forbidClick: true
     })
+
     if (store.getters.token) {
       config.headers['Authorization'] = getToken()
+      config.headers['refresh_token'] = getRefreshToken()
     }
+
     return config
   },
   (error) => {
@@ -73,8 +76,9 @@ instance.interceptors.response.use(
   (response) => {
     Toast.clear()
     responseLog(response)
-    const code = response.data.code
+    const code = +response.data.statusCode
     const msg = RESTFUL_ERROR_CODE_MAP[code]
+    debugger
     if (msg) {
       Toast(response.data.message || msg)
       if (code === 401) {

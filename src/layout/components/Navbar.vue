@@ -7,16 +7,15 @@
       <div class="conTab">
         <div class="conNav">
           <ul>
-            <li>产品介绍</li>
-            <li>价格</li>
-            <li>行业资讯</li>
-            <li>我的订单</li>
+            <li :class="{'active':active==1}" @click="showTab(1)">产品介绍</li>
+            <li :class="{'active':active==2}" @click="showTab(2)">价格</li>
+            <li :class="{'active':active==3}" @click="showTab(3)">行业资讯</li>
+            <li :class="{'active':active==4}" @click="showTab(4)">我的订单</li>
           </ul>
         </div>
         <div class="conLogin">
-          <p class="login">登录</p>
-          <p class="resgite">注册</p>
-
+          <p class="login" @click="login">登录</p>
+          <p class="resgite" @click="register">注册</p>
         </div>
       </div>
     </div>
@@ -28,10 +27,43 @@
 export default {
   name: 'Navbar',
   data() {
-    return {}
+    return {
+      active: 1
+    }
   },
   computed: {},
   methods: {
+    // 注册
+    register() {
+      this.$router.push({ name: 'Register' })
+    },
+    // 登录
+    login() {
+      this.$router.push({ name: 'Login' })
+    },
+    showTab(e) {
+      switch (e) {
+        case 1:
+          this.active = 1
+          this.$router.push({ name: 'Home' })
+          break
+        case 2:
+          this.active = 2
+          this.$router.push({ name: 'Price' })
+          break
+        case 3:
+          this.active = 3
+          this.$router.push({ name: 'News' })
+          break
+        case 4:
+          this.active = 4
+          this.$router.push({ name: 'Order' })
+          break
+
+        default:
+          break
+      }
+    }
     // onClickRight() {
     //   this.$router.push({ name: 'ComponentDemo' })
     // }
@@ -61,53 +93,56 @@ export default {
         height: 100%;
       }
     }
-    .conTab{
+    .conTab {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .conNav{
+      .conNav {
         margin-right: 200px;
         cursor: pointer;
-        ul{
+        ul {
           list-style: none;
-          li{
-             display: inline;
-             padding-bottom: 5px;
-             font-size:14px;
-              font-family:PingFang SC;
-              font-weight:500;
-              color:rgba(59,59,59,1);
-              line-height:53px;
-              margin-left: 80px;
-             &:hover{
-             border-bottom: 4px solid rgba(13,77,143,1);
-             }
+          .active{
+            border-bottom: 4px solid rgba(13, 77, 143, 1);
+          }
+          li {
+            display: inline;
+            padding-bottom: 5px;
+            font-size: 14px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: rgba(59, 59, 59, 1);
+            line-height: 53px;
+            margin-left: 80px;
+            &:hover {
+              border-bottom: 4px solid rgba(13, 77, 143, 1);
+            }
           }
         }
       }
-      .conLogin{
+      .conLogin {
         cursor: pointer;
-        .login{
+        .login {
           display: inline-block;
-          font-size:14px;
-          font-family:PingFang SC;
-          font-weight:500;
-          color:rgba(59,59,59,1);
-          line-height:53px;
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: rgba(59, 59, 59, 1);
+          line-height: 53px;
           margin-right: 31px;
         }
-        .resgite{
+        .resgite {
           width: 80px;
           height: 36px;
           text-align: center;
           display: inline-block;
-          font-size:14px;
-          font-family:PingFang SC;
-          font-weight:500;
-          color:rgba(253,253,253,1);
-          line-height:36px;
-          background:rgba(13,77,143,1);
-        border-radius:5px;
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: rgba(253, 253, 253, 1);
+          line-height: 36px;
+          background: rgba(13, 77, 143, 1);
+          border-radius: 5px;
         }
       }
     }

@@ -1,9 +1,14 @@
 import Cookies from 'js-cookie'
-import { TOKEN_KEY, LANGUAGE_KEY } from '@/constants/settings'
-
+import { TOKEN_KEY, LANGUAGE_KEY, REFRSHTOKEN_KEY } from '@/constants/settings'
 export const getToken = () => Cookies.get(TOKEN_KEY)
 export const setToken = (token) => Cookies.set(TOKEN_KEY, token)
 export const removeToken = () => Cookies.remove(TOKEN_KEY)
+
+// 刷新token
+
+export const getRefreshToken = () => Cookies.get(REFRSHTOKEN_KEY)
+export const setRefreshToken = (token) => Cookies.set(REFRSHTOKEN_KEY, token)
+export const removeRefreshToken = () => Cookies.remove(REFRSHTOKEN_KEY)
 
 export const getLanguage = () => Cookies.get(LANGUAGE_KEY)
 export const setLanguage = language => Cookies.set(LANGUAGE_KEY, language)

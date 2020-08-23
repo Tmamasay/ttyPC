@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import 'normalize.css/normalize.css'
 import '@/styles/index.scss'
+
 import Vant from 'vant'
 import 'vant/lib/index.css'
+
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
 import '@/icons'
 import App from '@/App.vue'
 import '@/permission'
@@ -42,7 +47,7 @@ if (PROD && VUE_APP_SENTRY_ENABLED === 'yes') {
 Object.keys(filters).forEach(filterName => {
   Vue.filter(filterName, filters[filterName])
 })
-
+Vue.use(ElementUI)
 Vue.use(Vant)
   .use(bus)
   .use(preventReClick)

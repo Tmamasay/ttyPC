@@ -73,6 +73,24 @@ export const routes = [
     ]
   },
   {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: 'login',
+        component: () => import('@/pages/user/login'),
+        name: 'Login',
+        meta: { title: '用户登录' }
+      },
+      {
+        path: 'register',
+        component: () => import('@/pages/user/register'),
+        name: 'Register',
+        meta: { title: '用户注册' }
+      }
+    ]
+  },
+  {
     path: '/test',
     component: Layout,
     children: [
