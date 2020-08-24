@@ -5,7 +5,7 @@
         <p class="ttH1">高效的智能办公平台</p>
         <p class="ttH2">降低企业运营成本，提高企业办公效率</p>
         <p class="ttH3">实时可视化管理、您的贴心管家</p>
-        <p class="ttSY">免费试用</p>
+        <p class="ttSY" @click="goTry">免费试用</p>
         <div class="ttPic1">
           <img src="@/assets/p1.png" alt="" srcset="">
         </div>
@@ -147,7 +147,7 @@
       <div class="ttSYFoot">
         <p class="ttF1">专业智能管理系统值得您的信赖</p>
         <p class="ttF2">您还在犹豫什么？</p>
-        <p class="ttF3">免费试用</p>
+        <p class="ttF3" @click="goTry">免费试用</p>
       </div>
       <Footer />
     </div>
@@ -157,6 +157,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
+import { getUserInfo } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -165,7 +166,7 @@ export default {
   },
   data() {
     return {
-
+      userInfo: getUserInfo() ? getUserInfo() : null,
       list: [],
       query: {
         page: 1,
@@ -174,9 +175,22 @@ export default {
     }
   },
   async created() {
-    this.getTestList({ page: 1, count: 10 })
+    // this.getTestList({ page: 1, count: 10 })
+  },
+  mounted() {
+    this.userInfo = getUserInfo() ? getUserInfo() : null
   },
   methods: {
+    goTry() {
+      if (!this.userInfo) {
+        this.$router.push({ name: 'Login' })
+        return
+      }
+      if (this.userInfo && !this.userInfo.company) {
+        this.$router.push({ name: 'Auth' })
+        return
+      }
+    },
     onAdd() {
       this.$router.push({ name: 'CreateTest' })
     },

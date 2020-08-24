@@ -20,4 +20,7 @@ export const PRODUCT = '/th-auth-biz/auth-login/getProductList'
 export const UPLOAD = '/th-auth-biz/login/fileUpload'
 // 企业认证填写资料
 export const COMPANYAUTH = '/th-auth-biz/login/userSetCompany'
-
+// 试用展示最基本的产品对应规格
+export const TESTPRO = '/th-auth-biz/product/getProductPriceTest'
+// 创建订单前查询改产品有哪些规格
+export const TESTPRILIST = '/th-auth-biz/product/getProductPriceList'
