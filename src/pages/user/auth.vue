@@ -120,8 +120,8 @@ export default {
     findSubmit() {
       this.$refs.authForm.validate(valid => {
         if (valid) {
-          this.authForm.companyTime = `${new Date(this.authForm.companyTime).toLocaleDateString().replace(/\//g, '-')} 00:00:00`
-          this.authForm.limitTime = `${new Date(this.authForm.limitTime).toLocaleDateString().replace(/\//g, '-')} 00:00:00`
+          this.authForm.companyTime = new Date(this.authForm.companyTime).toLocaleDateString().replace(/\//g, '-')
+          this.authForm.limitTime = new Date(this.authForm.limitTime).toLocaleDateString().replace(/\//g, '-')
           const data = {
             param: this.authForm
           }
