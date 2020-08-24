@@ -117,7 +117,7 @@
 <script>
 import login_bg from '@/assets/login/login_bg.jpg'
 import login_img from '@/assets/login/login_cover.png'
-// import { forgetToSend, forgetToUpdate } from '@/api/chengxu'
+import { ttyMD5 } from '@/utils/index'
 import TestHttpInteractor from '@/core/interactors/common-interactor'
 
 export default {
@@ -295,7 +295,7 @@ export default {
             param: {
               checkCode: this.forgetForm.code,
               phone: this.forgetForm.phone,
-              password: this.forgetForm.newPw
+              password: ttyMD5(this.forgetForm.newPw)
 
             }
           }
@@ -321,6 +321,7 @@ export default {
           type: 'warning',
           duration: 2 * 1000
         })
+        return
       }
       this.$refs.forgetForm.validate(valid => {
         if (valid) {
@@ -331,7 +332,7 @@ export default {
 
           }
 
-          TestHttpInteractor.registerSendSms(_params).then(res => {
+          TestHttpInteractor.resetSendSMS(_params).then(res => {
             debugger
             if (res) {
               this.$message({
@@ -399,16 +400,11 @@ export default {
       this.$refs[loginForm].validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store
-            .dispatch('user/userLogin', this.loginForm)
+          this.$store.dispatch('user/userLogin', this.loginForm)
             .then(res => {
-              if (res.data.code === '403') {
-                this.loading = false
-                this.$message.error(res.data.error_description)
-              } else {
-                this.$router.push({ path: this.redirect || '/' })
-                this.loading = false
-              }
+              if (res.user.id) { this.$router.push({ name: 'Home' }) }
+              // this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
             })
             .catch(() => {
               this.loginForm.password = ''

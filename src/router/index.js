@@ -18,7 +18,7 @@ export const routes = [
     ]
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
     redirect: '/home',
     children: [
@@ -87,6 +87,12 @@ export const routes = [
         component: () => import('@/pages/user/register'),
         name: 'Register',
         meta: { title: '用户注册' }
+      },
+      {
+        path: 'auth',
+        component: () => import('@/pages/user/auth'),
+        name: 'Auth',
+        meta: { title: '企业认证' }
       }
     ]
   },

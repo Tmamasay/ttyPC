@@ -4,10 +4,10 @@
       <img src="@/assets/r1.png" alt="" srcset="">
     </div>
     <div class="ttPriMeal">
-      <div class="ttPM1">
+      <div v-for="(item,index) in list" :key="item.id" class="ttPM1">
         <div class="ttPImg">
-          <p>基础版</p>
-          <img src="@/assets/r3.png" alt="" srcset="">
+          <p>{{ item.productName }}</p>
+          <img :src="getImgUrl(index)" alt="" srcset="">
         </div>
         <div class="ttJs">
           <p class="P1">使用人数<span>（按需购买）</span></p>
@@ -15,102 +15,19 @@
             <p>功能范围</p>
             <img src="@/assets/f1.png" alt="" srcset="">
           </div>
-          <p class="P1">人事管理系统</p>
-          <p class="P1">安全维护</p>
-          <p class="P2" style="margin-top:45px">低至每人</p>
-          <p class="P2">¥<span>21</span>.06/月</p>
+          <p v-for="child in item.lists" :key="child.id" class="P1">{{ child.functionName }}</p>
+          <!-- <p class="P1">安全维护</p> -->
+          <p v-if="+index===0" class="P2" style="margin-top:45px">低至每人</p>
+          <p v-if="+index===0" class="P2">¥<span>21</span>.06/月</p>
         </div>
-        <p class="P3">年付</p>
+        <p v-if="+index===0" class="P3" @click="goPay">年付</p>
+        <p v-else-if="+index===5" class="P3 getPri">获取报价</p>
+        <p v-else class="P3 close">敬请期待</p>
+
       </div>
 
-      <div class="ttPM1">
-        <div class="ttPImg">
-          <p>初创团队版</p>
-          <img src="@/assets/r2.png" alt="" srcset="">
-        </div>
-        <div class="ttJs">
-          <p class="P1">使用人数<span>（按需购买）</span></p>
-          <div class="P1Img">
-            <p>功能范围</p>
-            <img src="@/assets/f1.png" alt="" srcset="">
-          </div>
-          <p class="P1">人事管理系统</p>
-          <p class="P1">安全维护</p>
-        </div>
-        <p class="P3 close">敬请期待</p>
-      </div>
-
-      <div class="ttPM1">
-        <div class="ttPImg">
-          <p>企业版</p>
-          <img src="@/assets/r4.png" alt="" srcset="">
-        </div>
-        <div class="ttJs">
-          <p class="P1">使用人数<span>（按需购买）</span></p>
-          <div class="P1Img">
-            <p>功能范围</p>
-            <img src="@/assets/f1.png" alt="" srcset="">
-          </div>
-          <p class="P1">人事管理系统</p>
-          <p class="P1">安全维护</p>
-        </div>
-
-        <p class="P3 close">敬请期待</p>
-      </div>
-
-      <div class="ttPM1">
-        <div class="ttPImg">
-          <p>企业升级版</p>
-          <img src="@/assets/r5.png" alt="" srcset="">
-        </div>
-        <div class="ttJs">
-          <p class="P1">使用人数<span>（按需购买）</span></p>
-          <div class="P1Img">
-            <p>功能范围</p>
-            <img src="@/assets/f1.png" alt="" srcset="">
-          </div>
-          <p class="P1">人事管理系统</p>
-          <p class="P1">安全维护</p>
-        </div>
-        <p class="P3 close">敬请期待</p>
-      </div>
-
-      <div class="ttPM1">
-        <div class="ttPImg">
-          <p>智能高级版</p>
-          <img src="@/assets/r7.png" alt="" srcset="">
-        </div>
-        <div class="ttJs">
-          <p class="P1">使用人数<span>（按需购买）</span></p>
-          <div class="P1Img">
-            <p>功能范围</p>
-            <img src="@/assets/f1.png" alt="" srcset="">
-          </div>
-          <p class="P1">人事管理系统</p>
-          <p class="P1">安全维护</p>
-        </div>
-        <p class="P3 close">敬请期待</p>
-      </div>
-
-      <div class="ttPM1">
-        <div class="ttPImg">
-          <p>私有化部署</p>
-          <img src="@/assets/r6.png" alt="" srcset="">
-        </div>
-        <div class="ttJs">
-          <p class="P1">使用人数<span>（按需购买）</span></p>
-          <div class="P1Img">
-            <p>功能范围</p>
-            <img src="@/assets/f1.png" alt="" srcset="">
-          </div>
-          <p class="P1">人事管理系统</p>
-          <p class="P1">安全维护</p>
-        </div>
-        <p class="P3 getPri">获取报价</p>
-      </div>
     </div>
     <div class="ttQs">
-
       <p class="Q1">常见问题解答</p>
       <div class="qsOne">
         <div class="Qs1">
@@ -123,6 +40,17 @@
 
     </div>
     <Footer />
+    <el-dialog
+      title="提示"
+      :visible.sync="centerDialogVisible"
+      width="20%"
+      center
+    >
+      <span>请先进行企业认证后再下单哦</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" class="ttyRZ" @click="goAuth">去认证</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -137,7 +65,7 @@ export default {
   },
   data() {
     return {
-
+      centerDialogVisible: false,
       list: [],
       query: {
         page: 1,
@@ -149,6 +77,16 @@ export default {
     this.getTestList({ page: 1, count: 10 })
   },
   methods: {
+    goAuth() {
+      this.centerDialogVisible = false
+      this.$router.push({ name: 'Auth' })
+    },
+    goPay() {
+      this.centerDialogVisible = true
+    },
+    getImgUrl(index) {
+      return require(`@/assets/r${index + 2}.png`)
+    },
     onAdd() {
       this.$router.push({ name: 'CreateTest' })
     },
@@ -157,16 +95,11 @@ export default {
     },
     async getTestList(query) {
       try {
-        this.query = Object.assign({}, this.query, query)
-        const { data, total } = await testHttpInteractor.getTestList(
-          this.query
-        )
-        this.listTotal = total
-        if (this.query.page === 1) {
-          this.list = data
-        } else {
-          this.list = [...this.list, ...data]
-        }
+        // this.query = Object.assign({}, this.query, query)
+        const data = await testHttpInteractor.getProductList()
+        console.log(data)
+        console.log('o000000009999999988888888888887777')
+        this.list = data
       } catch (error) {
         console.log(error)
       }
@@ -191,6 +124,9 @@ export default {
       width: 100%;
       height: 100%;
     }
+  }
+  .ttyRZ{
+    padding: 6px 10px;
   }
   .ttQs{
     width: 100%;

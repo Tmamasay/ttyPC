@@ -6,7 +6,6 @@ import i18n from '@/lang'
 import { TITLE } from '@/constants/settings'
 
 NProgress.configure({ showSpinner: false })
-
 const getPageTitle = key => {
   const hasKey = i18n.te(`route.${key}`)
   if (hasKey) {
@@ -18,11 +17,12 @@ const getPageTitle = key => {
 
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
-  next()
   // const hasToken = getToken()
-
   // if (!hasToken) {
-  //   next(`/login?redirect=${to.path}`)
+  //   next(`/home`)
+  //   NProgress.done()
+  // } else {
+  next()
   NProgress.done()
   // }
 })

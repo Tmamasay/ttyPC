@@ -13,9 +13,30 @@
             <li :class="{'active':active==4}" @click="showTab(4)">我的订单</li>
           </ul>
         </div>
-        <div class="conLogin">
+        <div v-if="!info" class="conLogin">
           <p class="login" @click="login">登录</p>
           <p class="resgite" @click="register">注册</p>
+        </div>
+        <div v-else class="right-menu">
+          <el-dropdown class="avatar-container" trigger="click">
+            <div class="avatar-wrapper">
+              <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class="user-avatar" style="margin-top:6px">
+              <!-- <svg-icon style="width:45px;height:45px" icon-class="touxiang" /> -->
+            </div>
+            <el-dropdown-menu slot="dropdown" class="user-dropdown">
+              <router-link to="/cxLrs/admin/webStatistics">
+                <el-dropdown-item>
+                  首页
+                </el-dropdown-item>
+              </router-link>
+              <el-dropdown-item divided @click.native="xgmm_pop">
+                <span style="display:block;">修改密码</span>
+              </el-dropdown-item>
+              <el-dropdown-item divided @click.native="logout">
+                <span style="display:block;">退出登录</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -23,16 +44,25 @@
 </template>
 
 <script>
-// import { VueVantLocales } from '@/lang'
+import { getUserInfo } from '@/core/services/cache'
 export default {
   name: 'Navbar',
   data() {
     return {
-      active: 1
+      active: 1,
+      info: null
     }
   },
   computed: {},
+  mounted() {
+    this.info = getUserInfo()
+    console.log(getUserInfo())
+    console.log('------------')
+  },
   methods: {
+    // getImgUrl(icon) {
+    //   return require(`@/assets/avatar/PITAO-${Math.floor(Math.random() * 15 + 1)}.png`)
+    // },
     // 注册
     register() {
       this.$router.push({ name: 'Register' })
@@ -145,6 +175,58 @@ export default {
           border-radius: 5px;
         }
       }
+      .right-menu {
+    float: right;
+    height: 100%;
+    line-height: 50px;
+
+    &:focus {
+      outline: none;
+    }
+
+    .right-menu-item {
+      display: inline-block;
+      padding: 0 8px;
+      height: 100%;
+      font-size: 18px;
+      color: #5a5e66;
+      vertical-align: text-bottom;
+
+      &.hover-effect {
+        cursor: pointer;
+        transition: background .3s;
+
+        &:hover {
+          background: rgba(0, 0, 0, .025)
+        }
+      }
+    }
+
+    .avatar-container {
+      margin-right: 30px;
+
+      .avatar-wrapper {
+        margin-top: 2px;
+        position: relative;
+
+        .user-avatar {
+          cursor: pointer;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+        }
+
+        .el-icon-caret-bottom {
+          cursor: pointer;
+          position: absolute;
+          right: -20px;
+          top: 25px;
+          font-size: 12px;
+
+        }
+      }
+    }
+  }
     }
   }
 }

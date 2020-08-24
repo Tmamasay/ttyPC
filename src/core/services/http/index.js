@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
-import { Toast, Dialog } from 'vant'
+import { Message } from 'element-ui'
+import { Toast } from 'vant'
 import { getToken, getRefreshToken } from '../cache'
 import RESTFUL_ERROR_CODE_MAP from '@/constants/restful_error_code'
 
@@ -40,7 +41,11 @@ const responseLog = (response) => {
       `color:${randomColor};`
     )
     console.log('| 请求地址：', response.config.url)
-    console.log('| 请求参数：', response.config.data ? JSON.parse(response.config.data) : {})
+    try {
+      console.log('| 请求参数：', response.config.data ? JSON.parse(response.config.data) : {})
+    } catch (error) {
+      console.log(error)
+    }
     console.log('| 返回数据：', response.data)
     console.log(
       '%c┕------------------------------------------------------------------┙',
@@ -80,17 +85,35 @@ instance.interceptors.response.use(
     const msg = RESTFUL_ERROR_CODE_MAP[code]
     debugger
     if (msg) {
-      Toast(response.data.message || msg)
+      // Toast(response.data.message || msg)
       if (code === 401) {
-        Dialog.confirm({
-          message: response.data.message || msg
-        }).then(() => {
+        Message({
+          message: '登录时间失效，请重新登录',
+          type: 'error',
+          duration: 5 * 1000
+        })
+        setTimeout(() => {
           store.dispatch('user/resetToken').then(() => {
             location.reload()
           })
-        })
+        }, 2000)
+
+        // Dialog.confirm({
+        //   message: response.data.message || msg
+        // }).then(() => {
+        //   store.dispatch('user/resetToken').then(() => {
+        //     location.reload()
+        //   })
+        // })
       }
-      return Promise.reject(new Error(response.data.message || msg))
+      return Promise.reject(response.data.message || msg)
+    } else if (response.data.data.code && +response.data.data.code === 403) {
+      Message({
+        message: response.data.data.error_description,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(response.data.data.error_description || msg)
     } else {
       return response
     }

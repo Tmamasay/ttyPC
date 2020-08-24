@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -33,10 +33,19 @@ class TestHttpInteractor {
       throw error
     }
   }
-  // 用户注册发送短信验证码接口
+  // 用户注册
   async registerUser(data) {
     try {
       const optons = { url: REGISTER, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 用户注册发送短信验证码接口
+  async resetSendSMS(data) {
+    try {
+      const optons = { url: RESETCODE, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error
@@ -46,6 +55,33 @@ class TestHttpInteractor {
   async resetLoginPsw(data) {
     try {
       const optons = { url: RESETPW, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 企业认证上传
+  async fileUpload(data) {
+    try {
+      const optons = { url: UPLOAD, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 企业认证填写资料
+  async userSetCompany(data) {
+    try {
+      const optons = { url: COMPANYAUTH, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 获取所有可用产品信息
+  async getProductList(data) {
+    try {
+      const optons = { url: PRODUCT, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

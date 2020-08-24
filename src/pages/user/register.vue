@@ -94,6 +94,7 @@
 import login_bg from '@/assets/login/login_bg.jpg'
 import login_img from '@/assets/login/login_cover.png'
 import TestHttpInteractor from '@/core/interactors/common-interactor'
+import { ttyMD5 } from '@/utils/index'
 
 export default {
   name: 'Login',
@@ -229,7 +230,7 @@ export default {
               checkCode: this.registerForm.code,
               companyName: this.registerForm.companyName,
               name: this.registerForm.username,
-              password: this.registerForm.password,
+              password: ttyMD5(this.registerForm.password),
               phone: this.registerForm.phone,
               position: this.registerForm.position
             }
