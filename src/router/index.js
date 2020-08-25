@@ -35,13 +35,13 @@ export const routes = [
     component: Layout,
     children: [
       {
-        path: 'fill',
+        path: '',
         component: () => import('@/pages/order/index'),
         name: 'Order',
         meta: { title: '订单' }
       },
       {
-        path: '',
+        path: 'fill',
         component: () => import('@/pages/order/fill'),
         name: 'Fill',
         meta: { title: '订单填写' }

@@ -97,15 +97,14 @@ instance.interceptors.response.use(
             location.reload()
           })
         }, 2000)
-
-        // Dialog.confirm({
-        //   message: response.data.message || msg
-        // }).then(() => {
-        //   store.dispatch('user/resetToken').then(() => {
-        //     location.reload()
-        //   })
-        // })
+      } else {
+        Message({
+          message: response.data.message,
+          type: 'warning',
+          duration: 5 * 1000
+        })
       }
+
       return Promise.reject(response.data.message || msg)
     } else if (response.data.data.code && +response.data.data.code === 403) {
       Message({

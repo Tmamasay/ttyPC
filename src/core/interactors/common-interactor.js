@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, CREATTEST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -92,6 +92,16 @@ class TestHttpInteractor {
   async getProductPriceTest(data) {
     try {
       const optons = { url: TESTPRO, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 创建试用订单
+  async createProductPriceTest(data) {
+    try {
+      const optons = { url: CREATTEST, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

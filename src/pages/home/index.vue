@@ -190,6 +190,7 @@ export default {
         this.$router.push({ name: 'Auth' })
         return
       }
+      this.$router.push({ name: 'Fill' })
     },
     onAdd() {
       this.$router.push({ name: 'CreateTest' })

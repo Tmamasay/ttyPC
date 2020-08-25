@@ -24,6 +24,7 @@
         <p class="O2">
           <span>预计容量：{{ checkItem?checkItem.capacity:'请选使用人数' }}</span>
         </p>
+        <p class="O2"><span>购买期限：{{ checkItem?checkItem.years:'请选使用人数' }}</span></p>
       </div>
 
     </div>
@@ -31,7 +32,7 @@
       <p class="P1">订单金额：<span>￥{{ checkItem?checkItem.price:'0' }}</span></p>
       <p class="P2">支付完成后可申请发票，购买后到期日为2021年8月20日</p>
       <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span>《服务协议》</span></el-checkbox></p>
-      <p class="goDill">提交订单</p>
+      <p class="goDill" @click="goTryDill">提交订单</p>
     </div>
     <Footer />
   </div>
@@ -64,6 +65,36 @@ export default {
     this.getTestList()
   },
   methods: {
+    async goTryDill() {
+      if (!this.person) {
+        this.$message({
+          message: '请选择使用人数',
+          type: 'warning',
+          duration: 4 * 1000
+        })
+        return
+      }
+      if (!this.checked) {
+        this.$message({
+          message: '请勾选同意服务协议',
+          type: 'warning',
+          duration: 4 * 1000
+        })
+        return
+      }
+      await testHttpInteractor.createProductPriceTest().then(res => {
+        if (res) {
+          this.$message({
+            message: '试用申请提交成功，等待管理员审核~',
+            type: 'success',
+            duration: 5 * 1000
+          })
+          setTimeout(() => {
+            this.$router.push({ name: 'Home' })
+          }, 3000)
+        }
+      })
+    },
     showItem(e) {
       this.checkItem = this.testInfo.priceList.find(el => +el.productId === +e)
     },
