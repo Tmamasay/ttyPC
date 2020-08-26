@@ -1,7 +1,36 @@
 <template>
   <div class="ttOrderCont">
     <div class="ttOrderDet">
-      <div class="ttOrtit">
+      <div v-if="+authInfo.user.companyStatus!==2" class="ttShowIcon">
+        <div class="ttyStep">
+          <div :class="{'step':1}" :style="{backgroundImage:'url('+stepBg1+')'}">
+            <div>
+              <img src="@/assets/step1.png" alt="" srcset="">
+            </div>
+          </div>
+          <p class="activeTit activeAuth">1.企业认证</p>
+        </div>
+        <p :class="{ 'line':1,'checkAuth':+authInfo.user.companyStatus===1||+authInfo.user.companyStatus===3}" />
+        <div class="ttyStep">
+          <div :class="{'step':1,'authBg':+authInfo.user.companyStatus!==1}" :style="{backgroundImage:'url('+stepBg2+')'}">
+            <div>
+              <img src="@/assets/step2.png" alt="" srcset="">
+            </div>
+          </div>
+          <p :class="{'activeTit':1, 'activeAuth':+authInfo.user.companyStatus===1||+authInfo.user.companyStatus===3}">2.认证审核</p>
+        </div>
+        <p :class="{'line':1,'checkAuth':+authInfo.user.companyStatus===3}" />
+        <div class="ttyStep">
+          <div :class="{'step':1,'authBg':+authInfo.user.companyStatus!==3}" :style="{backgroundImage:'url('+stepBg3+')'}">
+            <div>
+              <img src="@/assets/step3.png" alt="" srcset="">
+            </div>
+
+          </div>
+          <p :class="{'activeTit':1,'activeAuth':+authInfo.user.companyStatus===3}">3.审核结果</p>
+        </div>
+      </div>
+      <div v-if="+authInfo.user.companyStatus===0" class="ttOrtit">
         <el-form
           ref="authForm"
           :model="authForm"
@@ -64,14 +93,31 @@
           <el-button class="makeSrue" type="primary" size="medium" @click.native="findSubmit('authForm')">确 定</el-button>
         </el-form>
       </div>
+      <div v-if="+authInfo.user.companyStatus===1" class="checkAuthing">
+        <div class="checkAuImg">
+          <img src="@/assets/checkAu.png" alt="" srcset="">
+        </div>
+        <p class="C1">您的企业认证资料已经提交</p>
+        <p class="C2">正在审核中...</p>
+      </div>
+      <div v-if="+authInfo.user.companyStatus===3" class="checkAuthing">
+        <div class="checkFailImg">
+          <img src="@/assets/fail.png" alt="" srcset="">
+        </div>
+        <p class="C1">您的企业认证资料未通过</p>
+        <p class="C2">{{ authInfo.user.reason||'企业信息有误' }}</p>
+        <p class="C3">再次认证</p>
+      </div>
     </div>
     <Footer />
   </div>
 </template>
 
 <script>
+import step_bg from '@/assets/stepBg.png'
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
+import { setUserInfo, getUserInfo } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -80,6 +126,10 @@ export default {
   },
   data() {
     return {
+      authInfo: getUserInfo(),
+      stepBg1: step_bg,
+      stepBg2: +getUserInfo().user.companyStatus === 1 || +getUserInfo().user.companyStatus === 3 ? step_bg : '',
+      stepBg3: +getUserInfo().user.companyStatus === 3 ? step_bg : '',
       authForm: {
         address: '', // 地址
         companyCode: '', // 信用代码
@@ -113,9 +163,22 @@ export default {
     }
   },
   async created() {
-    this.getTestList({ page: 1, count: 10 })
+    this.getCompany()
+  },
+  mounted() {
+    this.stepBg2 = +this.authInfo.user.companyStatus === 1 || +this.authInfo.user.companyStatus === 3 ? step_bg : ''
+    this.stepBg3 = +this.authInfo.user.companyStatus === 3 ? step_bg : ''
   },
   methods: {
+    async getCompany() {
+      await TestHttpInteractor.getCompanyOne().then(info => {
+        setUserInfo(info)
+        this.authInfo = info
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
     // 找回密码提交
     findSubmit() {
       this.$refs.authForm.validate(valid => {
@@ -128,12 +191,12 @@ export default {
           testHttpInteractor.userSetCompany(data).then(res => {
             if (res) {
               this.$message({
-                message: '企业认证成功~',
+                message: '企业认证提交审核成功~',
                 type: 'success',
                 duration: 3 * 1000
               })
               setTimeout(() => {
-                this.$router.push({ name: 'Price' })
+                this.getCompany()
               }, 1000)
             }
           })
@@ -202,6 +265,115 @@ export default {
   background:rgba(255,255,255,1);
   border:1px solid rgba(211,211,211,1);
   border-radius:10px;
+  .ttShowIcon{
+     margin-top:20px;
+      margin-left: 30px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    .authBg{
+      background:rgba(205,205,205,1);
+    }
+    .ttyStep{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+    .step{
+       margin: 0px!important;
+      padding: 0px !important;
+      width: 52px;
+      height: 52px;
+      border-radius:50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      div{
+        width: 25px;
+        height: 26px;
+        overflow: hidden;
+        img{
+          widows: 100%;
+          height: 100%;
+        }
+
+      }
+    }
+    .activeTit{
+          font-size:12px;
+          font-family:PingFang SC;
+          font-weight:500;
+         color:rgba(45,45,45,1);
+        }
+        .activeAuth{
+         color:rgba(23,105,191,1);
+        }
+  }
+
+    .line{
+
+      width:80px;
+      height:2px;
+      margin-top: -18px;
+      background:rgba(205,205,205,1);
+    }
+    .checkAuth{
+      background:rgba(99,163,230,1);
+    }
+  }
+  .checkAuthing{
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 150px;
+    .checkFailImg{
+      width: 145px;
+      height: 109px;
+      overflow: hidden;
+      margin: 0 auto;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+
+    }
+    .checkAuImg{
+      width: 216px;
+      height: 159px;
+      overflow: hidden;
+      margin: 0 auto;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+
+    }
+    .C1{
+      font-size:18px;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(46,46,46,1);
+    }
+    .C2{
+      font-size:14px;
+font-family:PingFang SC;
+font-weight:500;
+color:rgba(153,153,153,1);
+    }
+    .C3{
+      width:116px;
+      height:40px;
+      background:rgba(13,77,143,1);
+      border-radius:5px;
+      font-size:16px;
+font-family:PingFang SC;
+font-weight:500;
+color:rgba(241,241,241,1);
+line-height:40px;
+margin: 0 auto;
+    }
+  }
   .ttOrtit{
     cursor: pointer;
     margin: 50px 100px;
