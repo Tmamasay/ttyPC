@@ -402,7 +402,9 @@ export default {
           this.loading = true
           this.$store.dispatch('user/userLogin', this.loginForm)
             .then(res => {
-              if (res.user.id) { this.$router.push({ name: 'Home' }) }
+              if (res.user.id) {
+                 this.$router.push({ name: 'Home' }) }
+                 location.reload()
               // this.$router.push({ path: this.redirect || '/' })
               this.loading = false
             })

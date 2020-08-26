@@ -1,8 +1,12 @@
 import Cookies from 'js-cookie'
-import { TOKEN_KEY, LANGUAGE_KEY, REFRSHTOKEN_KEY, USERINFO } from '@/constants/settings'
+import { TOKEN_KEY, LANGUAGE_KEY, REFRSHTOKEN_KEY, USERINFO,SHOWTAB } from '@/constants/settings'
 export const getToken = () => Cookies.get(TOKEN_KEY)
 export const setToken = (token) => Cookies.set(TOKEN_KEY, token)
 export const removeToken = () => Cookies.remove(TOKEN_KEY)
+// 操作tab
+export const getTab = () => Cookies.get(SHOWTAB)
+export const setTab = (Tab) => Cookies.set(SHOWTAB, Tab)
+export const removeTab = () => Cookies.remove(SHOWTAB)
 // 操作用户信息
 export const getUserInfo = () => JSON.parse(Cookies.get(USERINFO) ? Cookies.get(USERINFO) : null)
 export const setUserInfo = (info) => Cookies.set(USERINFO, JSON.stringify(info))

@@ -44,16 +44,23 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/core/services/cache'
+import { getUserInfo,setTab } from '@/core/services/cache'
 export default {
   name: 'Navbar',
   data() {
     return {
-      active: 1,
+      active: this.$store.getters.setTab?this.$store.getters.setTab:1,
       info: null
     }
   },
   computed: {},
+  watch:{
+    active(newV,oldV){
+     this.active=newV
+     console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+     console.log(newV,oldV)
+    }
+  },
   mounted() {
     this.info = getUserInfo()
     console.log(getUserInfo())
@@ -75,18 +82,22 @@ export default {
       switch (e) {
         case 1:
           this.active = 1
+          setTab(1)
           this.$router.push({ name: 'Home' })
           break
         case 2:
           this.active = 2
+          setTab(2)
           this.$router.push({ name: 'Price' })
           break
         case 3:
           this.active = 3
+          setTab(3)
           this.$router.push({ name: 'News' })
           break
         case 4:
           this.active = 4
+          setTab(4)
           this.$router.push({ name: 'Order' })
           break
 

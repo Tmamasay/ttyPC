@@ -157,7 +157,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo } from '@/core/services/cache'
+import { getUserInfo,setTab } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -190,6 +190,8 @@ export default {
         this.$router.push({ name: 'Auth' })
         return
       }
+      setTab(2)
+      this.$store.commit('user/SET_TAB',2) 
       this.$router.push({ name: 'Fill' })
     },
     onAdd() {
