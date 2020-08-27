@@ -4,27 +4,29 @@
       <div class="navImg">
         <img src="@/assets/heng.png" alt="" srcset="">
       </div>
-      <p class="navTit"><span>价格</span>><span>订单填写</span></p>
+      <p class="navTit"><span>我的订单</span>><span>订单记录</span></p>
     </div>
     <div class="ttOrderDet">
       <div v-if="userInfo.company" class="ttOrtit">
-        <!-- <p class="O1"><span />订单信息</p> -->
-        <p class="O2"><span>公司名称：{{ userInfo.company.companyName }}</span></p>
-        <p class="O2"><span>订购版本：{{ testInfo.productName }}</span></p>
-        <p class="O2"><span>使用人数：</span>
-          <el-select v-model="person" size="small" placeholder="请选择" @change="showItem">
-            <el-option
-              v-for="item in testInfo.priceList"
-              :key="item.id"
-              :label="item.peopleNum"
-              :value="item.id"
-            />
-          </el-select>
-        </p>
-        <p class="O2">
-          <span>预计容量：{{ checkItem?checkItem.capacity:'请选使用人数' }}</span>
-        </p>
-        <p class="O2"><span>购买期限：{{ checkItem?checkItem.years:'请选使用人数' }}</span></p>
+        <el-table
+          :data="tableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="date"
+            label="日期"
+            width="180"
+          />
+          <el-table-column
+            prop="name"
+            label="姓名"
+            width="180"
+          />
+          <el-table-column
+            prop="address"
+            label="地址"
+          />
+        </el-table>
       </div>
 
     </div>
@@ -50,6 +52,23 @@ export default {
   },
   data() {
     return {
+      tableData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1517 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1519 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1516 弄'
+      }],
       checked: false,
       person: '',
       checkItem: null,
@@ -62,7 +81,7 @@ export default {
     }
   },
   async created() {
-    this.getTestList()
+    // this.getTestList()
   },
   mounted() {
     // alert(this.$route.params.isTry)
@@ -109,22 +128,9 @@ export default {
     },
     async getTestList(query) {
       try {
-        if (this.$route.params.isTry) {
-          const data = await testHttpInteractor.getProductPriceTest()
-          console.log(data)
-          this.testInfo = data
-        } else if (this.$route.params.productId) {
-          const data = await testHttpInteractor.getProductPriceList({
-            param: {
-              productId: this.$route.params.productId
-            }
-
-          })
-          console.log(data)
-          this.testInfo = data
-        } else {
-          this.$router.push({ name: 'Home' })
-        }
+        const data = await testHttpInteractor.getMyOrderList()
+        console.log(data)
+        this.tableData = data
       } catch (error) {
         console.log(error)
       }
@@ -230,73 +236,6 @@ line-height:40px
   .ttOrtit{
     cursor: pointer;
     margin: 50px 100px;
-    .O1{
-     font-size:16px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(45,45,45,1);
-      margin-bottom: 20px;
-      span{
-        display: inline-block;
-        width:4px;
-        height:23px;
-        background:rgba(13,77,143,1);
-        border-radius:2px;
-        vertical-align:middle;
-        margin-right:10px ;
-        margin-top: -2px;
-      }
-    }
-    .O2{
-      font-size:14px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(45,45,45,1);
-      line-height:45px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      span{
-        margin-left: 10px;
-        // width: 130px;
-        display: inline-block;
-        // margin-right: 205px;
-      }
-    }
-    .O4{
-      margin-top: 30px;
-    .Bt1{
-      cursor: pointer;
-      display: inline-block;
-      width:100px;
-      height:32px;
-      background:rgba(13,77,143,1);
-      border-radius:5px;
-      font-size:14px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(241,241,241,1);
-      line-height:32px;
-      text-align: center;
-      margin-right: 20px;
-    }
-     .Bt2{
-       cursor: pointer;
-       text-align: center;
-      display: inline-block;
-      width:100px;
-      height:32px;
-      background:rgba(241,241,241,1);
-      border:1px solid rgba(227,227,227,1);
-      border-radius:5px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(45,45,45,1);
-      line-height:32px;
-      margin-right: 20px;
-    }
-    }
 
   }
 }

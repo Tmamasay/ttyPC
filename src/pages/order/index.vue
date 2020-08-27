@@ -7,7 +7,7 @@
         <p class="O2"><span>订购版本：基础版</span><span>到期时间：2021.08.20</span></p>
         <p class="O2"><span>使用人数：11-30人</span><span>支付金额：¥2123.00</span></p>
         <p class="O2"><span>预计容量：40T</span><span>支付方式：微信支付</span></p>
-        <p class="O4"><span class="Bt1">立即续费</span><span class="Bt1">升级人数</span><span class="Bt2">订单记录</span><span class="Bt2">申请发票</span></p>
+        <p class="O4"><span class="Bt1">立即续费</span><span class="Bt1">升级人数</span><span class="Bt2" @click="goRecord">订单记录</span><span class="Bt2">申请发票</span></p>
       </div>
     </div>
     <Footer />
@@ -37,6 +37,9 @@ export default {
     this.getTestList({ page: 1, count: 10 })
   },
   methods: {
+    goRecord() {
+      this.$router.push({ name: 'Record' })
+    },
     onAdd() {
       this.$router.push({ name: 'CreateTest' })
     },

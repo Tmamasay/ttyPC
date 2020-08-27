@@ -157,7 +157,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo,setTab } from '@/core/services/cache'
+import { getUserInfo } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -186,13 +186,11 @@ export default {
         this.$router.push({ name: 'Login' })
         return
       }
-      if (this.userInfo && !this.userInfo.company) {
-        this.$router.push({ name: 'Auth' })
-        return
-      }
-      setTab(2)
-      this.$store.commit('user/SET_TAB',2) 
-      this.$router.push({ name: 'Fill' })
+      // if (this.userInfo && +this.userInfo.user.companyStatus !== 2) {
+      //   this.$router.push({ name: 'Auth' })
+      //   return
+      // }
+      this.$router.push({ name: 'Fill', params: { isTry: true }})
     },
     onAdd() {
       this.$router.push({ name: 'CreateTest' })

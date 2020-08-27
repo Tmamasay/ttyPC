@@ -20,7 +20,7 @@
           <p v-if="+index===0" class="P2" style="margin-top:45px">低至每人</p>
           <p v-if="+index===0" class="P2">¥<span>21</span>.06/月</p>
         </div>
-        <p v-if="+index===0" class="P3" @click="goPay">年付</p>
+        <p v-if="+index===0" class="P3" @click="goPay(item.productId)">年付</p>
         <p v-else-if="+index===5" class="P3 getPri">获取报价</p>
         <p v-else class="P3 close">敬请期待</p>
 
@@ -57,6 +57,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
+import { getUserInfo } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -66,6 +67,7 @@ export default {
   data() {
     return {
       centerDialogVisible: false,
+      info: getUserInfo(),
       list: [],
       query: {
         page: 1,
@@ -81,7 +83,15 @@ export default {
       this.centerDialogVisible = false
       this.$router.push({ name: 'Auth' })
     },
-    goPay() {
+    goPay(id) {
+      if (!this.info) {
+        this.$router.push({ name: 'Login' })
+        return
+      }
+      if (this.info.user && +this.info.user.companyStatus === 2) {
+        this.$router.push({ name: 'Fill', params: { productId: id }})
+        return
+      }
       this.centerDialogVisible = true
     },
     getImgUrl(index) {

@@ -5,12 +5,13 @@
         <img src="@/assets/logo.png" alt srcset>
       </div>
       <div class="conTab">
+        <!-- {{ onRoutesChild }} -->
         <div class="conNav">
           <ul>
-            <li :class="{'active':active==1}" @click="showTab(1)">产品介绍</li>
-            <li :class="{'active':active==2}" @click="showTab(2)">价格</li>
-            <li :class="{'active':active==3}" @click="showTab(3)">行业资讯</li>
-            <li :class="{'active':active==4}" @click="showTab(4)">我的订单</li>
+            <li :class="{'active':onRoutesChild=='home'}" @click="showTab(1)">产品介绍</li>
+            <li :class="{'active':onRoutesChild=='price'}" @click="showTab(2)">价格</li>
+            <li :class="{'active':onRoutesChild=='news'}" @click="showTab(3)">行业资讯</li>
+            <li :class="{'active':onRoutesChild=='order'}" @click="showTab(4)">我的订单</li>
           </ul>
         </div>
         <div v-if="!info" class="conLogin">
@@ -44,21 +45,17 @@
 </template>
 
 <script>
-import { getUserInfo,setTab } from '@/core/services/cache'
+import { getUserInfo } from '@/core/services/cache'
 export default {
   name: 'Navbar',
   data() {
     return {
-      active: this.$store.getters.setTab?this.$store.getters.setTab:1,
       info: null
     }
   },
-  computed: {},
-  watch:{
-    active(newV,oldV){
-     this.active=newV
-     console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
-     console.log(newV,oldV)
+  computed: {
+    onRoutesChild() {
+      return this.$route.path.replace('/', '').split('/')[0]
     }
   },
   mounted() {
@@ -81,23 +78,19 @@ export default {
     showTab(e) {
       switch (e) {
         case 1:
-          this.active = 1
-          setTab(1)
+
           this.$router.push({ name: 'Home' })
           break
         case 2:
-          this.active = 2
-          setTab(2)
+
           this.$router.push({ name: 'Price' })
           break
         case 3:
-          this.active = 3
-          setTab(3)
+
           this.$router.push({ name: 'News' })
           break
         case 4:
-          this.active = 4
-          setTab(4)
+
           this.$router.push({ name: 'Order' })
           break
 

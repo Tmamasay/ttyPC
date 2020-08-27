@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, CREATTEST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, ORDERLIST, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -87,6 +87,15 @@ class TestHttpInteractor {
       throw error
     }
   }
+  // 创建订单前查询改产品有哪些规格
+  async getProductPriceList(data) {
+    try {
+      const optons = { url: TESTPRILIST, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
 
   // 试用展示最基本的产品对应规格
   async getProductPriceTest(data) {
@@ -102,6 +111,15 @@ class TestHttpInteractor {
   async createProductPriceTest(data) {
     try {
       const optons = { url: CREATTEST, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 查询自己的所有订单
+  async getMyOrderList(data) {
+    try {
+      const optons = { url: ORDERLIST, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

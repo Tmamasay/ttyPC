@@ -94,6 +94,7 @@
 import login_bg from '@/assets/login/login_bg.jpg'
 import login_img from '@/assets/login/login_cover.png'
 import TestHttpInteractor from '@/core/interactors/common-interactor'
+import { getUserInfo } from '@/core/services/cache'
 import { ttyMD5 } from '@/utils/index'
 
 export default {
@@ -128,6 +129,7 @@ export default {
       }
     }
     return {
+      info: getUserInfo(),
       bgImg: login_bg,
       loginImg: login_img,
       setNewRules: {
@@ -195,7 +197,10 @@ export default {
     console.log('============版本号：V2.0.10=============>')
   },
   mounted() {
-
+    if (this.info) {
+      this.$router.push({ name: 'Home' })
+      return
+    }
   },
   methods: {
     countDown() {

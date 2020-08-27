@@ -118,6 +118,7 @@
 import login_bg from '@/assets/login/login_bg.jpg'
 import login_img from '@/assets/login/login_cover.png'
 import { ttyMD5 } from '@/utils/index'
+import { getUserInfo } from '@/core/services/cache'
 import TestHttpInteractor from '@/core/interactors/common-interactor'
 
 export default {
@@ -166,6 +167,7 @@ export default {
       }
     }
     return {
+      info: getUserInfo(),
       bgImg: login_bg,
       loginImg: login_img,
       loginForm: {
@@ -239,6 +241,10 @@ export default {
     console.log('============版本号：V2.0.10=============>')
   },
   mounted() {
+    if (this.info) {
+      this.$router.push({ name: 'Home' })
+      return
+    }
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
@@ -403,8 +409,8 @@ export default {
           this.$store.dispatch('user/userLogin', this.loginForm)
             .then(res => {
               if (res.user.id) {
-                 this.$router.push({ name: 'Home' }) }
-                 location.reload()
+                this.$router.push({ name: 'Home' })
+              }
               // this.$router.push({ path: this.redirect || '/' })
               this.loading = false
             })

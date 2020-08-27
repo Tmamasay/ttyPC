@@ -1,20 +1,16 @@
-import { getToken,getTab, setToken, setUserInfo, removeUserInfo, removeToken, setRefreshToken, removeRefreshToken } from '@/core/services/cache'
+import { getToken, setToken, setUserInfo, removeUserInfo, removeToken, setRefreshToken, removeRefreshToken } from '@/core/services/cache'
 import TestHttpInteractor from '@/core/interactors/common-interactor'
 import { ttyMD5 } from '@/utils/index'
 
 const state = {
-  token: getToken(),
-  showTab:getTab()
+  token: getToken()
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
-  },
-  SET_TAB: (state, showTab) => {
-    state.showTab = showTab
   }
-  
+
 }
 
 const actions = {

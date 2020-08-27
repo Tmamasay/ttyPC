@@ -18,6 +18,9 @@ export default {
     hideNav() {
       return this.$route.meta.hideNav
     }
+  },
+  activated() {
+    console.log('------ssssssss------')
   }
 }
 </script>

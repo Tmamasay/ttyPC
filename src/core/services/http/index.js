@@ -94,7 +94,7 @@ instance.interceptors.response.use(
         })
         setTimeout(() => {
           store.dispatch('user/resetToken').then(() => {
-            this.$router.push({ name: 'Home' }) 
+            this.$router.push({ name: 'Home' })
             location.reload()
           })
         }, 2000)

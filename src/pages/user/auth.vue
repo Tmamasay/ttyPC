@@ -108,6 +108,15 @@
         <p class="C2">{{ authInfo.user.reason||'企业信息有误' }}</p>
         <p class="C3">再次认证</p>
       </div>
+      <div v-if="+authInfo.user.companyStatus===2" class="showTrue">
+        <p class="O1"><span />企业认证</p>
+        <p class="O2"><span>公司名称：{{ authInfo.company.companyName }}</span></p>
+        <p class="O2"><span>统一社会信用代码/注册号/组织机构代码：{{ authInfo.company.companyName }}</span></p>
+        <p class="O2"><span>公司注册地址：{{ authInfo.company.address }}</span></p>
+        <p class="O2"><span>注册日期：{{ authInfo.company.createTime }}</span></p>
+        <p class="O2"><span>经营期限至：{{ authInfo.company.limitTime }}</span></p>
+
+      </div>
     </div>
     <Footer />
   </div>
@@ -166,14 +175,15 @@ export default {
     this.getCompany()
   },
   mounted() {
-    this.stepBg2 = +this.authInfo.user.companyStatus === 1 || +this.authInfo.user.companyStatus === 3 ? step_bg : ''
-    this.stepBg3 = +this.authInfo.user.companyStatus === 3 ? step_bg : ''
+    this.getCompany()
   },
   methods: {
-    async getCompany() {
-      await TestHttpInteractor.getCompanyOne().then(info => {
+    getCompany() {
+      testHttpInteractor.getCompanyOne().then(info => {
         setUserInfo(info)
         this.authInfo = info
+        this.stepBg2 = +this.authInfo.user.companyStatus === 1 || +this.authInfo.user.companyStatus === 3 ? step_bg : ''
+        this.stepBg3 = +this.authInfo.user.companyStatus === 3 ? step_bg : ''
       }).catch(error => {
         console.log(error)
       })
@@ -322,6 +332,44 @@ export default {
     .checkAuth{
       background:rgba(99,163,230,1);
     }
+  }
+  .showTrue{
+     cursor: pointer;
+    margin: 50px 100px;
+    .O1{
+     font-size:16px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(45,45,45,1);
+      margin-bottom: 20px;
+      span{
+        display: inline-block;
+        width:4px;
+        height:23px;
+        background:rgba(13,77,143,1);
+        border-radius:2px;
+        vertical-align:middle;
+        margin-right:10px ;
+        margin-top: -2px;
+      }
+    }
+    .O2{
+      width: 300px;
+      margin: 0 auto;
+      font-size:14px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(45,45,45,1);
+      line-height:45px;
+
+      span{
+        margin-left: 10px;
+        width: 500px;
+        display: inline-block;
+        // margin-right: 205px;
+      }
+    }
+
   }
   .checkAuthing{
     text-align: center;

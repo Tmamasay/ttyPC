@@ -26,3 +26,5 @@ export const CREATTEST = '/th-auth-biz/user-order/createProductPriceTest'
 export const TESTPRO = '/th-auth-biz/product/getProductPriceTest'
 // 创建订单前查询改产品有哪些规格
 export const TESTPRILIST = '/th-auth-biz/product/getProductPriceList'
+// 查询自己的所有订单
+export const ORDERLIST = '/th-auth-biz/user-order/getMyOrderList'

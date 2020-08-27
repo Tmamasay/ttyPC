@@ -45,6 +45,12 @@ export const routes = [
         component: () => import('@/pages/order/fill'),
         name: 'Fill',
         meta: { title: '订单填写' }
+      },
+      {
+        path: 'record',
+        component: () => import('@/pages/order/record'),
+        name: 'Record',
+        meta: { title: '订单记录' }
       }
     ]
   },
@@ -86,13 +92,13 @@ export const routes = [
         path: 'login',
         component: () => import('@/pages/user/login'),
         name: 'Login',
-        meta: { title: '用户登录' }
+        meta: { title: '用户登录', hideNav: true }
       },
       {
         path: 'register',
         component: () => import('@/pages/user/register'),
         name: 'Register',
-        meta: { title: '用户注册' }
+        meta: { title: '用户注册', hideNav: true }
       },
       {
         path: 'auth',

@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import { TOKEN_KEY, LANGUAGE_KEY, REFRSHTOKEN_KEY, USERINFO,SHOWTAB } from '@/constants/settings'
+import { TOKEN_KEY, LANGUAGE_KEY, REFRSHTOKEN_KEY, USERINFO, SHOWTAB } from '@/constants/settings'
 export const getToken = () => Cookies.get(TOKEN_KEY)
 export const setToken = (token) => Cookies.set(TOKEN_KEY, token)
 export const removeToken = () => Cookies.remove(TOKEN_KEY)
