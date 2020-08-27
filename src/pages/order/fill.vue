@@ -68,6 +68,7 @@ export default {
     // alert(this.$route.params.isTry)
   },
   methods: {
+
     async goTryDill() {
       if (!this.person) {
         this.$message({

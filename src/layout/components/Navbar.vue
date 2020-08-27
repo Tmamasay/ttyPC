@@ -25,13 +25,13 @@
               <!-- <svg-icon style="width:45px;height:45px" icon-class="touxiang" /> -->
             </div>
             <el-dropdown-menu slot="dropdown" class="user-dropdown">
-              <router-link to="/cxLrs/admin/webStatistics">
+              <!-- <router-link to="/cxLrs/admin/webStatistics">
                 <el-dropdown-item>
                   首页
                 </el-dropdown-item>
-              </router-link>
-              <el-dropdown-item divided @click.native="xgmm_pop">
-                <span style="display:block;">修改密码</span>
+              </router-link> -->
+              <el-dropdown-item divided @click.native="ttyAuth">
+                <span style="display:block;">企业信息</span>
               </el-dropdown-item>
               <el-dropdown-item divided @click.native="logout">
                 <span style="display:block;">退出登录</span>
@@ -64,9 +64,9 @@ export default {
     console.log('------------')
   },
   methods: {
-    // getImgUrl(icon) {
-    //   return require(`@/assets/avatar/PITAO-${Math.floor(Math.random() * 15 + 1)}.png`)
-    // },
+    ttyAuth() {
+      this.$router.push({ name: 'Auth' })
+    },
     // 注册
     register() {
       this.$router.push({ name: 'Register' })

@@ -13,28 +13,57 @@
           style="width: 100%"
         >
           <el-table-column
-            prop="date"
-            label="日期"
+            prop="orderId"
+            label="订单号"
             width="180"
           />
           <el-table-column
-            prop="name"
-            label="姓名"
-            width="180"
+            prop="years"
+            label="购买年限"
           />
           <el-table-column
-            prop="address"
-            label="地址"
+            prop="productName"
+            label="订购版本"
           />
+          <el-table-column
+            prop="peopleNum"
+            label="使用人数"
+          />
+          <el-table-column prop="payTime" width="180" label="支付时间">
+            <template slot-scope="scope">
+              {{ formatDate(scope.row.payTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            label="支付金额"
+          />
+          <el-table-column
+            prop="payType"
+            label="支付方式"
+          />
+          <el-table-column
+            prop="capacity"
+            label="预计容量"
+          />
+          <el-table-column
+            prop="payType"
+            label="到期时间"
+            width="180"
+          />
+
+          <el-table-column
+            label="操作"
+            width="150"
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row">取消订单</span>
+              <span>去付款</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
 
-    </div>
-    <div class="payCont">
-      <p class="P1">订单金额：<span>￥{{ checkItem?checkItem.price:'0' }}</span></p>
-      <p class="P2">支付完成后可申请发票，购买后到期日为2021年8月20日</p>
-      <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span>《服务协议》</span></el-checkbox></p>
-      <p class="goDill" @click="goTryDill">提交订单</p>
     </div>
     <Footer />
   </div>
@@ -81,12 +110,28 @@ export default {
     }
   },
   async created() {
-    // this.getTestList()
+    this.getTestList()
   },
   mounted() {
     // alert(this.$route.params.isTry)
   },
   methods: {
+    // 时间戳转换
+    formatDate(value) {
+      const date = new Date(value)
+      const y = date.getFullYear()
+      let MM = date.getMonth() + 1
+      MM = MM < 10 ? ('0' + MM) : MM
+      let d = date.getDate()
+      d = d < 10 ? ('0' + d) : d
+      let h = date.getHours()
+      h = h < 10 ? ('0' + h) : h
+      let m = date.getMinutes()
+      m = m < 10 ? ('0' + m) : m
+      let s = date.getSeconds()
+      s = s < 10 ? ('0' + s) : s
+      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s
+    },
     async goTryDill() {
       if (!this.person) {
         this.$message({
@@ -173,59 +218,6 @@ export default {
       color:#ffffff;
     }
   }
-  .payCont{
-    width:1350px;
-    margin: 0 auto;
-    text-align: right;
-.P1{
-  font-size:18px;
-font-family:PingFang SC;
-font-weight:500;
-color:rgba(46,46,46,1);
-line-height:30px;
-span{
-  font-size:26px;
-font-family:PingFang SC;
-font-weight:800;
-color:rgba(254,86,71,1);
-line-height:30px;
-}
-}
-.P2{
-font-size:14px;
-font-family:PingFang SC;
-font-weight:500;
-color:rgba(46,46,46,1);
-line-height:30px;
-}
-.P3{
-  font-size:14px;
-font-family:PingFang SC;
-font-weight:500;
-color:rgba(46,46,46,1);
-line-height:30px;
-margin-bottom: 10px;
-span{
-  color: #186AC0;
-}
-
-}
-.goDill{
-  cursor: pointer;
- margin-left: 1234px;
-  margin-bottom: 50px;
-  width:116px;
-height:40px;
-background:rgba(14,78,144,1);
-border-radius:5px;
-font-size:16px;
-text-align: center;
-font-family:PingFang SC;
-font-weight:500;
-color:rgba(242,242,242,1);
-line-height:40px
-}
-  }
 .ttOrderDet{
   width:1350px;
   height:376px;
@@ -235,7 +227,7 @@ line-height:40px
   border-radius:10px;
   .ttOrtit{
     cursor: pointer;
-    margin: 50px 100px;
+    margin: 50px 60px;
 
   }
 }
