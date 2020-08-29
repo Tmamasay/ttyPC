@@ -1,7 +1,7 @@
 import md5 from 'js-md5'
 // md5加密
 export const ttyMD5 = (passworld) => {
-  return md5(passworld)
+  return md5(passworld).toUpperCase()
 }
 export const initPlatform = () => {
   const UA = navigator.userAgent

@@ -6,6 +6,16 @@ class TestHttpInteractor {
   constructor(service) {
     this.service = service
   }
+  // 获取公司
+  async getCompanies(data) {
+    try {
+      const optons = { url: `http://192.168.0.210:10001/auth/oauth/companies`, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
   // 登录
   async userLogin(data) {
     try {

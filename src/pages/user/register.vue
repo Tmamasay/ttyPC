@@ -13,12 +13,16 @@
       <el-row>
         <el-col :span="8">
           <div class="login-text-warpper">
-            <p class="login-text-des">“{{ textTips }}”</p>
-            <!-- <p class="login-text-author">—— {{ textName }}</p> -->
+            <div class="imgLogo">
+        <img src="@/assets/logo.png" alt srcset>
+            </div>
+            <div class="imgLeft"> 
+              <img src="@/assets/leftIm.png" alt="" srcset="">
+              </div>
           </div>
         </el-col>
         <el-col :span="16">
-          <div class="login-form-warpper">
+          <div class="login-form-warpperR">
             <h3 class="login-form-title">用户注册</h3>
             <el-form-item prop="username">
               <el-input
@@ -78,10 +82,15 @@
                 @click="getCode"
               >{{ content }}</el-button>
             </el-form-item>
-            <div slot="footer" class="dialog-footer">
-              <el-button size="medium" @click="visible = false">取 消</el-button>
-              <el-button type="primary" size="medium" :disabled="!canClick" @click.native="findSubmit('registerForm')">确 定</el-button>
-            </div>
+            <el-button
+              type="primary"
+              style="width:100%;line-height: 20px;"
+              class="reBtn"
+             :disabled="!canClick" @click.native="findSubmit('registerForm')"
+            >登 陆</el-button>
+              <!-- <el-button type="primary" size="medium" :disabled="!canClick" @click.native="findSubmit('registerForm')">确 定</el-button> -->
+             <p class="login-form-forgetL" @click="visible = true" @>注册即表示同意泰霆云 <span>《使用协议》</span></p>
+            <p class="login-form-forgetP" @click="goLogin">登录</p>
 
           </div>
         </el-col>
@@ -203,6 +212,9 @@ export default {
     }
   },
   methods: {
+    goLogin(){
+this.$router.push({ name: 'Login' })
+    },
     countDown() {
       if (!this.canClick) return // 改动的是这两行代码
       // this.canClick = false
@@ -374,8 +386,8 @@ $cursor: #000;
 $dark_gray: #889aa4;
 $light_gray: #000;
 .el-button{
-    background-color: #00c48f!important;
-        border-color: #00c48f!important;
+    background-color: #0E4E90!important;
+        border-color: #0E4E90!important;
             color: #FFF!important;
 }
 .login-container {
@@ -388,7 +400,8 @@ $light_gray: #000;
   background-attachment: fixed;
   .login-form {
     position: absolute;
-    width: 800px;
+    width: 1320px;
+    height: 790px;
     // height: 494px;
     /*background-image: url("@/assets/logim/login_cover.png");*/
     left: 50%;
@@ -397,16 +410,28 @@ $light_gray: #000;
     background-color: #fff;
     transform: translate(-50%, -50%);
     .login-text-warpper {
-      margin: 180px 40px 0 40px;
+      margin: 50px 40px 0 40px;
       color: #000;
-      /*.login-text-eng {
-        font-size: 28px;
-        font-weight: bold;
-        position: relative;
-        margin-top: 0;
-        padding-bottom: 15px;
-        margin-bottom: 40px;
-      }*/
+      .imgLogo{
+            width: 127px;
+            height: 38px;
+            overflow: hidden;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+      }
+      .imgLeft{
+        width: 476px;
+        height: 343px;
+        overflow: hidden;
+        margin-top: 150px;
+        margin-left: 77px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
       .login-text-eng::before {
         content: "";
         position: absolute;
@@ -429,8 +454,10 @@ $light_gray: #000;
         font-size: 20px;
       }
     }
-    .login-form-warpper {
-      margin: 70px 60px;
+    .login-form-warpperR {
+       width: 400px;
+      margin-top:80px ;
+      margin-left: 300px;
       .login-form-title {
         font-size: 20px;
         color: #333333;
@@ -442,17 +469,40 @@ $light_gray: #000;
         content: "";
         position: absolute;
         left: 0;
-        background: #00c48f;
+        background: #0E4E90;
         width: 5px;
         height: 20px;
         top: 1px;
         border-radius: 2px;
       }
+      .reBtn{
+        width: 100%;
+        height: 44px;     
+background: #0E4E90;
+border-radius: 5px;
+font-size: 14px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #FFFBFB;
+line-height: 44px;
+      }
+      .login-form-forgetL {
+        cursor: pointer;
+         float: left;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #646464;
+        margin-top: 10px;
+      span{
+        color: #2A78DC;
+      }
+      }
       .login-form-forgetP {
-        color: #00c48f;
+        color: #0E4E90;
         float: right;
         cursor: pointer;
-        margin-top: -10px;
+        margin-top: 10px;
         font-size: 12px;
       }
       .login-bottom-text {

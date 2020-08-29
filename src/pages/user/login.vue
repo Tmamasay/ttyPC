@@ -13,13 +13,22 @@
       <el-row>
         <el-col :span="10">
           <div class="login-text-warpper">
-            <p class="login-text-des">“{{ textTips }}”</p>
-            <!-- <p class="login-text-author">—— {{ textName }}</p> -->
+            <div class="imgLogo">
+        <img src="@/assets/logo.png" alt srcset>
+            </div>
+            <div class="imgLeft"> 
+              <img src="@/assets/leftIm.png" alt="" srcset="">
+              </div>
+           <!-- <p class="login-text-author">—— {{ textName }}</p> -->
           </div>
         </el-col>
         <el-col :span="14">
           <div class="login-form-warpper">
             <h3 class="login-form-title">欢迎使用</h3>
+            <div class="loginWeap">
+              <p class="L1 active" >企业登录</p>
+              <p class="L2">个人登录</p>
+            </div>
             <el-form-item prop="username" class="ele-form-item">
               <span class="svg-container">
                 <svg-icon icon-class="user" />
@@ -32,6 +41,19 @@
                 type="text"
                 auto-complete="on"
               />
+            </el-form-item>
+            <el-form-item prop="username" v-if="companies&&companies.length" class="ele-form-item">
+              <span class="svg-container">
+                <svg-icon icon-class="icon" />
+              </span>
+              <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in companies"
+                :key="item.id"
+                :label="item.company"
+                :value="item.id">
+              </el-option>
+            </el-select>
             </el-form-item>
 
             <el-form-item prop="password" class="ele-form-item">
@@ -54,13 +76,15 @@
                 <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
               </span>
             </el-form-item>
-            <p class="login-form-forgetP" @click="visible = true">忘记密码？</p>
+            
             <el-button
               type="primary"
-              style="width:100%;line-height: 20px;margin-top: 40px;font-size:17px"
+              style="width:100%;line-height: 20px;margin-top: 20px;font-size:17px"
               @click.native.prevent="handleLogin('loginForm')"
             >登 陆</el-button>
-            <!-- <p class="login-bottom-text">background management system</p> -->
+            <p class="login-form-forgetL" @click="visible = true" @>忘记密码？</p>
+            <p class="login-form-forgetP" @click="goregist">立即注册</p>
+            <p class="login-bottom-text">background management system</p>
           </div>
         </el-col>
       </el-row>
@@ -115,7 +139,7 @@
 </template>
 
 <script>
-import login_bg from '@/assets/login/login_bg.jpg'
+import login_bg from '@/assets/login/login_bg.png'
 import login_img from '@/assets/login/login_cover.png'
 import { ttyMD5 } from '@/utils/index'
 import { getUserInfo } from '@/core/services/cache'
@@ -167,6 +191,7 @@ export default {
       }
     }
     return {
+      companies:null,
       info: getUserInfo(),
       bgImg: login_bg,
       loginImg: login_img,
@@ -238,6 +263,7 @@ export default {
     }
   },
   created() {
+    this.getCompanies()
     console.log('============版本号：V2.0.10=============>')
   },
   mounted() {
@@ -262,6 +288,25 @@ export default {
     this.textName = this.textArray[index].name
   },
   methods: {
+    async getCompanies(){
+      const _params={
+        content:{
+          phoneNumber: this.loginForm.username
+        }
+      }
+      await TestHttpInteractor.getCompanies(_params).then(res => {
+        if(res){
+             this.companies=res 
+          console.log('-------------------------')
+
+        }
+     
+          })
+
+    },
+    goregist(){
+    this.$router.push({ name: 'Register' })
+    },
     countDown() {
       if (!this.canClick) return // 改动的是这两行代码
       // this.canClick = false
@@ -433,8 +478,8 @@ $cursor: #000;
 $dark_gray: #889aa4;
 $light_gray: #000;
 .el-button{
-    background-color: #00c48f!important;
-        border-color: #00c48f!important;
+    background-color: #0E4E90!important;
+        border-color: #0E4E90!important;
             color: #FFF!important;
 }
 .login-container {
@@ -447,8 +492,8 @@ $light_gray: #000;
   background-attachment: fixed;
   .login-form {
     position: absolute;
-    width: 800px;
-    height: 494px;
+    width: 1320px;
+    height: 790px;
     /*background-image: url("@/assets/logim/login_cover.png");*/
     left: 50%;
     top: 50%;
@@ -456,8 +501,28 @@ $light_gray: #000;
     background-color: #fff;
     transform: translate(-50%, -50%);
     .login-text-warpper {
-      margin: 180px 40px 0 40px;
+      margin: 50px 40px 0 40px;
       color: #000;
+      .imgLogo{
+            width: 127px;
+            height: 38px;
+            overflow: hidden;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+      }
+      .imgLeft{
+        width: 476px;
+        height: 343px;
+        overflow: hidden;
+        margin-top: 150px;
+        margin-left: 77px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
       /*.login-text-eng {
         font-size: 28px;
         font-weight: bold;
@@ -489,29 +554,70 @@ $light_gray: #000;
       }
     }
     .login-form-warpper {
-      margin: 70px 60px;
+      width: 400px;
+      margin-top:200px ;
+      margin-left: 180px;
+      .loginWeap{
+        margin-top:-20px ;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          cursor: pointer;
+          .L1{        
+          font-size: 20px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #2E2E2E;
+          // line-height: 55px;
+          padding-bottom: 6px;
+
+          }
+          .L2{ 
+            font-size: 20px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #2E2E2E;
+            line-height: 55px;
+            padding-bottom: 5px;
+
+          }
+          .active{
+            border-bottom: 2px solid rgba($color: #2A77DC, $alpha: 1.0);
+
+         color: #2A78DC;
+          }
+
+        }
       .login-form-title {
         font-size: 20px;
         color: #333333;
         position: relative;
         padding-left: 12px;
         margin: 0 0 50px;
+        
       }
       .login-form-title::before {
         content: "";
         position: absolute;
         left: 0;
-        background: #00c48f;
+        background: #0E4E90;
         width: 5px;
         height: 20px;
         top: 1px;
         border-radius: 2px;
       }
+      .login-form-forgetL {
+        color:#646464;
+        float: left;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 12px;
+      }
       .login-form-forgetP {
-        color: #00c48f;
+        color: #2A78DC;
         float: right;
         cursor: pointer;
-        margin-top: -10px;
+        margin-top: 10px;
         font-size: 12px;
       }
       .login-bottom-text {
