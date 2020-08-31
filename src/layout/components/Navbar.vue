@@ -50,7 +50,7 @@ export default {
   name: 'Navbar',
   data() {
     return {
-      info: null
+      info: getUserInfo()
     }
   },
   computed: {
@@ -64,6 +64,13 @@ export default {
     console.log('------------')
   },
   methods: {
+    logout() {
+      this.$store.dispatch('user/logout').then(res => {
+        if (res) {
+          this.$router.push({ name: 'Home' })
+        }
+      })
+    },
     ttyAuth() {
       this.$router.push({ name: 'Auth' })
     },
@@ -90,7 +97,10 @@ export default {
           this.$router.push({ name: 'News' })
           break
         case 4:
-
+          if (!this.info) {
+            this.$router.push({ name: 'Login' })
+            break
+          }
           this.$router.push({ name: 'Order' })
           break
 

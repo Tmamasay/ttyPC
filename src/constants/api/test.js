@@ -28,3 +28,9 @@ export const TESTPRO = '/th-auth-biz/product/getProductPriceTest'
 export const TESTPRILIST = '/th-auth-biz/product/getProductPriceList'
 // 查询自己的所有订单
 export const ORDERLIST = '/th-auth-biz/user-order/getMyOrderList'
+// 用户注销接口
+export const LOGINOUT = '/th-auth-biz/auth-login/loginOut'
+// 我的订单展示现在正在使用的订单详情
+export const PROUSE = '/th-auth-biz/product/getProductPriceUse'
+// 再次提交资料
+export const RESETCOM = '/th-auth-biz/login/resetCompany'

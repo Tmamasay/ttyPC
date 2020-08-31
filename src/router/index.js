@@ -105,6 +105,12 @@ export const routes = [
         component: () => import('@/pages/user/auth'),
         name: 'Auth',
         meta: { title: '企业认证' }
+      },
+      {
+        path: 'agreement',
+        component: () => import('@/pages/user/agreement'),
+        name: 'Agreement',
+        meta: { title: '服务协议' }
       }
     ]
   },

@@ -90,7 +90,7 @@
               @click.native="findSubmit('registerForm')"
             >登 陆</el-button>
             <!-- <el-button type="primary" size="medium" :disabled="!canClick" @click.native="findSubmit('registerForm')">确 定</el-button> -->
-            <p class="login-form-forgetL" @ @click="visible = true">注册即表示同意泰霆云 <span>《使用协议》</span></p>
+            <p class="login-form-forgetL" @ @click="visible = true">注册即表示同意泰霆云 <span @click="agreeXy">《使用协议》</span></p>
             <p class="login-form-forgetP" @click="goLogin">登录</p>
 
           </div>
@@ -213,6 +213,9 @@ export default {
     }
   },
   methods: {
+    agreeXy() {
+      this.$router.push({ name: 'Agreement' })
+    },
     goLogin() {
       this.$router.push({ name: 'Login' })
     },

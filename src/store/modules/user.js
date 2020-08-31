@@ -68,10 +68,25 @@ const actions = {
   },
 
   logout({ commit, state, dispatch }) {
-    commit('SET_TOKEN', '')
-    removeToken()
-    removeUserInfo()
-    removeRefreshToken()
+    return new Promise(resolve => {
+      const data = {
+        param: {
+          clientCode: 'tyteen',
+          token: state.token.split(' ')[1],
+          sysName: 'tyteen'
+
+        }
+      }
+      TestHttpInteractor.loginOut(data).then(res => {
+        if (res) {
+          commit('SET_TOKEN', '')
+          removeToken()
+          removeUserInfo()
+          removeRefreshToken()
+          resolve(res)
+        }
+      })
+    })
   },
 
   resetToken({ commit }) {

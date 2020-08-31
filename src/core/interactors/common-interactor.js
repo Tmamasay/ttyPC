@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, ORDERLIST, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -9,7 +9,7 @@ class TestHttpInteractor {
   // 获取公司
   async getCompanies(data) {
     try {
-      const optons = { url: `http://192.168.0.210:10001/auth/oauth/companies`, data }
+      const optons = { url: `http://47.114.91.11:10001/auth/oauth/companies`, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error
@@ -18,7 +18,7 @@ class TestHttpInteractor {
   // 个人登录
   async oauthLogin(data) {
     try {
-      const optons = { url: `http://192.168.0.210:10001/auth/oauth/login`, data }
+      const optons = { url: `http://47.114.91.11:10001/auth/oauth/login`, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error
@@ -139,6 +139,35 @@ class TestHttpInteractor {
   async getMyOrderList(data) {
     try {
       const optons = { url: ORDERLIST, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 我的订单展示现在正在使用的订单详情
+  async getProductPriceUse(data) {
+    try {
+      const optons = { url: PROUSE, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 再次提交资料
+  async resetCompany(data) {
+    try {
+      const optons = { url: RESETCOM, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 用户注销接口
+  async loginOut(data) {
+    try {
+      const optons = { url: LOGINOUT, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

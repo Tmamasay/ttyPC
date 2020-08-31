@@ -3,11 +3,11 @@
     <div class="ttOrderDet">
       <div class="ttOrtit">
         <p class="O1"><span />订单信息</p>
-        <p class="O2"><span>公司名称：旭辉建筑工程有限公司</span><span>购买年限：1年</span></p>
-        <p class="O2"><span>订购版本：基础版</span><span>到期时间：2021.08.20</span></p>
-        <p class="O2"><span>使用人数：11-30人</span><span>支付金额：¥2123.00</span></p>
-        <p class="O2"><span>预计容量：40T</span><span>支付方式：微信支付</span></p>
-        <p class="O4"><span class="Bt1">立即续费</span><span class="Bt1">升级人数</span><span class="Bt2" @click="goRecord">订单记录</span><span class="Bt2">申请发票</span></p>
+        <p class="O2"><span>公司名称：{{ orderInfo.user.companyName }}</span><span>购买年限：{{ orderInfo.order.years }}</span></p>
+        <p class="O2"><span>订购版本：{{ orderInfo.user.productName }}</span><span>到期时间：{{ formatDate(orderInfo.order.endTime) }}</span></p>
+        <p class="O2"><span>使用人数：{{ orderInfo.productPrice.peopleNum }}人</span><span>支付金额：¥{{ orderInfo.order.price }}</span></p>
+        <p class="O2"><span>预计容量：{{ orderInfo.order.capacity }}T</span><span>支付方式：微信支付</span></p>
+        <p class="O4"><span class="Bt1" style="display:none">立即续费</span><span class="Bt1" style="display:none">升级人数</span><span class="Bt2" style="display:none" @click="goRecord">订单记录</span><span class="Bt2" style="display:none">申请发票</span></p>
       </div>
     </div>
     <Footer />
@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-
+      orderInfo: null,
       list: [],
       query: {
         page: 1,
@@ -34,9 +34,25 @@ export default {
     }
   },
   async created() {
-    this.getTestList({ page: 1, count: 10 })
+    this.getProductPriceUse()
   },
   methods: {
+    // 时间戳转换
+    formatDate(value) {
+      const date = new Date(value)
+      const y = date.getFullYear()
+      let MM = date.getMonth() + 1
+      MM = MM < 10 ? ('0' + MM) : MM
+      let d = date.getDate()
+      d = d < 10 ? ('0' + d) : d
+      let h = date.getHours()
+      h = h < 10 ? ('0' + h) : h
+      let m = date.getMinutes()
+      m = m < 10 ? ('0' + m) : m
+      let s = date.getSeconds()
+      s = s < 10 ? ('0' + s) : s
+      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s
+    },
     goRecord() {
       this.$router.push({ name: 'Record' })
     },
@@ -46,18 +62,11 @@ export default {
     onEdit(item, index) {
       this.$router.push({ name: 'EditTest', params: { id: item.id }})
     },
-    async getTestList(query) {
+    async getProductPriceUse() {
       try {
-        this.query = Object.assign({}, this.query, query)
-        const { data, total } = await testHttpInteractor.getTestList(
-          this.query
-        )
-        this.listTotal = total
-        if (this.query.page === 1) {
-          this.list = data
-        } else {
-          this.list = [...this.list, ...data]
-        }
+        const data = await testHttpInteractor.getProductPriceUse()
+        this.orderInfo = data
+        console.log(data)
       } catch (error) {
         console.log(error)
       }

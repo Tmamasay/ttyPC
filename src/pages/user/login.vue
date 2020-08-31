@@ -40,6 +40,7 @@
                 name="username"
                 type="text"
                 auto-complete="on"
+                @blur="getCompany"
               />
             </el-form-item>
             <el-form-item v-if="active===2" prop="company" class="ele-form-item">
@@ -192,7 +193,7 @@ export default {
     }
     return {
       active: 1,
-      companies: null,
+      companies: [],
       info: getUserInfo(),
       bgImg: login_bg,
       loginImg: login_img,
@@ -268,7 +269,7 @@ export default {
     }
   },
   created() {
-    this.getCompanies()
+    // this.getCompanies()
     console.log('============版本号：V2.0.10=============>')
   },
   mounted() {
@@ -276,11 +277,11 @@ export default {
       this.$router.push({ name: 'Home' })
       return
     }
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
-    }
+    // if (this.loginForm.username === '') {
+    //   this.$refs.username.focus()
+    // } else if (this.loginForm.password === '') {
+    //   this.$refs.password.focus()
+    // }
     const _this = this
     document.onkeydown = function(e) {
       e = e || window.event
@@ -293,6 +294,11 @@ export default {
     this.textName = this.textArray[index].name
   },
   methods: {
+    getCompany() {
+      if (+this.active === 2) {
+        this.getCompanies()
+      }
+    },
     checkItem(e) {
       this.active = e
     },
@@ -302,12 +308,9 @@ export default {
           phoneNumber: this.loginForm.username
         }
       }
-      await TestHttpInteractor.getCompanies(_params).then(res => {
-        if (res) {
-          this.companies = res
-          console.log('-------------------------')
-        }
-      })
+      const data = await TestHttpInteractor.getCompanies(_params)
+      this.companies = data
+      // console.log(data)
     },
     goregist() {
       this.$router.push({ name: 'Register' })
@@ -458,7 +461,14 @@ export default {
           this.loading = true
           this.$store.dispatch('user/userLogin', this.loginForm)
             .then(res => {
-              if (res.user.id) {
+              console.log(res)
+              console.log(res.accessToken)
+
+              if (res.accessToken) {
+                window.location.href = `http://www.tyteenyun.com/ttbuild/#/workbench/approvalProcess?accessToken=${res.accessToken}`
+                console.log('0000000')
+              }
+              if (res.user && res.user.id) {
                 this.$router.push({ name: 'Home' })
               }
               // this.$router.push({ path: this.redirect || '/' })

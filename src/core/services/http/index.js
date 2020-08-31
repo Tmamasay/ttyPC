@@ -107,7 +107,7 @@ instance.interceptors.response.use(
       }
 
       return Promise.reject(response.data.message || msg)
-    } else if (response.data.data.code && +response.data.data.code === 403) {
+    } else if (response.data.data && +response.data.data.code === 403) {
       Message({
         message: response.data.data.error_description,
         type: 'error',
@@ -132,11 +132,9 @@ export default async function(options) {
   const requestOptions = Object.assign({}, options)
 
   try {
-    const { data, data: { errno, errmsg }} = await instance.request(requestOptions)
-    if (errno) {
-      errorReport(url, errmsg, requestOptions, data)
-      throw new Error(errmsg)
-    }
+    // const { data, data: { errno, errmsg }} = await instance.request(requestOptions)
+    const { data } = await instance.request(requestOptions)
+
     return data
   } catch (err) {
     errorReport(url, err, requestOptions)

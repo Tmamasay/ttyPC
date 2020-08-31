@@ -106,15 +106,15 @@
         </div>
         <p class="C1">您的企业认证资料未通过</p>
         <p class="C2">{{ authInfo.user.reason||'企业信息有误' }}</p>
-        <p class="C3">再次认证</p>
+        <p class="C3" @click="recertification">再次认证</p>
       </div>
       <div v-if="+authInfo.user.companyStatus===2" class="showTrue">
         <p class="O1"><span />企业认证</p>
         <p class="O2"><span>公司名称：{{ authInfo.company.companyName }}</span></p>
         <p class="O2"><span>统一社会信用代码/注册号/组织机构代码：{{ authInfo.company.companyName }}</span></p>
         <p class="O2"><span>公司注册地址：{{ authInfo.company.address }}</span></p>
-        <p class="O2"><span>注册日期：{{ authInfo.company.createTime }}</span></p>
-        <p class="O2"><span>经营期限至：{{ authInfo.company.limitTime }}</span></p>
+        <p class="O2"><span>注册日期：{{ formatDate(authInfo.company.createTime) }}</span></p>
+        <p class="O2"><span>经营期限至：{{ formatDate(authInfo.company.limitTime) }}</span></p>
 
       </div>
     </div>
@@ -178,6 +178,27 @@ export default {
     this.getCompany()
   },
   methods: {
+    recertification() {
+      testHttpInteractor.resetCompany().then(info => {
+        location.reload()
+      })
+    },
+    // 时间戳转换
+    formatDate(value) {
+      const date = new Date(value)
+      const y = date.getFullYear()
+      let MM = date.getMonth() + 1
+      MM = MM < 10 ? ('0' + MM) : MM
+      let d = date.getDate()
+      d = d < 10 ? ('0' + d) : d
+      let h = date.getHours()
+      h = h < 10 ? ('0' + h) : h
+      let m = date.getMinutes()
+      m = m < 10 ? ('0' + m) : m
+      let s = date.getSeconds()
+      s = s < 10 ? ('0' + s) : s
+      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s
+    },
     getCompany() {
       testHttpInteractor.getCompanyOne().then(info => {
         setUserInfo(info)
