@@ -15,6 +15,15 @@ class TestHttpInteractor {
       throw error
     }
   }
+  // 个人登录
+  async oauthLogin(data) {
+    try {
+      const optons = { url: `http://192.168.0.210:10001/auth/oauth/login`, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
 
   // 登录
   async userLogin(data) {

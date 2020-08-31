@@ -15,32 +15,52 @@ const mutations = {
 
 const actions = {
   userLogin({ commit, state }, info) {
-    const { username, password } = info
+    const { username, password, company } = info
     return new Promise((resolve, reject) => {
-      const data = {
-        param: {
-          username: username.trim(),
-          password: ttyMD5(password),
-          sysName: 'tyteen',
-          loginType: 'tyteen',
-          clientPassword: 'nfjkMaHiO4Wz42Fb1jNVWlilUzBXxwqD'
+      // 个人登录
+      if (!company) {
+        const data = {
+          param: {
+            username: username.trim(),
+            password: ttyMD5(password),
+            sysName: 'tyteen',
+            loginType: 'tyteen',
+            clientPassword: 'nfjkMaHiO4Wz42Fb1jNVWlilUzBXxwqD'
+          }
         }
+        TestHttpInteractor.userLogin(data).then(res => {
+          if (res.access_token) {
+            // setToken(res.access_token)
+            setToken(`Bearer ${res.access_token}`)
+            setRefreshToken(res.refresh_token)
+            commit('SET_TOKEN', res.access_token)
+            console.log(res.access_token)
+            TestHttpInteractor.getCompanyOne().then(info => {
+              setUserInfo(info)
+              resolve(info)
+            }).catch(error => {
+              reject(error)
+            })
+          }
+        })
+      } else {
+        const data = {
+          content: {
+            account: username.trim(),
+            password: ttyMD5(password),
+            clientId: 1,
+            companyId: company,
+            clientSecret: 'C4CA4238A0B923820DCC509A6F75849B'
+          }
+        }
+        TestHttpInteractor.oauthLogin(data).then(res => {
+          if (res) {
+            resolve(res)
+          }
+        }).catch(error => {
+          reject(error)
+        })
       }
-      TestHttpInteractor.userLogin(data).then(res => {
-        if (res.access_token) {
-        // setToken(res.access_token)
-          setToken(`Bearer ${res.access_token}`)
-          setRefreshToken(res.refresh_token)
-          commit('SET_TOKEN', res.access_token)
-          console.log(res.access_token)
-          TestHttpInteractor.getCompanyOne().then(info => {
-            setUserInfo(info)
-            resolve(info)
-          }).catch(error => {
-            reject(error)
-          })
-        }
-      })
     })
   },
   getInfo({ commit, state }) {

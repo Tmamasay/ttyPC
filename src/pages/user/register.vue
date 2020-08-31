@@ -14,11 +14,11 @@
         <el-col :span="8">
           <div class="login-text-warpper">
             <div class="imgLogo">
-        <img src="@/assets/logo.png" alt srcset>
+              <img src="@/assets/logo.png" alt srcset>
             </div>
-            <div class="imgLeft"> 
+            <div class="imgLeft">
               <img src="@/assets/leftIm.png" alt="" srcset="">
-              </div>
+            </div>
           </div>
         </el-col>
         <el-col :span="16">
@@ -86,10 +86,11 @@
               type="primary"
               style="width:100%;line-height: 20px;"
               class="reBtn"
-             :disabled="!canClick" @click.native="findSubmit('registerForm')"
+              :disabled="!canClick"
+              @click.native="findSubmit('registerForm')"
             >登 陆</el-button>
-              <!-- <el-button type="primary" size="medium" :disabled="!canClick" @click.native="findSubmit('registerForm')">确 定</el-button> -->
-             <p class="login-form-forgetL" @click="visible = true" @>注册即表示同意泰霆云 <span>《使用协议》</span></p>
+            <!-- <el-button type="primary" size="medium" :disabled="!canClick" @click.native="findSubmit('registerForm')">确 定</el-button> -->
+            <p class="login-form-forgetL" @ @click="visible = true">注册即表示同意泰霆云 <span>《使用协议》</span></p>
             <p class="login-form-forgetP" @click="goLogin">登录</p>
 
           </div>
@@ -212,8 +213,8 @@ export default {
     }
   },
   methods: {
-    goLogin(){
-this.$router.push({ name: 'Login' })
+    goLogin() {
+      this.$router.push({ name: 'Login' })
     },
     countDown() {
       if (!this.canClick) return // 改动的是这两行代码
@@ -477,7 +478,7 @@ $light_gray: #000;
       }
       .reBtn{
         width: 100%;
-        height: 44px;     
+        height: 44px;
 background: #0E4E90;
 border-radius: 5px;
 font-size: 14px;

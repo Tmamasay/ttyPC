@@ -14,20 +14,20 @@
         <el-col :span="10">
           <div class="login-text-warpper">
             <div class="imgLogo">
-        <img src="@/assets/logo.png" alt srcset>
+              <img src="@/assets/logo.png" alt srcset>
             </div>
-            <div class="imgLeft"> 
+            <div class="imgLeft">
               <img src="@/assets/leftIm.png" alt="" srcset="">
-              </div>
-           <!-- <p class="login-text-author">—— {{ textName }}</p> -->
+            </div>
+            <!-- <p class="login-text-author">—— {{ textName }}</p> -->
           </div>
         </el-col>
         <el-col :span="14">
           <div class="login-form-warpper">
             <h3 class="login-form-title">欢迎使用</h3>
             <div class="loginWeap">
-              <p class="L1 active" >企业登录</p>
-              <p class="L2">个人登录</p>
+              <p :class="{'L1':1,'active':active===1}" @click="checkItem(1)">企业登录</p>
+              <p :class="{'L2':1,'active':active===2 }" @click="checkItem(2)">个人登录</p>
             </div>
             <el-form-item prop="username" class="ele-form-item">
               <span class="svg-container">
@@ -42,18 +42,18 @@
                 auto-complete="on"
               />
             </el-form-item>
-            <el-form-item prop="username" v-if="companies&&companies.length" class="ele-form-item">
+            <el-form-item v-if="active===2" prop="company" class="ele-form-item">
               <span class="svg-container">
                 <svg-icon icon-class="icon" />
               </span>
-              <el-select v-model="value" placeholder="请选择">
-              <el-option
-                v-for="item in companies"
-                :key="item.id"
-                :label="item.company"
-                :value="item.id">
-              </el-option>
-            </el-select>
+              <el-select v-model="loginForm.company" placeholder="请选择" style="width:400px">
+                <el-option
+                  v-for="item in companies"
+                  :key="item.id"
+                  :label="item.company"
+                  :value="item.id"
+                />
+              </el-select>
             </el-form-item>
 
             <el-form-item prop="password" class="ele-form-item">
@@ -76,13 +76,13 @@
                 <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
               </span>
             </el-form-item>
-            
+
             <el-button
               type="primary"
               style="width:100%;line-height: 20px;margin-top: 20px;font-size:17px"
               @click.native.prevent="handleLogin('loginForm')"
             >登 陆</el-button>
-            <p class="login-form-forgetL" @click="visible = true" @>忘记密码？</p>
+            <p class="login-form-forgetL" @ @click="visible = true">忘记密码？</p>
             <p class="login-form-forgetP" @click="goregist">立即注册</p>
             <p class="login-bottom-text">background management system</p>
           </div>
@@ -191,13 +191,15 @@ export default {
       }
     }
     return {
-      companies:null,
+      active: 1,
+      companies: null,
       info: getUserInfo(),
       bgImg: login_bg,
       loginImg: login_img,
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        company: ''
       },
       loginRules: {
         username: [
@@ -205,6 +207,9 @@ export default {
         ],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
+        ],
+        company: [
+          { required: true, message: '请选择所属企业', trigger: 'change' }
         ]
       },
       setNewRules: {
@@ -288,24 +293,24 @@ export default {
     this.textName = this.textArray[index].name
   },
   methods: {
-    async getCompanies(){
-      const _params={
-        content:{
+    checkItem(e) {
+      this.active = e
+    },
+    async getCompanies() {
+      const _params = {
+        content: {
           phoneNumber: this.loginForm.username
         }
       }
       await TestHttpInteractor.getCompanies(_params).then(res => {
-        if(res){
-             this.companies=res 
+        if (res) {
+          this.companies = res
           console.log('-------------------------')
-
         }
-     
-          })
-
+      })
     },
-    goregist(){
-    this.$router.push({ name: 'Register' })
+    goregist() {
+      this.$router.push({ name: 'Register' })
     },
     countDown() {
       if (!this.canClick) return // 改动的是这两行代码
@@ -563,7 +568,7 @@ $light_gray: #000;
           justify-content: space-around;
           align-items: center;
           cursor: pointer;
-          .L1{        
+          .L1{
           font-size: 20px;
           font-family: PingFang SC;
           font-weight: 500;
@@ -572,7 +577,7 @@ $light_gray: #000;
           padding-bottom: 6px;
 
           }
-          .L2{ 
+          .L2{
             font-size: 20px;
             font-family: PingFang SC;
             font-weight: 500;
@@ -594,7 +599,7 @@ $light_gray: #000;
         position: relative;
         padding-left: 12px;
         margin: 0 0 50px;
-        
+
       }
       .login-form-title::before {
         content: "";
