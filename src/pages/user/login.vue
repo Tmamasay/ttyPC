@@ -83,8 +83,8 @@
               style="width:100%;line-height: 20px;margin-top: 20px;font-size:17px"
               @click.native.prevent="handleLogin('loginForm')"
             >登 陆</el-button>
-            <p class="login-form-forgetL" @ @click="visible = true">忘记密码？</p>
-            <p class="login-form-forgetP" @click="goregist">立即注册</p>
+            <p v-if="active===1" class="login-form-forgetL" @click="visible = true">忘记密码？</p>
+            <p v-if="active===1" class="login-form-forgetP" @click="goregist">立即注册</p>
             <p class="login-bottom-text">background management system</p>
           </div>
         </el-col>
@@ -104,6 +104,7 @@
         <el-form-item prop="newPw">
           <el-input
             v-model="forgetForm.newPw"
+            type="password"
             autocomplete="off"
             placeholder="请输入新密码"
           />
@@ -111,6 +112,7 @@
         <el-form-item prop="newPw1">
           <el-input
             v-model="forgetForm.newPw1"
+            type="password"
             autocomplete="off"
             placeholder="确认新密码"
           />
@@ -626,14 +628,14 @@ $light_gray: #000;
         float: left;
         cursor: pointer;
         margin-top: 10px;
-        font-size: 12px;
+        font-size: 14px;
       }
       .login-form-forgetP {
         color: #2A78DC;
         float: right;
         cursor: pointer;
         margin-top: 10px;
-        font-size: 12px;
+        font-size: 14px;
       }
       .login-bottom-text {
         margin-bottom: 0;

@@ -108,7 +108,7 @@ export default {
     onEdit(item, index) {
       this.$router.push({ name: 'EditTest', params: { id: item.id }})
     },
-    async getTestList(query) {
+    async getTestList() {
       try {
         if (this.$route.params.isTry) {
           const data = await testHttpInteractor.getProductPriceTest()

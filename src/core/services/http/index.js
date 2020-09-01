@@ -3,7 +3,7 @@ import store from '@/store'
 import { Message } from 'element-ui'
 import { Toast } from 'vant'
 import { getToken, getRefreshToken } from '../cache'
-import RESTFUL_ERROR_CODE_MAP from '@/constants/restful_error_code'
+// import RESTFUL_ERROR_CODE_MAP from '@/constants/restful_error_code'
 
 function errorReport(url, error, requestOptions, response) {
   if (window.$sentry) {
@@ -81,12 +81,10 @@ instance.interceptors.response.use(
   (response) => {
     Toast.clear()
     responseLog(response)
-    const code = +response.data.statusCode
-    const msg = RESTFUL_ERROR_CODE_MAP[code]
-    debugger
-    if (msg) {
-      // Toast(response.data.message || msg)
-      if (code === 401) {
+    const codeTy = response.data.code
+    const code = response.data.statusCode
+    if (code && code !== '00000') {
+      if (+code === 401) {
         Message({
           message: '登录时间失效，请重新登录',
           type: 'error',
@@ -105,18 +103,57 @@ instance.interceptors.response.use(
           duration: 5 * 1000
         })
       }
-
-      return Promise.reject(response.data.message || msg)
+      return Promise.reject(response.data.message)
     } else if (response.data.data && +response.data.data.code === 403) {
       Message({
         message: response.data.data.error_description,
         type: 'error',
         duration: 5 * 1000
       })
-      return Promise.reject(response.data.data.error_description || msg)
+      return Promise.reject(response.data.data.error_description)
+    } else if (codeTy && +codeTy !== 10000) {
+      Message({
+        message: response.data.msg,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(response.data.msg)
     } else {
       return response
     }
+    // const msg = RESTFUL_ERROR_CODE_MAP[code]
+    // if (msg) {
+    //   // Toast(response.data.message || msg)
+    //   if (+code === 401) {
+    //     Message({
+    //       message: '登录时间失效，请重新登录',
+    //       type: 'error',
+    //       duration: 5 * 1000
+    //     })
+    //     setTimeout(() => {
+    //       store.dispatch('user/resetToken').then(() => {
+    //         this.$router.push({ name: 'Home' })
+    //         location.reload()
+    //       })
+    //     }, 2000)
+    //   } else {
+    //     Message({
+    //       message: response.data.message,
+    //       type: 'warning',
+    //       duration: 5 * 1000
+    //     })
+    //   }
+    //   return Promise.reject(response.data.message || msg)
+    // } else if (response.data.data && +response.data.data.code === 403) {
+    //   Message({
+    //     message: response.data.data.error_description,
+    //     type: 'error',
+    //     duration: 5 * 1000
+    //   })
+    //   return Promise.reject(response.data.data.error_description || msg)
+    // } else {
+    //   return response
+    // }
   },
   (thrown) => {
     Toast(thrown.message || 'Error')

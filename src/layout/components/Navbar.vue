@@ -65,11 +65,11 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch('user/logout').then(res => {
-        if (res) {
-          this.$router.push({ name: 'Home' })
-        }
-      })
+      this.$store.dispatch('user/logout')
+      setTimeout(() => {
+        this.$router.push({ name: 'Home' })
+        location.reload()
+      }, 1000)
     },
     ttyAuth() {
       this.$router.push({ name: 'Auth' })
@@ -119,6 +119,8 @@ export default {
 .contain {
   width: 100%;
   height: 65px;
+  // position: fixed;
+  top: 0;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 5px 20px 0px rgba(191, 190, 190, 0.15);
   .conTent {
@@ -152,7 +154,7 @@ export default {
           li {
             display: inline;
             padding-bottom: 5px;
-            font-size: 14px;
+            font-size: 15px;
             font-family: PingFang SC;
             font-weight: 500;
             color: rgba(59, 59, 59, 1);
@@ -168,7 +170,7 @@ export default {
         cursor: pointer;
         .login {
           display: inline-block;
-          font-size: 14px;
+          font-size: 15px;
           font-family: PingFang SC;
           font-weight: 500;
           color: rgba(59, 59, 59, 1);
@@ -180,7 +182,7 @@ export default {
           height: 36px;
           text-align: center;
           display: inline-block;
-          font-size: 14px;
+          font-size: 15px;
           font-family: PingFang SC;
           font-weight: 500;
           color: rgba(253, 253, 253, 1);
@@ -220,7 +222,7 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 2px;
+        margin-top: 10px;
         position: relative;
 
         .user-avatar {

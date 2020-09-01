@@ -110,7 +110,7 @@ export const routes = [
         path: 'agreement',
         component: () => import('@/pages/user/agreement'),
         name: 'Agreement',
-        meta: { title: '服务协议' }
+        meta: { title: '服务协议', hideNav: true }
       }
     ]
   },

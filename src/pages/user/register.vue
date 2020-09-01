@@ -49,6 +49,7 @@
             <el-form-item prop="password">
               <el-input
                 v-model="registerForm.password"
+                type="password"
                 autocomplete="off"
                 placeholder="请输入登录密码"
               />
@@ -56,6 +57,7 @@
             <el-form-item prop="passwordTwo">
               <el-input
                 v-model="registerForm.passwordTwo"
+                type="password"
                 autocomplete="off"
                 placeholder="确认新密码"
               />
@@ -88,7 +90,7 @@
               class="reBtn"
               :disabled="!canClick"
               @click.native="findSubmit('registerForm')"
-            >登 陆</el-button>
+            >确 定</el-button>
             <!-- <el-button type="primary" size="medium" :disabled="!canClick" @click.native="findSubmit('registerForm')">确 定</el-button> -->
             <p class="login-form-forgetL" @ @click="visible = true">注册即表示同意泰霆云 <span @click="agreeXy">《使用协议》</span></p>
             <p class="login-form-forgetP" @click="goLogin">登录</p>
@@ -214,7 +216,9 @@ export default {
   },
   methods: {
     agreeXy() {
-      this.$router.push({ name: 'Agreement' })
+      const routeData = this.$router.resolve({ path: '/user/agreement' })
+      window.open(routeData.href, '_blank')
+      // this.$router.push({ name: 'Agreement' })
     },
     goLogin() {
       this.$router.push({ name: 'Login' })
@@ -283,6 +287,8 @@ export default {
 
           }
           TestHttpInteractor.registerSendSms(_params).then(res => {
+            console.log(res)
+            console.log('---------------------k')
             if (res) {
               //   this.resetCont = res.data
               this.$message({
@@ -459,7 +465,7 @@ $light_gray: #000;
       }
     }
     .login-form-warpperR {
-       width: 400px;
+       width: 420px;
       margin-top:80px ;
       margin-left: 300px;
       .login-form-title {

@@ -33,7 +33,7 @@ const actions = {
             // setToken(res.access_token)
             setToken(`Bearer ${res.access_token}`)
             setRefreshToken(res.refresh_token)
-            commit('SET_TOKEN', res.access_token)
+            commit('SET_TOKEN', `Bearer ${res.access_token}`)
             console.log(res.access_token)
             TestHttpInteractor.getCompanyOne().then(info => {
               setUserInfo(info)

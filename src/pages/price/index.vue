@@ -76,7 +76,7 @@ export default {
     }
   },
   async created() {
-    this.getTestList({ page: 1, count: 10 })
+    this.getTestList()
   },
   methods: {
     goAuth() {
@@ -103,9 +103,8 @@ export default {
     onEdit(item, index) {
       this.$router.push({ name: 'EditTest', params: { id: item.id }})
     },
-    async getTestList(query) {
+    async getTestList() {
       try {
-        // this.query = Object.assign({}, this.query, query)
         const data = await testHttpInteractor.getProductList()
         console.log(data)
         console.log('o000000009999999988888888888887777')

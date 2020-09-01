@@ -258,29 +258,8 @@ export default {
       var formData = new FormData()
       formData.append('file', file.raw)
       _this.uploadData = formData
-    },
-    onAdd() {
-      this.$router.push({ name: 'CreateTest' })
-    },
-    onEdit(item, index) {
-      this.$router.push({ name: 'EditTest', params: { id: item.id }})
-    },
-    async getTestList(query) {
-      try {
-        this.query = Object.assign({}, this.query, query)
-        const { data, total } = await testHttpInteractor.getTestList(
-          this.query
-        )
-        this.listTotal = total
-        if (this.query.page === 1) {
-          this.list = data
-        } else {
-          this.list = [...this.list, ...data]
-        }
-      } catch (error) {
-        console.log(error)
-      }
     }
+
   }
 }
 </script>

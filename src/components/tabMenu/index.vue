@@ -1,29 +1,13 @@
 <template>
   <div>
-    <van-field
-      v-model="value"
-      readonly
-      clickable
-      name="picker"
-      v-bind="$attrs"
-      :label="label"
-      :placeholder="placeholder"
-      @click="showPicker = true"
-    />
-    <van-popup v-model="showPicker" :overlay="overlay" :position="position">
-      <van-picker
-        show-toolbar
-        :columns="columns"
-        @confirm="handleConfirmSelect"
-        @cancel="showPicker = false"
-      />
-    </van-popup>
+    <div class="tabContent" />
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Select',
+  name: 'TabMenu',
   model: {
     prop: 'selectValue'
   },
@@ -79,6 +63,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-
-</style>
