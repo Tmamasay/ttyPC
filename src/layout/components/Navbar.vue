@@ -14,29 +14,33 @@
             <li :class="{'active':onRoutesChild=='order'}" @click="showTab(4)">我的订单</li>
           </ul>
         </div>
+        <p v-if="info" class="workArea">进入工作区</p>
         <div v-if="!info" class="conLogin">
           <p class="login" @click="login">登录</p>
           <p class="resgite" @click="register">注册</p>
         </div>
         <div v-else class="right-menu">
-          <el-dropdown class="avatar-container" trigger="click">
-            <div class="avatar-wrapper">
+
+          <el-dropdown class="avatar-container">
+            <div class="avatar-wrapper" @click="showMenu">
               <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class="user-avatar" style="margin-top:6px">
               <!-- <svg-icon style="width:45px;height:45px" icon-class="touxiang" /> -->
+              <img :class="{'xlC':1,'close':isshow}" src="@/assets/sl.png" alt="" srcset="">
             </div>
-            <el-dropdown-menu slot="dropdown" class="user-dropdown">
-              <!-- <router-link to="/cxLrs/admin/webStatistics">
-                <el-dropdown-item>
-                  首页
-                </el-dropdown-item>
-              </router-link> -->
+            <div v-if="isshow">
+              <tableft />
+            </div>
+
+            <!-- <tableft /> -->
+            <!-- <el-dropdown-menu slot="dropdown" class="user-dropdown">
+              <tableft />
               <el-dropdown-item divided @click.native="ttyAuth">
                 <span style="display:block;">企业信息</span>
               </el-dropdown-item>
               <el-dropdown-item divided @click.native="logout">
                 <span style="display:block;">退出登录</span>
               </el-dropdown-item>
-            </el-dropdown-menu>
+            </el-dropdown-menu> -->
           </el-dropdown>
         </div>
       </div>
@@ -46,11 +50,16 @@
 
 <script>
 import { getUserInfo } from '@/core/services/cache'
+import tableft from '@/components/tabMenu'
 export default {
   name: 'Navbar',
+  components: {
+    tableft
+  },
   data() {
     return {
-      info: getUserInfo()
+      info: getUserInfo(),
+      isshow: false
     }
   },
   computed: {
@@ -64,16 +73,10 @@ export default {
     console.log('------------')
   },
   methods: {
-    logout() {
-      this.$store.dispatch('user/logout')
-      setTimeout(() => {
-        this.$router.push({ name: 'Home' })
-        location.reload()
-      }, 1000)
+    showMenu() {
+      this.isshow = !this.isshow
     },
-    ttyAuth() {
-      this.$router.push({ name: 'Auth' })
-    },
+
     // 注册
     register() {
       this.$router.push({ name: 'Register' })
@@ -143,6 +146,20 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+        .workArea{
+          cursor: pointer;
+          text-align: center;
+      width: 100px;
+      height: 36px;
+      background: #0E4E90;
+      border-radius: 5px;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #FEFEFE;
+      line-height: 36px;
+      margin-right: 40px;
+    }
       .conNav {
         margin-right: 200px;
         cursor: pointer;
@@ -194,7 +211,8 @@ export default {
       .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+
+    // line-height: 50px;
 
     &:focus {
       outline: none;
@@ -222,14 +240,23 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 10px;
+        margin-top: -5px;
         position: relative;
 
         .user-avatar {
           cursor: pointer;
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 50%;
+        }
+        .xlC{
+          width: 20px;
+          height: 20px;
+          transition: all 0.4s;
+        }
+        .close{
+          transition: all 0.4s;
+          transform:rotate(180deg);
         }
 
         .el-icon-caret-bottom {
