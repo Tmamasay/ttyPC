@@ -32,10 +32,34 @@
       <div class="qsOne">
         <div class="Qs1">
           <p class="s1">1、支付渠道和支付方式说明</p>
-          <div class="sIm"><img src="@/assets/open.png" alt="" srcset=""></div>
-          <p class="s2">查看详情</p>
+          <div :class="{'sIm':1,'close':isShow}"><img src="@/assets/open.png" alt="" srcset=""></div>
+          <p class="s2" @click="show()">{{ isShow?'收起详情':'查看详情' }}</p>
         </div>
-        <p class="QScont">到期后已产生的数据会全部保留在该系统，可以查看该系统的内容，但是不能再进行任何操作，需付费后才能正常使用该系统所有功能，但是不能再进行任何操作，需付费后才能正常使用该系统所有功能</p>
+        <p v-if="+isShow" class="QScont">我们支付方式只能在泰霆云官网上进行支付，支付方式有支付宝支付、微信支付、对公转账，支付信息已官网为准。请勿相信私下转账交易，如有任何疑问请与我们客服联系。</p>
+      </div>
+      <div class="qsOne">
+        <div class="Qs1">
+          <p class="s1">2、 购买后是否可以开具发票？</p>
+          <div :class="{'sIm':1,'close':isShow2}"><img src="@/assets/open.png" alt="" srcset=""></div>
+          <p class="s2" @click="show2()">{{ isShow2?'收起详情':'查看详情' }}</p>
+        </div>
+        <p v-if="isShow2" class="QScont">我们提供增值税普通发票，付款成功后进入【我的订单】页面选择【申请发票】信息提交成功后，我们将以邮寄的方式送达给您。</p>
+      </div>
+      <div class="qsOne">
+        <div class="Qs1">
+          <p class="s1">3、使用期间增加人员名额如何付费？</p>
+          <div :class="{'sIm':1,'close':isShow3}"><img src="@/assets/open.png" alt="" srcset=""></div>
+          <p class="s2" @click="show3()">{{ isShow3?'收起详情':'查看详情' }}</p>
+        </div>
+        <p v-if="isShow3" class="QScont">登录后进入【我的订单】页面选择【升级人数】，在根据现阶段人数选择合适的套餐人数下单即可。升级人数付款金额我们是以补差价的方式计算，并且有效期以原订单的剩余有效期为准。计算方法如下：付款金额为=（升级版本金额-旧版本金额）/365÷（365-已使用天数）。</p>
+      </div>
+      <div class="qsOne">
+        <div class="Qs1">
+          <p class="s1">4、 到期后已产生的数据是否会继续保留以及系统可否继续使用？</p>
+          <div :class="{'sIm':1,'close':isShow4}"><img src="@/assets/open.png" alt="" srcset=""></div>
+          <p class="s2" @click="show4()">{{ isShow4?'收起详情':'查看详情' }}</p>
+        </div>
+        <p v-if="isShow4" class="QScont">到期后已产生的数据在180天内会保留在该系统，此时间内用户可以查看该系统的内容，但是不能再进行任何操作，需付费后才能正常使用该系统所有功能。如满180天还未成功续费，系统将自动清空所有保留的数据。</p>
       </div>
 
     </div>
@@ -66,6 +90,10 @@ export default {
   },
   data() {
     return {
+      isShow: true,
+      isShow2: false,
+      isShow3: false,
+      isShow4: false,
       centerDialogVisible: false,
       info: getUserInfo(),
       list: [],
@@ -79,6 +107,18 @@ export default {
     this.getTestList()
   },
   methods: {
+    show() {
+      this.isShow = !this.isShow
+    },
+    show2() {
+      this.isShow2 = !this.isShow2
+    },
+    show3() {
+      this.isShow3 = !this.isShow3
+    },
+    show4() {
+      this.isShow4 = !this.isShow4
+    },
     goAuth() {
       this.centerDialogVisible = false
       this.$router.push({ name: 'Auth' })
@@ -157,20 +197,23 @@ export default {
      border-bottom:1px solid rgba(232,232,232,1);
        margin: 0 auto;
     .QScont{
-  font-size:14px;
-font-family:PingFang SC;
-font-weight:500;
-color:rgba(45,45,45,1);
-line-height:30px;
-padding-bottom: 20px;
+        font-size:14px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(45,45,45,1);
+      line-height:30px;
+      padding-bottom: 20px;
+      transition: all 0.4s;
     }
   .Qs1{
+    cursor: pointer;
    padding-bottom:15px ;
    display: flex;
    justify-content: space-between;
    align-items: center;
 
    .s1{
+     width: 500px;
      font-size:16px;
     font-family:PingFang SC;
     font-weight:500;
@@ -182,7 +225,8 @@ padding-bottom: 20px;
         width: 16px;
         height: 16px;
         overflow: hidden;
-        margin-right: -805px;
+        margin-right: -510px;
+        transition: all 0.4s;
         img{
           display:inline-block;
           width: 100%;
@@ -195,8 +239,11 @@ padding-bottom: 20px;
       font-weight:500;
       color:rgba(0,79,165,1);
       line-height:53px;
-
    }
+   .close{
+          transition: all 0.4s;
+          transform:rotate(180deg);
+        }
   }
   }
   }
@@ -206,7 +253,13 @@ padding-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .ttPM1{
+      transition: all 0.3s;
+      &:hover{
+      box-shadow: 0 15px 30px rgba(0,0,0,.1);
+    transform: translate3d(0,-2px,0);
+    }
       cursor: pointer;
       width:208px;
       height:506px;

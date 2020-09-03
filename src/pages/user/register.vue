@@ -281,7 +281,6 @@ export default {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.canClick = true
-          // debugger
           const _params = {
             data: this.registerForm.phone
 

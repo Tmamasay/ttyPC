@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -168,6 +168,16 @@ class TestHttpInteractor {
   async loginOut(data) {
     try {
       const optons = { url: LOGINOUT, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 资讯分页
+  async selectNotices(data) {
+    try {
+      const optons = { url: NOTICES, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

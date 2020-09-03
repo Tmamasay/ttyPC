@@ -34,3 +34,5 @@ export const LOGINOUT = '/th-auth-biz/auth-login/loginOut'
 export const PROUSE = '/th-auth-biz/product/getProductPriceUse'
 // 再次提交资料
 export const RESETCOM = '/th-auth-biz/login/resetCompany'
+// 资讯分页
+export const NOTICES = '/th-auth-biz/tyteen-notice/selectNotices'

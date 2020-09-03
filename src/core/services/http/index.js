@@ -103,7 +103,8 @@ instance.interceptors.response.use(
           duration: 5 * 1000
         })
       }
-      return Promise.reject(response.data.message)
+      // return Promise.reject(response.data.message)
+      return response.data
     } else if (response.data.data && +response.data.data.code === 403) {
       Message({
         message: response.data.data.error_description,
