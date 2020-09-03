@@ -62,6 +62,7 @@ export default {
   position: absolute;
   right: -85px;
   top:63px;
+  z-index: 99;
  .tabContent{
    width: 180px;
   height: 160px;

@@ -25,6 +25,12 @@
           <span>预计容量：{{ checkItem?checkItem.capacity:'请选使用人数' }}</span>
         </p>
         <p class="O2"><span>购买期限：{{ checkItem?checkItem.years:'请选使用人数' }}</span></p>
+        <div class="yearsCk ">
+          <div class="ck1 active">
+            <p class="k1">1年</p>
+            <p class="k2">￥22578</p>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -247,6 +253,38 @@ line-height:40px
         margin-right:10px ;
         margin-top: -2px;
       }
+    }
+    .yearsCk{
+      .ck1{
+        width: 220px;
+        height: 90px;
+        background: #FFFFFF;
+        border: 1px solid #E6E6E6;
+        border-radius: 10px;
+        text-align: center;
+        .k1{
+          margin-top: 10px;
+        font-size: 18px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #2E2E2E;
+        line-height: 30px;
+        }
+        .k2{
+
+        font-size: 20px;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FE5547;
+        line-height: 30px;
+        }
+      }
+      .active{
+background: linear-gradient(90deg, #FDF0D4, #FEE6BB);
+border: 1px solid #FFE5B3;
+border-radius: 10px;
+      }
+
     }
     .O2{
       font-size:14px;

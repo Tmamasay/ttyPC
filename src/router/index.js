@@ -63,6 +63,12 @@ export const routes = [
         component: () => import('@/pages/price/index'),
         name: 'Price',
         meta: { title: '价格' }
+      },
+      {
+        path: 'offer',
+        component: () => import('@/pages/price/offer'),
+        name: 'Offer',
+        meta: { title: '私有化部署' }
       }
     ]
   },

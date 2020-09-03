@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -19,6 +19,15 @@ class TestHttpInteractor {
   async oauthLogin(data) {
     try {
       const optons = { url: `http://47.114.91.11:10001/auth/oauth/login`, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 私有化部署咨询信息填写
+  async setProductMessage(data) {
+    try {
+      const optons = { url: SETMES, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

@@ -36,3 +36,5 @@ export const PROUSE = '/th-auth-biz/product/getProductPriceUse'
 export const RESETCOM = '/th-auth-biz/login/resetCompany'
 // 资讯分页
 export const NOTICES = '/th-auth-biz/tyteen-notice/selectNotices'
+// 私有化部署咨询信息填写
+export const SETMES = '/th-auth-biz/auth-login/setProductMessage'
