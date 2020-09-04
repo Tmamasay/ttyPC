@@ -27,6 +27,12 @@ export const routes = [
         component: () => import('@/pages/home/index'),
         name: 'Home',
         meta: { title: '首页' }
+      },
+      {
+        path: 'about',
+        component: () => import('@/pages/home/about'),
+        name: 'About',
+        meta: { title: '关于我们' }
       }
     ]
   },

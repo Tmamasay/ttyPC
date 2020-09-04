@@ -2,6 +2,10 @@
   <div class="ttOfferCont">
     <div class="ttOfferBanner">
       <img src="@/assets/offer.png" alt="" srcset="">
+      <div class="getTitle">
+        <p class="Gt1">企业私有化部署</p>
+        <p class="Gt2">专业功能定制、数据更隐私、独享服务器、安全便捷</p>
+      </div>
       <div class="getForm">
         <input v-model="offerForm.phone" class="T1" type="number" placeholder="联系电话">
         <input v-model="offerForm.company" class="T1" type="text" placeholder="公司名称">
@@ -172,6 +176,26 @@ export default {
     img{
       width: 100%;
       height: 100%;
+    }
+    .getTitle{
+        position: absolute;
+      top: 215px;
+      left: 385px;
+      .Gt1{
+    font-size: 50px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #F2F2F2;
+    // line-height: 53px;
+      }
+      .Gt2{
+      margin-top: 39px;
+      font-size: 24px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #F2F2F2;
+      // line-height: 36px;
+      }
     }
     .getForm{
       position: absolute;

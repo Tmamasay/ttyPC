@@ -21,7 +21,7 @@
           <p v-if="+index===0" class="P2">¥<span>21</span>.06/月</p>
         </div>
         <p v-if="+index===0" class="P3" @click="goPay(item.productId)">年付</p>
-        <p v-else-if="+index===5" class="P3 getPri">获取报价</p>
+        <p v-else-if="+index===5" class="P3 getPri" @click="getOffer">获取报价</p>
         <p v-else class="P3 close">敬请期待</p>
 
       </div>
@@ -118,6 +118,9 @@ export default {
     },
     show4() {
       this.isShow4 = !this.isShow4
+    },
+    getOffer() {
+      this.$router.push({ name: 'Offer' })
     },
     goAuth() {
       this.centerDialogVisible = false
