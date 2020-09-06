@@ -1,30 +1,45 @@
 <template>
   <div class="ttOrderCont">
-    <div class="ttOrderDet">
+    <div v-if="orderInfo.user" class="ttOrderDet">
       <div class="ttOrtit">
         <p class="O1"><span />订单信息</p>
         <p class="O2"><span>公司名称：{{ orderInfo.user.companyName }}</span><span>购买年限：{{ orderInfo.order.years }}</span></p>
         <p class="O2"><span>订购版本：{{ orderInfo.user.productName }}</span><span>到期时间：{{ formatDate(orderInfo.order.endTime) }}</span></p>
         <p class="O2"><span>使用人数：{{ orderInfo.productPrice.peopleNum }}人</span><span>支付金额：¥{{ orderInfo.order.price }}</span></p>
         <p class="O2"><span>预计容量：{{ orderInfo.order.capacity }}T</span><span>支付方式：微信支付</span></p>
-        <p class="O4"><span class="Bt1" style="display:none">立即续费</span><span class="Bt1" style="display:none">升级人数</span><span class="Bt2" style="display:none" @click="goRecord">订单记录</span><span class="Bt2" style="display:none">申请发票</span></p>
+        <p class="O4"><span class="Bt1">立即续费</span><span class="Bt1">升级人数</span><span class="Bt2" @click="goRecord">订单记录</span><span class="Bt2" @click="getInvoice">申请发票</span></p>
       </div>
     </div>
     <Footer />
+    <el-dialog
+      title="申请发票"
+      :visible.sync="isShowInvoice"
+      width="30%"
+      center
+    >
+      <div>
+        <Invoice />
+      </div>
+
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
+import Invoice from '@/components/invoice'
 
 export default {
-  name: 'Home',
+  name: 'Order',
   components: {
-    Footer
+    Footer,
+    Invoice
   },
   data() {
     return {
+      isShowInvoice: false,
       orderInfo: null,
       list: [],
       query: {
@@ -37,6 +52,9 @@ export default {
     this.getProductPriceUse()
   },
   methods: {
+    getInvoice() {
+      this.isShowInvoice = true
+    },
     // 时间戳转换
     formatDate(value) {
       const date = new Date(value)

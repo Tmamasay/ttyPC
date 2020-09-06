@@ -7,15 +7,15 @@
       </div>
       <div class="ttF1">
         <p class="tF2">支持</p>
-        <p class="tF3">企业私有化部署</p>
-        <p class="tF3">使用教程</p>
-        <p class="tF3">为什么选择泰霆</p>
+        <p class="tF3" @click="goRoute(1)">企业私有化部署</p>
+        <p class="tF3" @click="goRoute(2)">使用教程</p>
+        <p class="tF3" @click="goRoute(3)">为什么选择泰霆</p>
       </div>
       <div class="ttF1">
         <p class="tF2">关于</p>
-        <p class="tF3">关于我们</p>
+        <p class="tF3" @click="goAbout">关于我们</p>
         <p class="tF3">加入我们</p>
-        <p class="tF3">服务协议</p>
+        <p class="tF3" @click="goRoute(4)">服务协议</p>
         <p class="tF3">隐私协议</p>
       </div>
       <div class="ttF1">
@@ -50,6 +50,28 @@ export default {
 
   },
   methods: {
+    goRoute(e) {
+      switch (e) {
+        case 1:
+          this.$router.push({ name: 'Offer' })
+          break
+        case 2:
+          this.$router.push({ name: 'Price' })
+          break
+        case 3:
+          this.$router.push({ name: 'About' })
+          break
+        case 4:
+          this.$router.push({ name: 'Agreement' })
+          break
+
+        default:
+          break
+      }
+    },
+    goAbout() {
+      this.$router.push({ name: 'About' })
+    }
 
   }
 }
@@ -61,6 +83,7 @@ export default {
   padding: 0;
 }
 .ttFooter{
+  cursor: pointer;
   width: 100%;
   background-color: #ffffff;
   .ttFCont{

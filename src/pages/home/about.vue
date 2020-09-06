@@ -39,8 +39,18 @@
     </div>
     <div class="conTact">
       <img src="@/assets/ab4.png" alt="" srcset="">
+      <p class="cv">联系我们</p>
       <div class="TacTit">
-        <p class="Ac1">联系我们</p>
+        <div class="imgcont">
+          <img src="@/assets/phone.png" alt="" srcset="">
+        </div>
+        <p class="Ac1">023-67284792</p>
+      </div>
+      <div class="TacTit2 ">
+        <div class="imgcont">
+          <img src="@/assets/mobie.png" alt="" srcset="">
+        </div>
+        <p class="Ac1">023-67284792</p>
       </div>
     </div>
     <Footer />
@@ -160,19 +170,70 @@ export default {
     height: 550px;
     margin: 0 auto;
     overflow: hidden;
+    position: relative;
     img{
       width: 100%;
       height: 100%;
+    }
+    .cv{
+      position: absolute;
+   top:128px;
+   left: 50%;
+   left:863px;
+    font-size: 50px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 38px;
+    }
+    .TacTit2{
+    position: absolute;
+    top:337px;
+    display: flex;
+    align-items: center;
+    left: 1022px;
 
+      .imgcont{
+        width: 27px;
+        height: 40px;
+        overflow: hidden;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .Ac1{
+          margin-left: 20px;
+          font-size: 30px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+          line-height: 53px;
+      }
     }
     .TacTit{
-      .Ac1{
+    position: absolute;
+    top:337px;
+    display: flex;
+    align-items: center;
+    left: 658px;
 
-font-size: 50px;
-font-family: PingFang SC;
-font-weight: 500;
-color: #FFFFFF;
-line-height: 38px;
+      .imgcont{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .Ac1{
+          margin-left: 20px;
+          font-size: 30px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+          line-height: 53px;
       }
     }
   }
