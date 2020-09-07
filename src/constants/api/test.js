@@ -44,3 +44,5 @@ export const BILL = '/th-auth-biz/order-bill/setBill'
 export const JUMPTYTEEN = '/th-auth-biz/login/jumpTyteen'
 // 资讯详情
 export const NOTICEONE = '/th-auth-biz/tyteen-notice/getNoticeOne'
+// 资讯详情
+export const PRODUCTORDER = '/th-auth-biz/user-order/createProductOrder'

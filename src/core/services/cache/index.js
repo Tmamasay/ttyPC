@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import { TOKEN_KEY, LANGUAGE_KEY, REFRSHTOKEN_KEY, USERINFO, SHOWTAB } from '@/constants/settings'
+import { TOKEN_KEY, SHOWORDER, LANGUAGE_KEY, REFRSHTOKEN_KEY, USERINFO, SHOWTAB } from '@/constants/settings'
 export const getToken = () => Cookies.get(TOKEN_KEY)
 export const setToken = (token) => Cookies.set(TOKEN_KEY, token)
 export const removeToken = () => Cookies.remove(TOKEN_KEY)
@@ -11,6 +11,10 @@ export const removeTab = () => Cookies.remove(SHOWTAB)
 export const getUserInfo = () => JSON.parse(Cookies.get(USERINFO) ? Cookies.get(USERINFO) : null)
 export const setUserInfo = (info) => Cookies.set(USERINFO, JSON.stringify(info))
 export const removeUserInfo = () => Cookies.remove(USERINFO)
+// 订单信息
+export const getUserOrder = () => JSON.parse(Cookies.get(SHOWORDER) ? Cookies.get(SHOWORDER) : null)
+export const setUserOrder = (info) => Cookies.set(SHOWORDER, JSON.stringify(info))
+export const removeUserOrder = () => Cookies.remove(SHOWORDER)
 
 // 刷新token
 export const getRefreshToken = () => Cookies.get(REFRSHTOKEN_KEY)

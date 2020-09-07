@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, PRODUCTORDER, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -29,6 +29,16 @@ class TestHttpInteractor {
   async jumpTyteen(data) {
     try {
       const optons = { url: JUMPTYTEEN, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 工作区跳转,获取token
+  async createProductOrder(data) {
+    try {
+      const optons = { url: PRODUCTORDER, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

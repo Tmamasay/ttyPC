@@ -4,42 +4,52 @@
       <div class="navImg">
         <img src="@/assets/heng.png" alt="" srcset="">
       </div>
-      <p class="navTit"><span>价格</span>><span>订单填写</span></p>
+      <p class="navTit"><span>价格</span>><span>订单填写</span>><span>确认订单</span></p>
     </div>
     <div class="ttOrderDet">
       <div v-if="userInfo.company" class="ttOrtit">
         <!-- <p class="O1"><span />订单信息</p> -->
         <p class="O2"><span>公司名称：{{ userInfo.company.companyName }}</span></p>
-        <p class="O2"><span>订购版本：{{ testInfo.productName }}</span></p>
-        <p class="O2"><span>使用人数：</span>
-          <el-select v-model="person" size="small" placeholder="请选择" @change="showItem">
-            <el-option
-              v-for="item in testInfo.numLists"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
+        <p class="O2"><span>订购版本：{{ orderInfo.productVO.productName }}</span></p>
+        <p class="O2"><span>使用人数：{{ orderInfo.productVO.priceList[0].peopleNum }}</span> </p>
+        <p class="O2">
+          <span>预计容量：{{ orderInfo.productVO.priceList[0].capacity }}</span>
         </p>
         <p class="O2">
-          <span>预计容量：{{ checkTh?checkTh.capacity:'请选使用人数' }}</span>
+          <span>预计容量：{{ orderInfo.productVO.priceList[0].years }}</span>
         </p>
-        <div class="yearsCk ">
-          <div v-for="item in checkItem" :key="item.id" :class="{'ck1':1, 'active':item.id===checkTh.id}" @click="checkThis(item)">
-            <div class="zk">
-              <img src="@/assets/zk.png" alt="" srcset="">
-              <p>折扣</p>
-            </div>
-            <p class="k1">{{ item.years }}</p>
-            <p class="k2">￥{{ item.price }}</p>
-          </div>
-        </div>
       </div>
 
     </div>
+    <div class="payContSt">
+      <p class="payQ">支付方式</p>
+      <div class="payStyle">
+        <div class="paySt" @click="checkPayOne(1)">
+          <img src="@/assets/o4.png" alt="" srcset="" width="36" height="36">
+          <p class="P1">支付宝支付</p>
+          <div v-if="+checkPay===1" class="chPay">
+            <img src="@/assets/o3.png" alt="" srcset="" width="12" height="9">
+          </div>
+        </div>
+        <div class="paySt" @click="checkPayOne(2)">
+          <img src="@/assets/o2.png" alt="" srcset="" width="41" height="36">
+          <p class="P1">微信支付</p>
+          <div v-if="+checkPay===2" class="chPay">
+            <img src="@/assets/o3.png" alt="" srcset="" width="12" height="9">
+          </div>
+        </div>
+        <div class="paySt" @click="checkPayOne(3)">
+          <img src="@/assets/o1.png" alt="" srcset="" width="36" height="36">
+          <p class="P1">对公转账</p>
+          <div v-if="+checkPay===3" class="chPay">
+            <img src="@/assets/o3.png" alt="" srcset="" width="12" height="9">
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="payCont">
-      <p class="P1">订单金额：<span>￥{{ checkTh?checkTh.price:'0' }}</span></p>
-      <p v-if="checkTh" class="P2">支付完成后可申请发票，购买后到期日为{{ getDQTime( checkTh?checkTh.years:'1') }}</p>
+      <p class="P1">订单金额：<span>￥{{ orderInfo.price||'0' }}</span></p>
+      <p class="P2">支付完成后可申请发票，购买后到期日为{{ getDQTime( orderInfo.productVO.priceList[0].years) }}</p>
       <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span>《服务协议》</span></el-checkbox></p>
       <p class="goDill" @click="goTryDill">提交订单</p>
     </div>
@@ -50,7 +60,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo, setUserOrder } from '@/core/services/cache'
+import { getUserInfo, getUserOrder } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -59,30 +69,54 @@ export default {
   },
   data() {
     return {
-      checkTh: null,
-      checked: false,
-      person: '',
-      checkItem: null,
       userInfo: getUserInfo() ? getUserInfo() : null,
       testInfo: {},
-      query: {
-        page: 1,
-        count: 10
+      checkPay: 1,
+      // orderInfo: getUserOrder() ? getUserInfo() : null
+      orderInfo: {
+        'orderId': 'JZ20200907Nm6MnI',
+        'price': 3533800,
+        'productVO': {
+          'productId': '110',
+          'productName': '基础版',
+          'rate': 0,
+          'status': null,
+          'lists': null,
+          'numLists': null,
+          'priceList': [
+            {
+              'id': '256205',
+              'action': 1,
+              'createTime': 1597757702000,
+              'updateTime': null,
+              'productId': '110',
+              'peopleNum': '1-10',
+              'price': 35338,
+              'years': '2年',
+              'capacity': '500GB',
+              'minNum': 1,
+              'maxNum': 10
+            }
+          ]
+        }
       }
     }
   },
   async created() {
-    this.getTestList()
+    // this.getTestList()
   },
   mounted() {
     // alert(this.$route.params.isTry)
   },
   methods: {
+    checkPayOne(e) {
+      this.checkPay = e
+    },
     getDQTime(hs) {
       const hms = hs.substr(0, 1)
-      const laHms = (+hms) * 31536000000 + new Date().getTime()
+      const laHms = (+hms) * 31536000000 + this.orderInfo.productVO.priceList[0].createTime
       const year = new Date(laHms).getFullYear()
-      const month = new Date(laHms).getMonth()
+      const month = new Date(laHms).getMonth() + 1
       const day = new Date(laHms).getDay()
       return `${year}年${month}月${day}`
     },
@@ -128,38 +162,12 @@ export default {
           }
         }).then(res => {
           if (res) {
-            setUserOrder(res)
-            this.$router.push({ name: 'Srue' })
+            console.log(11)
           }
         })
       }
-    },
-    async getTestList() {
-      try {
-        if (this.$route.params.isTry) {
-          const data = await testHttpInteractor.getProductPriceTest()
-          console.log(data)
-          this.testInfo = data
-        } else if (this.$route.params.productId) {
-          const data = await testHttpInteractor.getProductPriceList({
-            param: {
-              productId: this.$route.params.productId
-            }
-          })
-          console.log(data)
-          this.testInfo = data
-        } else {
-          this.$router.push({ name: 'Home' })
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    showItem(e) {
-      this.checkItem = this.testInfo.priceList.filter(el => el.peopleNum === e)
-      this.checkTh = this.checkItem[0]
-      console.log(this.checkItem)
     }
+
   }
 }
 </script>
@@ -198,11 +206,68 @@ export default {
       color:#ffffff;
     }
   }
+  .payContSt{
+     width:1350px;
+    margin: 0 auto;
+   .payQ{
+      font-size: 18px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #2E2E2E;
+      line-height: 30px;
+      margin-top:30px;
+      margin-bottom: 20px;
+   }
+  .payStyle{
+    display: flex;
+      align-items: center;
+    .paySt{
+      width: 190px;
+      height: 70px;
+      background: #FFFFFF;
+      border: 1px solid #E6E6E6;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+      position: relative;
+      overflow: hidden;
+      .chPay{
+        position: absolute;
+        bottom:0px;
+        right: 0px;
+         width: 0;
+        height: 0;
+        border-bottom: 35px solid #0289F1;
+        border-left: 40px solid transparent;
+        img{
+          position: absolute;
+          bottom:-27px;
+        right: 5px;
+        z-index: 5;
+        }
+      }
+      .P1{
+        cursor: pointer;
+        padding-left: 20px;
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #2E2E2E;
+      line-height: 30px;
+      }
+    }
+
+  }
+  }
   .payCont{
     width:1350px;
     margin: 0 auto;
     text-align: right;
+
 .P1{
+
   font-size:18px;
 font-family:PingFang SC;
 font-weight:500;
@@ -253,7 +318,7 @@ line-height:40px
   }
 .ttOrderDet{
   width:1350px;
-  height:376px;
+  height:286px;
   margin: 30px auto;
   background:rgba(255,255,255,1);
   border:1px solid rgba(211,211,211,1);
@@ -278,68 +343,7 @@ line-height:40px
         margin-top: -2px;
       }
     }
-    .yearsCk{
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      .ck1{
-        position: relative;
-        width: 220px;
-        height: 90px;
-        background: #FFFFFF;
-        border: 1px solid #E6E6E6;
-        border-radius: 10px;
-        text-align: center;
-        margin-right: 20px;
-        .zk{
-          position: absolute;
-          top: 0px;
-          left: 0px;
-          width: 58px;
-          height: 26px;
-          overflow: hidden;
-          text-align: center;
-          p{
-            width: 100%;
-            position: absolute;
-            top: 0px;
-            z-index: 8;
-            font-size: 14px;
-            font-family: PingFang SC;
-            font-weight: 500;
-            color: #FFFFFF;
-            line-height: 26px;
 
-          }
-          img{
-            width: 100%;
-            height: 100%;
-          }
-        }
-        .k1{
-          margin-top: 10px;
-        font-size: 18px;
-        font-family: PingFang SC;
-        font-weight: 500;
-        color: #2E2E2E;
-        line-height: 30px;
-        }
-        .k2{
-
-        font-size: 20px;
-        font-family: PingFang SC;
-        font-weight: bold;
-        color: #FE5547;
-        line-height: 30px;
-        }
-      }
-      .active{
-background: linear-gradient(90deg, #FDF0D4, #FEE6BB);
-border: 1px solid #FFE5B3;
-border-radius: 10px;
-      }
-
-    }
     .O2{
       font-size:14px;
       font-family:PingFang SC;

@@ -53,6 +53,12 @@ export const routes = [
         meta: { title: '订单填写' }
       },
       {
+        path: 'srue',
+        component: () => import('@/pages/order/srue'),
+        name: 'Srue',
+        meta: { title: '订单确认 ' }
+      },
+      {
         path: 'record',
         component: () => import('@/pages/order/record'),
         name: 'Record',
