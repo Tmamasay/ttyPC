@@ -57,8 +57,8 @@
             width="150"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row">取消订单</span>
-              <span>去付款</span>
+              <span v-if="scope.row" class="qxOr">取消订单</span>
+              <span class="payOr">去付款</span>
             </template>
           </el-table-column>
         </el-table>
@@ -228,6 +228,22 @@ export default {
   .ttOrtit{
     cursor: pointer;
     margin: 50px 60px;
+    .qxOr{
+
+font-size: 12px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #186AC0;
+line-height: 30px;
+    }
+    .payOr{
+font-size: 12px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #186AC0;
+line-height: 30px;
+padding-left: 20px;
+    }
 
   }
 }

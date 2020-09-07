@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -15,6 +15,7 @@ class TestHttpInteractor {
       throw error
     }
   }
+
   // 个人登录
   async oauthLogin(data) {
     try {
@@ -24,6 +25,25 @@ class TestHttpInteractor {
       throw error
     }
   }
+  // 工作区跳转,获取token
+  async jumpTyteen(data) {
+    try {
+      const optons = { url: JUMPTYTEEN, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 资讯详情
+  async getNoticeOne(data) {
+    try {
+      const optons = { url: NOTICEONE, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
   // 私有化部署咨询信息填写
   async setProductMessage(data) {
     try {
@@ -167,6 +187,16 @@ class TestHttpInteractor {
   async resetCompany(data) {
     try {
       const optons = { url: RESETCOM, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 填写发票信息
+  async setBill(data) {
+    try {
+      const optons = { url: BILL, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

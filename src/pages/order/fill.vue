@@ -14,10 +14,10 @@
         <p class="O2"><span>使用人数：</span>
           <el-select v-model="person" size="small" placeholder="请选择" @change="showItem">
             <el-option
-              v-for="item in testInfo.priceList"
-              :key="item.id"
-              :label="item.peopleNum"
-              :value="item.id"
+              v-for="item in testInfo.numLists"
+              :key="item"
+              :label="item"
+              :value="item"
             />
           </el-select>
         </p>
@@ -26,9 +26,13 @@
         </p>
         <p class="O2"><span>购买期限：{{ checkItem?checkItem.years:'请选使用人数' }}</span></p>
         <div class="yearsCk ">
-          <div class="ck1 active">
-            <p class="k1">1年</p>
-            <p class="k2">￥22578</p>
+          <div v-for="item in checkItem" :key="item.id" class="ck1 active" @click="checkThis">
+            <div class="zk">
+              <img src="@/assets/zk.png" alt="" srcset="">
+              <p>折扣</p>
+            </div>
+            <p class="k1">{{ item.years }}</p>
+            <p class="k2">￥{{ item.price }}</p>
           </div>
         </div>
       </div>
@@ -92,27 +96,23 @@ export default {
         })
         return
       }
-      await testHttpInteractor.createProductPriceTest().then(res => {
-        if (res) {
-          this.$message({
-            message: '试用申请提交成功，等待管理员审核~',
-            type: 'success',
-            duration: 5 * 1000
-          })
-          setTimeout(() => {
-            this.$router.push({ name: 'Home' })
-          }, 3000)
-        }
-      })
-    },
-    showItem(e) {
-      this.checkItem = this.testInfo.priceList.find(el => +el.id === +e)
-    },
-    onAdd() {
-      this.$router.push({ name: 'CreateTest' })
-    },
-    onEdit(item, index) {
-      this.$router.push({ name: 'EditTest', params: { id: item.id }})
+
+      if (!this.$route.params.productId) {
+        await testHttpInteractor.createProductPriceTest().then(res => {
+          if (res) {
+            this.$message({
+              message: '试用申请提交成功，等待管理员审核~',
+              type: 'success',
+              duration: 5 * 1000
+            })
+            setTimeout(() => {
+              this.$router.push({ name: 'Home' })
+            }, 3000)
+          }
+        })
+      } else {
+        console.log(111)
+      }
     },
     async getTestList() {
       try {
@@ -125,7 +125,6 @@ export default {
             param: {
               productId: this.$route.params.productId
             }
-
           })
           console.log(data)
           this.testInfo = data
@@ -135,6 +134,10 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    showItem(e) {
+      this.checkItem = this.testInfo.priceList.filter(el => el.peopleNum === e)
+      console.log(this.checkItem)
     }
   }
 }
@@ -255,13 +258,43 @@ line-height:40px
       }
     }
     .yearsCk{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
       .ck1{
+        position: relative;
         width: 220px;
         height: 90px;
         background: #FFFFFF;
         border: 1px solid #E6E6E6;
         border-radius: 10px;
         text-align: center;
+        margin-right: 20px;
+        .zk{
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 58px;
+          height: 26px;
+          overflow: hidden;
+          text-align: center;
+          p{
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            z-index: 8;
+            font-size: 14px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #FFFFFF;
+            line-height: 26px;
+
+          }
+          img{
+            width: 100%;
+            height: 100%;
+          }
+        }
         .k1{
           margin-top: 10px;
         font-size: 18px;

@@ -140,12 +140,7 @@ export default {
     getImgUrl(index) {
       return require(`@/assets/r${index + 2}.png`)
     },
-    onAdd() {
-      this.$router.push({ name: 'CreateTest' })
-    },
-    onEdit(item, index) {
-      this.$router.push({ name: 'EditTest', params: { id: item.id }})
-    },
+
     async getTestList() {
       try {
         const data = await testHttpInteractor.getProductList()

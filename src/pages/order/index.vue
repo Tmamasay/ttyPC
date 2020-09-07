@@ -18,7 +18,7 @@
       center
     >
       <div>
-        <Invoice />
+        <Invoice :info="orderInfo" />
       </div>
 
     </el-dialog>
@@ -74,12 +74,7 @@ export default {
     goRecord() {
       this.$router.push({ name: 'Record' })
     },
-    onAdd() {
-      this.$router.push({ name: 'CreateTest' })
-    },
-    onEdit(item, index) {
-      this.$router.push({ name: 'EditTest', params: { id: item.id }})
-    },
+
     async getProductPriceUse() {
       try {
         const data = await testHttpInteractor.getProductPriceUse()

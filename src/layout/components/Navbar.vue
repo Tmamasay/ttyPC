@@ -14,7 +14,7 @@
             <li :class="{'active':onRoutesChild=='order'}" @click="showTab(4)">我的订单</li>
           </ul>
         </div>
-        <p v-if="info" class="workArea">进入工作区</p>
+        <p v-if="info" class="workArea" @click="jumpTyteen">进入工作区</p>
         <div v-if="!info" class="conLogin">
           <p class="login" @click="login">登录</p>
           <p class="resgite" @click="register">注册</p>
@@ -51,6 +51,8 @@
 <script>
 import { getUserInfo } from '@/core/services/cache'
 import tableft from '@/components/tabMenu'
+import TestHttpInteractor from '@/core/interactors/common-interactor'
+
 export default {
   name: 'Navbar',
   components: {
@@ -73,6 +75,21 @@ export default {
     console.log('------------')
   },
   methods: {
+    jumpTyteen() {
+      TestHttpInteractor.jumpTyteen().then(res => {
+        if (res.accessToken) {
+          window.location.href = `http://www.tyteenyun.com/ttbuild/#/workbench/approvalProcess?accessToken=${res.accessToken}`
+        } else {
+          this.$message({
+            message: '您还未购买产品哦~',
+            type: 'warning',
+            duration: 2 * 1000
+          })
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     showMenu() {
       this.isshow = !this.isshow
     },
@@ -122,7 +139,8 @@ export default {
 .contain {
   width: 100%;
   height: 65px;
-  // position: fixed;
+  position: fixed;
+  z-index: 88;
   top: 0;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 5px 20px 0px rgba(191, 190, 190, 0.15);

@@ -133,6 +133,11 @@ export default {
             type: 'success',
             duration: 3 * 1000
           })
+          this.offerForm = {
+            phone: '',
+            company: '',
+            useNum: ''
+          }
         }
       })
     },

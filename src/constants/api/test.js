@@ -38,3 +38,9 @@ export const RESETCOM = '/th-auth-biz/login/resetCompany'
 export const NOTICES = '/th-auth-biz/tyteen-notice/selectNotices'
 // 私有化部署咨询信息填写
 export const SETMES = '/th-auth-biz/auth-login/setProductMessage'
+// 填写发票信息
+export const BILL = '/th-auth-biz/order-bill/setBill'
+// 工作区跳转,获取token
+export const JUMPTYTEEN = '/th-auth-biz/login/jumpTyteen'
+// 资讯详情
+export const NOTICEONE = '/th-auth-biz/tyteen-notice/getNoticeOne'

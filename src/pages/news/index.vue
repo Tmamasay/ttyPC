@@ -13,7 +13,7 @@
           <p class="C1">{{ item.title }}</p>
           <p class="C2">来源：{{ item.source }}  发布时间：{{ formatDate(item.releaseTime) }}</p>
           <p class="C3" v-html="item.textBody" />
-          <p class="C4">查看详情</p>
+          <p class="C4" @click="goNews(item.id)">查看详情</p>
         </div>
       </div>
       <div v-for="item in 5" :key="item" class="ttNewOne">
@@ -65,6 +65,9 @@ export default {
     this.getNewsList()
   },
   methods: {
+    goNews(id) {
+      this.$router.push({ name: 'Detail', params: { newsId: id }})
+    },
     handleCurrentChange(val) {
       this.query.pageNum = val
       this.getNewsList()

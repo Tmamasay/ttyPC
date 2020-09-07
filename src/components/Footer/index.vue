@@ -23,7 +23,7 @@
         <p class="tF3">地址：重庆市两江新区杨柳路3号1幢25层25-3</p>
         <p class="tF3">电话：023-67284792          18002343507</p>
         <p class="tF3">邮箱：Joanna@tyteen.com</p>
-        <p class="tF3">微信公众号：泰霆科技</p>
+        <p class="tF3">微信公众号：泰霆云</p>
       </div>
     </div>
     <div class="tFF">
