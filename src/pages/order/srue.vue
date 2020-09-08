@@ -94,7 +94,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo, getUserOrder } from '@/core/services/cache'
+import { getUserInfo } from '@/core/services/cache'
 import QRCode from 'qrcode'
 export default {
   name: 'Home',
@@ -110,7 +110,7 @@ export default {
       userInfo: getUserInfo(),
       testInfo: {},
       checkPay: 0,
-      orderInfo: getUserOrder(),
+      orderInfo: null,
       interval: null
     }
   },
@@ -123,6 +123,7 @@ export default {
     // this.getTestList()
   },
   mounted() {
+    this.getOrderOne()
     // console.log(getUserOrder())
     this.interval = setInterval(() => {
       this.checkPayStatus()
@@ -130,6 +131,17 @@ export default {
     // alert(this.$route.params.isTry)
   },
   methods: {
+    async getOrderOne() {
+      await testHttpInteractor.getOrderOne({
+        data: {
+          orderId: this.$route.params.orderId
+        }
+      }).then(res => {
+        if (res) {
+          this.orderInfo = res
+        }
+      })
+    },
     async bankSUb() {
       await testHttpInteractor.bankPay({
         data: {
@@ -166,6 +178,8 @@ export default {
           setTimeout(() => {
             this.$router.push({ name: 'Order' })
           }, 1000)
+        } else {
+          clearInterval(this.interval)
         }
       })
     },
@@ -213,7 +227,9 @@ export default {
             document.forms[0].target = ' _blank'// 在新页面弹出支付宝页面
             // document.forms[0].acceptCharset='GBK';//如果后台返回form的charset=GBK，需要做此修改
             document.forms[0].submit()
-            location.reload()
+            setTimeout(() => {
+              location.reload()
+            }, 1000)
           }
           console.log(11)
         }

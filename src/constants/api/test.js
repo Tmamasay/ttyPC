@@ -52,3 +52,14 @@ export const ORDERCODE = '/th-auth-biz/user-order/createOrderCode'
 export const ORDERSTATUS = '/th-auth-biz/user-order/getMyOrderStatus'
 // 银行卡支付
 export const BANKPAY = '/th-auth-biz/user-order/bankPay'
+// 通过订单id查询订单
+export const GETORDERONE = '/th-auth-biz/user-order/getOrderOne'
+
+// 取消订单请求
+export const DELORDER = '/th-auth-biz/user-order/delOrder'
+
+// 升级订单预请求
+export const UPORDER = '/th-auth-biz/user-order/upgradeOrder'
+
+// 升级订单确认下单
+export const UPORDERCONFIRM = '/th-auth-biz/user-order/upgradeOrderConfirm'

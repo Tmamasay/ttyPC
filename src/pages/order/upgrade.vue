@@ -4,27 +4,30 @@
       <div class="navImg">
         <img src="@/assets/heng.png" alt="" srcset="">
       </div>
-      <p class="navTit"><span>价格</span>><span>订单填写</span></p>
+      <p class="navTit"><span>价格</span>><span>升级人数</span></p>
     </div>
     <div class="ttOrderDet">
-      <div v-if="userInfo.company" class="ttOrtit">
+      <div v-if="userInfo.company&&testInfo" class="ttOrtit">
         <!-- <p class="O1"><span />订单信息</p> -->
         <p class="O2"><span>公司名称：{{ userInfo.company.companyName }}</span></p>
-        <p class="O2"><span>订购版本：{{ testInfo.productName }}</span></p>
+        <p class="O2"><span>订购版本：{{ testInfo.userOrder.productName }}</span></p>
         <p class="O2"><span>使用人数：</span>
           <el-select v-model="person" size="small" placeholder="请选择" @change="showItem">
             <el-option
-              v-for="item in testInfo.numLists"
-              :key="item"
-              :label="item"
-              :value="item"
+              v-for="item in testInfo.productPrices"
+              :key="item.id"
+              :label="item.peopleNum"
+              :value="item.id"
             />
           </el-select>
         </p>
         <p class="O2">
           <span>预计容量：{{ checkTh?checkTh.capacity:'请选使用人数' }}</span>
         </p>
-        <div class="yearsCk ">
+        <p class="O2">
+          <span>预计容量：{{ checkTh?checkTh.years:'请选使用人数' }}</span>
+        </p>
+        <!-- <div class="yearsCk ">
           <div v-for="item in checkItem" :key="item.id" :class="{'ck1':1, 'active':item.id===checkTh.id}" @click="checkThis(item)">
             <div class="zk">
               <img src="@/assets/zk.png" alt="" srcset="">
@@ -33,7 +36,7 @@
             <p class="k1">{{ item.years }}</p>
             <p class="k2">￥{{ toNum(item.price) }}</p>
           </div>
-        </div>
+        </div> -->
       </div>
 
     </div>
@@ -51,7 +54,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo, setUserOrder } from '@/core/services/cache'
+import { getUserInfo } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -66,7 +69,7 @@ export default {
       person: '',
       checkItem: null,
       userInfo: getUserInfo() ? getUserInfo() : null,
-      testInfo: {},
+      testInfo: null,
       query: {
         page: 1,
         count: 10
@@ -113,48 +116,31 @@ export default {
         })
         return
       }
-
-      if (!this.$route.params.productId) {
-        await testHttpInteractor.createProductPriceTest().then(res => {
-          if (res) {
-            this.$message({
-              message: '试用申请提交成功，等待管理员审核~',
-              type: 'success',
-              duration: 5 * 1000
-            })
-            setTimeout(() => {
-              this.$router.push({ name: 'Home' })
-            }, 3000)
-          }
-        })
-      } else {
-        await testHttpInteractor.createProductOrder({
-          data: {
-            productId: this.$route.params.productId,
-            productPriceId: this.checkTh.id
-          }
-        }).then(res => {
-          if (res) {
-            setUserOrder(res)
-            this.$router.push({ name: 'Srue', params: { orderId: res.orderId }})
-          }
-        })
-      }
+      await testHttpInteractor.upgradeOrderConfirm({
+        data: {
+          orderId: this.$route.params.orderId,
+          productPriceId: this.checkTh.id
+        }
+      }).then(res => {
+        if (res) {
+          console.log(res)
+          this.$router.push({ name: 'Srue', params: { orderId: res.orderId }})
+        }
+      })
     },
     async getTestList() {
       try {
-        if (this.$route.params.isTry) {
-          const data = await testHttpInteractor.getProductPriceTest()
-          console.log(data)
-          this.testInfo = data
-        } else if (this.$route.params.productId) {
-          const data = await testHttpInteractor.getProductPriceList({
-            param: {
-              productId: this.$route.params.productId
+        if (this.$route.params.orderId) {
+          await testHttpInteractor.upgradeOrder({
+            data: {
+              orderId: this.$route.params.orderId
+            }
+          }).then(res => {
+            if (res) {
+              console.log(res)
+              this.testInfo = res
             }
           })
-          console.log(data)
-          this.testInfo = data
         } else {
           this.$router.push({ name: 'Home' })
         }
@@ -163,9 +149,9 @@ export default {
       }
     },
     showItem(e) {
-      this.checkItem = this.testInfo.priceList.filter(el => el.peopleNum === e)
-      this.checkTh = this.checkItem[0]
-      console.log(this.checkItem)
+      this.checkTh = this.testInfo.productPrices.find(el => el.id === e)
+      // this.checkTh = this.checkItem[0]
+      // console.log(this.checkItem)
     }
   }
 }

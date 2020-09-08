@@ -57,8 +57,16 @@
             width="150"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row" class="qxOr">取消订单</span>
-              <span class="payOr">去付款</span>
+              <span v-if="+scope.row.payStatus===0">
+                <span class="qxOr" @click="delOrder(scope.row)">取消订单</span>
+                <span class="payOr" @click="goPay(scope.row)">去付款</span>
+              </span>
+              <span v-if="+scope.row.payStatus===1&&+scope.row.billStatus===0">
+                <span class="qxOr" @click="getInvoice(scope.row)">申请发票</span>
+              </span>
+              <span v-if="+scope.row.payStatus===1&&+scope.row.billStatus===1">
+                <span class="qxOrOver">已开票</span>
+              </span>
             </template>
           </el-table-column>
         </el-table>
@@ -66,10 +74,22 @@
 
     </div>
     <Footer />
+    <el-dialog
+      title="申请发票"
+      :visible.sync="isShowInvoice"
+      width="30%"
+      center
+    >
+      <div>
+        <Invoice :info="orderInfo" />
+      </div>
+
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import Invoice from '@/components/invoice'
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
 import { getUserInfo } from '@/core/services/cache'
@@ -77,10 +97,13 @@ import { getUserInfo } from '@/core/services/cache'
 export default {
   name: 'Home',
   components: {
-    Footer
+    Footer,
+    Invoice
   },
   data() {
     return {
+      orderInfo: null,
+      isShowInvoice: false,
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -116,6 +139,29 @@ export default {
     // alert(this.$route.params.isTry)
   },
   methods: {
+    goPay(row) {
+      this.$router.push({ name: 'Srue', params: { orderId: row.id }})
+    },
+    async delOrder(row) {
+      await testHttpInteractor.delOrder({
+        data: {
+          orderId: row.id
+        }
+      }).then(res => {
+        if (res) {
+          this.$message({
+            message: '取消订单成功~',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.getTestList()
+        }
+      })
+    },
+    getInvoice(row) {
+      this.isShowInvoice = true
+      this.orderInfo = row
+    },
     // 时间戳转换
     formatDate(value) {
       const date = new Date(value)
@@ -230,11 +276,19 @@ export default {
     margin: 50px 60px;
     .qxOr{
 
-font-size: 12px;
-font-family: PingFang SC;
-font-weight: 500;
-color: #186AC0;
-line-height: 30px;
+    font-size: 12px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #186AC0;
+    line-height: 30px;
+    }
+    .qxOrOver{
+
+    font-size: 12px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #B2B7C0;
+    line-height: 30px;
     }
     .payOr{
 font-size: 12px;

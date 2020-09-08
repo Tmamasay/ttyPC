@@ -77,11 +77,13 @@ export default {
   methods: {
     jumpTyteen() {
       TestHttpInteractor.jumpTyteen().then(res => {
-        if (res.accessToken) {
-          window.location.href = `http://www.tyteenyun.com/ttbuild/#/workbench/approvalProcess?accessToken=${res.accessToken}`
+        res = JSON.parse(res)
+        console.log(res.data)
+        if (res.data.accessToken) {
+          window.location.href = `http://www.tyteenyun.com/ttbuild/#/workbench/approvalProcess?accessToken=${res.data.accessToken}`
         } else {
           this.$message({
-            message: '您还未购买产品哦~',
+            message: '跳转工作台失败~',
             type: 'warning',
             duration: 2 * 1000
           })

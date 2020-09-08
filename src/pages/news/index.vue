@@ -16,7 +16,7 @@
           <p class="C4" @click="goNews(item.id)">查看详情</p>
         </div>
       </div>
-      <div v-for="item in 5" :key="item" class="ttNewOne">
+      <!-- <div v-for="item in 5" :key="item" class="ttNewOne">
         <div class="ttLeft">
           <img src="" alt="" srcset="">
         </div>
@@ -26,7 +26,7 @@
           <p class="C3">泰霆云是泰霆科技有限公司研发的智能建筑管理系统，于2020年7月上线运营。主要服务是人事管理，建筑管理，财务管理，行政管理，销售管理，等一站式以系统业务处理系统，该系统为企业降低成本提高效率，创造无纸化办公创造有效环境</p>
           <p class="C4">查看详情</p>
         </div>
-      </div>
+      </div> -->
       <p class="showAllLine"> 共{{ total }}条资讯</p>
       <div class="pageFy">
         <el-pagination

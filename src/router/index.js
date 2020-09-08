@@ -63,6 +63,12 @@ export const routes = [
         component: () => import('@/pages/order/record'),
         name: 'Record',
         meta: { title: '订单记录' }
+      },
+      {
+        path: 'upgrade',
+        component: () => import('@/pages/order/upgrade'),
+        name: 'Upgrade',
+        meta: { title: '升级人数' }
       }
     ]
   },

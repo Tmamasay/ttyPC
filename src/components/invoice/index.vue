@@ -7,9 +7,9 @@
       label-position="right"
       label-width="150px"
     >
-      <el-form-item label="企业名称：">
+      <!-- <el-form-item label="企业名称：">
         <el-input v-model="company" :readonly="true" autocomplete="off" placeholder="请输入企业名称" style="width: 75%;" />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item prop="billTitle" label="发票抬头：">
         <el-input v-model="invoForm.billTitle" autocomplete="off" placeholder="请输入发票抬头" style="width: 75%;" />
       </el-form-item>
@@ -45,6 +45,7 @@
 
 <script>
 import TestHttpInteractor from '@/core/interactors/common-interactor'
+
 export default {
   name: 'Invoice',
   props: {
@@ -65,7 +66,7 @@ export default {
       }
     }
     return {
-      company: '111',
+      // company: '111',
       money: '',
       invoForm: {
         bankCode: '',
@@ -105,9 +106,14 @@ export default {
     }
   },
   mounted() {
-    this.company = this.info.user.companyName
-    this.invoForm.id = this.info.order.id
-    this.money = this.info.order.price
+    // this.company = this.info.user.companyName
+    if (!this.info.orderId) {
+      this.invoForm.id = this.info.order.id
+      this.money = this.info.order.price
+    } else {
+      this.invoForm.id = this.info.orderId
+      this.money = this.info.price
+    }
   },
   beforeDestroy() {
 

@@ -186,10 +186,10 @@ export default {
         this.$router.push({ name: 'Login' })
         return
       }
-      // if (this.userInfo && +this.userInfo.user.companyStatus !== 2) {
-      //   this.$router.push({ name: 'Auth' })
-      //   return
-      // }
+      if (this.userInfo && +this.userInfo.user.companyStatus !== 2) {
+        this.$router.push({ name: 'Auth' })
+        return
+      }
       this.$router.push({ name: 'Fill', params: { isTry: true }})
     }
 

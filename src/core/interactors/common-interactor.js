@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, BANKPAY, ORDERSTATUS, ORDERCODE, PRODUCTORDER, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, DELORDER, UPORDER, UPORDERCONFIRM, GETORDERONE, BANKPAY, ORDERSTATUS, ORDERCODE, PRODUCTORDER, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -29,6 +29,43 @@ class TestHttpInteractor {
   async jumpTyteen(data) {
     try {
       const optons = { url: JUMPTYTEEN, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 通过订单id查询订单
+  async getOrderOne(data) {
+    try {
+      const optons = { url: GETORDERONE, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 升级订单预请求
+  async upgradeOrder(data) {
+    try {
+      const optons = { url: UPORDER, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 升级订单queren
+  async upgradeOrderConfirm(data) {
+    try {
+      const optons = { url: UPORDERCONFIRM, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 取消订单请求
+  async delOrder(data) {
+    try {
+      const optons = { url: DELORDER, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error
