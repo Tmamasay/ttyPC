@@ -2,6 +2,8 @@
   <div class="ttPriceCont">
     <div class="ttPriBanner">
       <img src="@/assets/r1.png" alt="" srcset="">
+      <p class="tt1">选择适合您的套餐</p>
+      <p class="tt2">能满足不同规模、各层级需求的智能化办公品台</p>
     </div>
     <div class="ttPriMeal">
       <div v-for="(item,index) in list" :key="item.id" class="ttPM1">
@@ -167,9 +169,32 @@ export default {
     width: 100%;
     height: 452px;
     overflow: hidden;
+    position:relative;
     img{
       width: 100%;
       height: 100%;
+    }
+    .tt1{
+      position: absolute;
+      top:172px;
+      width: 100%;
+      text-align: center;
+      font-size: 50px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #FCFCFC;
+      line-height: 53px;
+    }
+    .tt2{
+        position: absolute;
+      top:258px;
+      width: 100%;
+      text-align: center;
+      font-size: 24px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #FBFBFB;
+      line-height: 36px;
     }
   }
   .ttyRZ{

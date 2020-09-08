@@ -44,5 +44,11 @@ export const BILL = '/th-auth-biz/order-bill/setBill'
 export const JUMPTYTEEN = '/th-auth-biz/login/jumpTyteen'
 // 资讯详情
 export const NOTICEONE = '/th-auth-biz/tyteen-notice/getNoticeOne'
-// 资讯详情
+// 创建正常订单
 export const PRODUCTORDER = '/th-auth-biz/user-order/createProductOrder'
+// 生成支付二维码
+export const ORDERCODE = '/th-auth-biz/user-order/createOrderCode'
+// 查询自己当前订单是否支付成功
+export const ORDERSTATUS = '/th-auth-biz/user-order/getMyOrderStatus'
+// 银行卡支付
+export const BANKPAY = '/th-auth-biz/user-order/bankPay'

@@ -85,7 +85,7 @@
             >登 陆</el-button>
             <p v-if="active===1" class="login-form-forgetL" @click="visible = true">忘记密码？</p>
             <p v-if="active===1" class="login-form-forgetP" @click="goregist">立即注册</p>
-            <p class="login-bottom-text">background management system</p>
+            <p class="login-bottom-text">泰霆云高效的智能办公平台</p>
           </div>
         </el-col>
       </el-row>
@@ -642,7 +642,11 @@ $light_gray: #000;
         margin-top: 90px;
         font-size: 14px;
         text-align: center;
-        color: #b8b8b8;
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #2A78DC;
+      line-height: 36px;
       }
       .ele-form-item {
         border-bottom: 1px solid #dbdbdb;

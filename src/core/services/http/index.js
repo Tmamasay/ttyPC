@@ -1,7 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
 import { Message } from 'element-ui'
-import { Toast } from 'vant'
 import { getToken, getRefreshToken } from '../cache'
 // import RESTFUL_ERROR_CODE_MAP from '@/constants/restful_error_code'
 
@@ -58,12 +57,6 @@ const instance = axios.create(DEFAULT_OPTIONS)
 
 instance.interceptors.request.use(
   (config) => {
-    Toast.loading({
-      duration: 0,
-      message: '加载中...',
-      forbidClick: true
-    })
-
     if (store.getters.token) {
       config.headers['Authorization'] = getToken()
       config.headers['refresh_token'] = getRefreshToken()
@@ -72,14 +65,12 @@ instance.interceptors.request.use(
     return config
   },
   (error) => {
-    Toast.clear()
     Promise.reject(error)
   }
 )
 
 instance.interceptors.response.use(
   (response) => {
-    Toast.clear()
     responseLog(response)
     const codeTy = response.data.code
     const code = response.data.statusCode
@@ -100,7 +91,7 @@ instance.interceptors.response.use(
         Message({
           message: response.data.message,
           type: 'warning',
-          duration: 5 * 1000
+          duration: 2 * 1000
         })
       }
       // return Promise.reject(response.data.message)
@@ -109,14 +100,14 @@ instance.interceptors.response.use(
       Message({
         message: response.data.data.error_description,
         type: 'error',
-        duration: 5 * 1000
+        duration: 2 * 1000
       })
       return Promise.reject(response.data.data.error_description)
     } else if (codeTy && +codeTy !== 10000) {
       Message({
         message: response.data.msg,
         type: 'error',
-        duration: 5 * 1000
+        duration: 2 * 1000
       })
       return Promise.reject(response.data.msg)
     } else {
@@ -157,10 +148,10 @@ instance.interceptors.response.use(
     // }
   },
   (thrown) => {
-    Toast(thrown.message || 'Error')
-    setTimeout(() => {
-      Toast.clear()
-    }, 500)
+    // Toast(thrown.message || 'Error')
+    // setTimeout(() => {
+    //   Toast.clear()
+    // }, 500)
     return Promise.reject(thrown)
   }
 )

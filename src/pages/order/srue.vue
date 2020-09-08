@@ -7,7 +7,7 @@
       <p class="navTit"><span>价格</span>><span>订单填写</span>><span>确认订单</span></p>
     </div>
     <div class="ttOrderDet">
-      <div v-if="userInfo.company" class="ttOrtit">
+      <div v-if="userInfo.company&&orderInfo.productVO.priceList.length" class="ttOrtit">
         <!-- <p class="O1"><span />订单信息</p> -->
         <p class="O2"><span>公司名称：{{ userInfo.company.companyName }}</span></p>
         <p class="O2"><span>订购版本：{{ orderInfo.productVO.productName }}</span></p>
@@ -24,36 +24,70 @@
     <div class="payContSt">
       <p class="payQ">支付方式</p>
       <div class="payStyle">
-        <div class="paySt" @click="checkPayOne(1)">
+        <div class="paySt" @click="checkPayOne(0)">
           <img src="@/assets/o4.png" alt="" srcset="" width="36" height="36">
           <p class="P1">支付宝支付</p>
+          <div v-if="+checkPay===0" class="chPay">
+            <img src="@/assets/o3.png" alt="" srcset="" width="12" height="9">
+          </div>
+        </div>
+        <div class="paySt" @click="checkPayOne(1)">
+          <img src="@/assets/o2.png" alt="" srcset="" width="41" height="36">
+          <p class="P1">微信支付</p>
           <div v-if="+checkPay===1" class="chPay">
             <img src="@/assets/o3.png" alt="" srcset="" width="12" height="9">
           </div>
         </div>
         <div class="paySt" @click="checkPayOne(2)">
-          <img src="@/assets/o2.png" alt="" srcset="" width="41" height="36">
-          <p class="P1">微信支付</p>
-          <div v-if="+checkPay===2" class="chPay">
-            <img src="@/assets/o3.png" alt="" srcset="" width="12" height="9">
-          </div>
-        </div>
-        <div class="paySt" @click="checkPayOne(3)">
           <img src="@/assets/o1.png" alt="" srcset="" width="36" height="36">
           <p class="P1">对公转账</p>
-          <div v-if="+checkPay===3" class="chPay">
+          <div v-if="+checkPay===2" class="chPay">
             <img src="@/assets/o3.png" alt="" srcset="" width="12" height="9">
           </div>
         </div>
       </div>
     </div>
     <div class="payCont">
-      <p class="P1">订单金额：<span>￥{{ orderInfo.price||'0' }}</span></p>
+      <p class="P1">订单金额：<span>￥{{ toNum(orderInfo.price) ||'0' }}</span></p>
       <p class="P2">支付完成后可申请发票，购买后到期日为{{ getDQTime( orderInfo.productVO.priceList[0].years) }}</p>
-      <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span>《服务协议》</span></el-checkbox></p>
-      <p class="goDill" @click="goTryDill">提交订单</p>
+      <p class="goDill" @click="goBill">确认订单</p>
     </div>
     <Footer />
+    <el-dialog
+      title=""
+      :visible.sync="WXdialogVisible"
+      width="320px"
+      top="260px"
+      :close-on-click-modal="false"
+    >
+      <p class="wxTit">请使用微信扫码付款</p>
+      <div class="wxQr">
+        <img :src="wxQrcode" alt="" srcset="">
+      </div>
+      <div class="wxPay">
+        <div class="backBtn" @click="goBack">返回</div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="对公转账"
+      :visible.sync="BankdialogVisible"
+      width="450px"
+      top="260px"
+      center
+      :close-on-click-modal="false"
+    >
+      <!-- <p class="wxTit">对公转账</p> -->
+      <div class="Bank">
+        <p class="B1">企业名称：<span class="B2">泰霆科技（重庆）有限公司</span></p>
+        <p class="B1">银行账号：<span class="B2">110022884066885</span></p>
+        <p class="B1">开户行：<span class="B2">中国银行江北嘴支行</span></p>
+        <p class="B1">转账备注：<span class="B2">泰霆saas订单</span><span class="B3">*打款时请备注</span></p>
+        <p class="B1">交易流水：<span class="B2"><input v-model="payCode" type="text" placeholder="请转账成功后填写交易流水号"></span></p>
+      </div>
+      <div class="wxPay2">
+        <div class="backBtn" @click="bankSUb">提交</div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -61,7 +95,7 @@
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
 import { getUserInfo, getUserOrder } from '@/core/services/cache'
-
+import QRCode from 'qrcode'
 export default {
   name: 'Home',
   components: {
@@ -69,103 +103,121 @@ export default {
   },
   data() {
     return {
-      userInfo: getUserInfo() ? getUserInfo() : null,
+      payCode: '',
+      wxQrcode: '',
+      WXdialogVisible: false,
+      BankdialogVisible: false,
+      userInfo: getUserInfo(),
       testInfo: {},
-      checkPay: 1,
-      // orderInfo: getUserOrder() ? getUserInfo() : null
-      orderInfo: {
-        'orderId': 'JZ20200907Nm6MnI',
-        'price': 3533800,
-        'productVO': {
-          'productId': '110',
-          'productName': '基础版',
-          'rate': 0,
-          'status': null,
-          'lists': null,
-          'numLists': null,
-          'priceList': [
-            {
-              'id': '256205',
-              'action': 1,
-              'createTime': 1597757702000,
-              'updateTime': null,
-              'productId': '110',
-              'peopleNum': '1-10',
-              'price': 35338,
-              'years': '2年',
-              'capacity': '500GB',
-              'minNum': 1,
-              'maxNum': 10
-            }
-          ]
-        }
-      }
+      checkPay: 0,
+      orderInfo: getUserOrder(),
+      interval: null
     }
+  },
+  beforeRouteLeave(to, form, next) {
+    // alert(1)
+    clearInterval(this.interval)
+    next()
   },
   async created() {
     // this.getTestList()
   },
   mounted() {
+    // console.log(getUserOrder())
+    this.interval = setInterval(() => {
+      this.checkPayStatus()
+    }, 3000)
     // alert(this.$route.params.isTry)
   },
   methods: {
+    async bankSUb() {
+      await testHttpInteractor.bankPay({
+        data: {
+          orderId: this.orderInfo.orderId,
+          payCode: this.payCode
+        }
+      }).then(res => {
+        if (res) {
+          this.$message({
+            message: '确认订单提交成功，等待管理员审核~',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.BankdialogVisible = false
+          setTimeout(() => {
+            this.$router.push({ name: 'Home' })
+          }, 2000)
+        }
+      })
+    },
+    async checkPayStatus() {
+      await testHttpInteractor.getMyOrderStatus({
+        data: {
+          orderId: this.orderInfo.orderId
+        }
+      }).then(res => {
+        if (res) {
+          clearInterval(this.interval)
+          this.$message({
+            message: '支付成功，即将跳转订单详情~',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          setTimeout(() => {
+            this.$router.push({ name: 'Order' })
+          }, 1000)
+        }
+      })
+    },
+    goBack() {
+      this.WXdialogVisible = false
+    },
+    toNum(num) {
+      if (!num) return 0
+      return (+num / 100).toFixed(2)
+    },
+    async generateQR(urlQ) {
+      this.WXdialogVisible = true
+      await QRCode.toDataURL(urlQ).then((url) => {
+        this.wxQrcode = url
+      })
+    },
     checkPayOne(e) {
       this.checkPay = e
     },
     getDQTime(hs) {
       const hms = hs.substr(0, 1)
-      const laHms = (+hms) * 31536000000 + this.orderInfo.productVO.priceList[0].createTime
+      const laHms = (+hms) * 31536000000 + new Date().getTime()
       const year = new Date(laHms).getFullYear()
       const month = new Date(laHms).getMonth() + 1
-      const day = new Date(laHms).getDay()
+      const day = new Date(laHms).getDate()
       return `${year}年${month}月${day}`
     },
-    checkThis(item) {
-      this.checkTh = item
-    },
-    async goTryDill() {
-      if (!this.person) {
-        this.$message({
-          message: '请选择使用人数',
-          type: 'warning',
-          duration: 4 * 1000
-        })
-        return
-      }
-      if (!this.checked) {
-        this.$message({
-          message: '请勾选同意服务协议',
-          type: 'warning',
-          duration: 4 * 1000
-        })
-        return
-      }
 
-      if (!this.$route.params.productId) {
-        await testHttpInteractor.createProductPriceTest().then(res => {
-          if (res) {
-            this.$message({
-              message: '试用申请提交成功，等待管理员审核~',
-              type: 'success',
-              duration: 5 * 1000
-            })
-            setTimeout(() => {
-              this.$router.push({ name: 'Home' })
-            }, 3000)
-          }
-        })
-      } else {
-        await testHttpInteractor.createProductOrder({
-          data: {
-            productId: this.$route.params.productId,
-            productPriceId: this.checkTh.id
-          }
-        }).then(res => {
-          if (res) {
-            console.log(11)
-          }
-        })
+    async goBill() {
+      if (+this.checkPay === 2) {
+        this.BankdialogVisible = true
+        return
       }
+      await testHttpInteractor.createOrderCode({
+        data: {
+          orderId: this.orderInfo.orderId,
+          payType: this.checkPay
+        }
+      }).then(res => {
+        if (res) {
+          if (+this.checkPay === 1) {
+            this.generateQR(res)
+          } else if (+this.checkPay === 0) {
+            document.querySelector('body').innerHTML = res
+            document.forms[0].target = ' _blank'// 在新页面弹出支付宝页面
+            // document.forms[0].acceptCharset='GBK';//如果后台返回form的charset=GBK，需要做此修改
+            document.forms[0].submit()
+            location.reload()
+          }
+          console.log(11)
+        }
+      })
     }
 
   }
@@ -179,6 +231,123 @@ export default {
 }
 .ttOrderCont{
   width: 100%;
+
+ .wxPay2{
+    text-align: center;
+    width: 450px;
+    height: 65px;
+    background: #F2F2F2;
+    // border-radius: 10px;
+    margin: 30px auto;
+    text-align: center;
+    margin-left: -25px;
+    margin-bottom: -32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .backBtn{
+      cursor: pointer;
+      width: 116px;
+    height: 40px;
+    margin: 0 auto;
+    background: #0E4E90;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #F2F2F2;
+    line-height: 40px;
+}
+  }
+  .wxPay{
+    text-align: center;
+    width: 320px;
+    height: 65px;
+    background: #F2F2F2;
+    // border-radius: 10px;
+    margin: 0 auto;
+    text-align: center;
+    margin-left: -20px;
+    margin-bottom: -30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .backBtn{
+      cursor: pointer;
+      width: 116px;
+    height: 40px;
+    margin: 0 auto;
+    background: #0E4E90;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #F2F2F2;
+    line-height: 40px;
+}
+  }
+  .wxTit{
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #2E2E2E;
+      margin-bottom: 20px;
+      margin-top: -20px;
+  }
+  .Bank{
+      margin-top: -30px;
+      margin-left: 30px;
+    .B1{
+
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #646464;
+    line-height: 30px;
+    margin-top: 20px;
+    }
+    .B2{
+      font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #2E2E2E;
+    line-height: 30px;
+    input{
+      width: 300px;
+height: 36px;
+background: #FFFFFF;
+border: 1px solid #E6E6E6;
+border-radius: 3px;
+font-size: 14px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #999999;
+line-height: 30px;
+padding-left: 5px;
+    }
+    }
+    .B3{
+ padding-left: 30px;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #FE5547;
+    line-height: 30px;
+    }
+
+  }
+
+  .wxQr{
+    width: 180px;
+     height: 180px;
+     overflow: hidden;
+     margin: 0 auto;
+     margin-bottom: 10px;
+     img{
+       width: 100%;
+       height: 100%;
+     }
+  }
   .ttyNav{
     width: 100%;
     height: 80px;
@@ -318,14 +487,14 @@ line-height:40px
   }
 .ttOrderDet{
   width:1350px;
-  height:286px;
+  height:296px;
   margin: 30px auto;
   background:rgba(255,255,255,1);
   border:1px solid rgba(211,211,211,1);
   border-radius:10px;
   .ttOrtit{
     cursor: pointer;
-    margin: 50px 100px;
+    margin: 40px 100px;
     .O1{
      font-size:16px;
       font-family:PingFang SC;

@@ -77,8 +77,14 @@ export default {
 
     async getProductPriceUse() {
       try {
-        const data = await testHttpInteractor.getProductPriceUse()
-        this.orderInfo = data
+        const data = await testHttpInteractor.getProductPriceUse().then(res => {
+          if (res) {
+            this.orderInfo = res
+          } else {
+            this.$router.push({ name: 'Price' })
+          }
+        })
+
         console.log(data)
       } catch (error) {
         console.log(error)

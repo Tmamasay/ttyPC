@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, PRODUCTORDER, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, BANKPAY, ORDERSTATUS, ORDERCODE, PRODUCTORDER, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -35,10 +35,20 @@ class TestHttpInteractor {
     }
   }
 
-  // 工作区跳转,获取token
+  // 创建正常订单
   async createProductOrder(data) {
     try {
       const optons = { url: PRODUCTORDER, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 生成支付二维码
+  async createOrderCode(data) {
+    try {
+      const optons = { url: ORDERCODE, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error
@@ -178,6 +188,24 @@ class TestHttpInteractor {
   async getMyOrderList(data) {
     try {
       const optons = { url: ORDERLIST, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 查询自己当前订单是否支付成功
+  async getMyOrderStatus(data) {
+    try {
+      const optons = { url: ORDERSTATUS, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 银行卡支付
+  async bankPay(data) {
+    try {
+      const optons = { url: BANKPAY, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error

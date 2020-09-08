@@ -94,6 +94,7 @@
             <!-- <el-button type="primary" size="medium" :disabled="!canClick" @click.native="findSubmit('registerForm')">确 定</el-button> -->
             <p class="login-form-forgetL" @ @click="visible = true">注册即表示同意泰霆云 <span @click="agreeXy">《使用协议》</span></p>
             <p class="login-form-forgetP" @click="goLogin">登录</p>
+            <p class="login-bottom-text">泰霆云高效的智能办公平台</p>
 
           </div>
         </el-col>
@@ -103,7 +104,7 @@
 </template>
 
 <script>
-import login_bg from '@/assets/login/login_bg.jpg'
+import login_bg from '@/assets/login/login_bg.png'
 import login_img from '@/assets/login/login_cover.png'
 import TestHttpInteractor from '@/core/interactors/common-interactor'
 import { getUserInfo } from '@/core/services/cache'
@@ -506,6 +507,17 @@ line-height: 44px;
       span{
         color: #2A78DC;
       }
+      }
+      .login-bottom-text {
+        margin-bottom: 0;
+        margin-top: 90px;
+        font-size: 14px;
+        text-align: center;
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #2A78DC !important;
+      line-height: 36px;
       }
       .login-form-forgetP {
         color: #0E4E90;

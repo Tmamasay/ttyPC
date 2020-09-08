@@ -38,7 +38,7 @@
 
     </div>
     <div class="payCont">
-      <p class="P1">订单金额：<span>￥{{ checkTh?checkTh.price:'0' }}</span></p>
+      <p class="P1">订单金额：<span>￥{{ toNum(checkTh?checkTh.price:0) ||'0' }} </span></p>
       <p v-if="checkTh" class="P2">支付完成后可申请发票，购买后到期日为{{ getDQTime( checkTh?checkTh.years:'1') }}</p>
       <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span>《服务协议》</span></el-checkbox></p>
       <p class="goDill" @click="goTryDill">提交订单</p>
@@ -78,12 +78,16 @@ export default {
     // alert(this.$route.params.isTry)
   },
   methods: {
+    toNum(num) {
+      if (!num) return 0
+      return (+num / 100).toFixed(2)
+    },
     getDQTime(hs) {
       const hms = hs.substr(0, 1)
       const laHms = (+hms) * 31536000000 + new Date().getTime()
       const year = new Date(laHms).getFullYear()
-      const month = new Date(laHms).getMonth()
-      const day = new Date(laHms).getDay()
+      const month = new Date(laHms).getMonth() + 1
+      const day = new Date(laHms).getDate()
       return `${year}年${month}月${day}`
     },
     checkThis(item) {

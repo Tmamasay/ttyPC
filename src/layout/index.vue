@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper">
-    <div style="width:100%;height:65px" />
+    <div v-if="!hideNav" style="width:100%;height:65px" />
     <navbar v-if="!hideNav" />
     <app-main />
   </div>
