@@ -68,8 +68,9 @@
           </el-form-item>
           <el-form-item label="经营期限制：" prop="limitTime">
             <el-date-picker v-model="authForm.limitTime" type="date" placeholder="请选择" style="width: 50%;" />
+            <el-checkbox v-model="authForm.isTime" style="padding-left:20px">长期</el-checkbox>
           </el-form-item>
-          <el-form-item label="上传营业执照：" prop="company_img" class="ttyUpload">
+          <el-form-item label="上传营业执照：" prop="companyImg" class="ttyUpload">
             <div>
               <el-upload
                 list-type="picture-card"
@@ -111,12 +112,23 @@
       <div v-if="+authInfo.user.companyStatus===2" class="showTrue">
         <p class="O1"><span />企业认证</p>
         <p class="O2"><span>公司名称：{{ authInfo.company.companyName }}</span></p>
-        <p class="O2"><span>统一社会信用代码/注册号/组织机构代码：{{ authInfo.company.companyName }}</span></p>
+        <p class="O2"><span>统一社会信用代码/注册号/组织机构代码：{{ authInfo.company.companyCode }}</span></p>
         <p class="O2"><span>公司注册地址：{{ authInfo.company.address }}</span></p>
         <p class="O2"><span>注册日期：{{ formatDate(authInfo.company.createTime) }}</span></p>
-        <p class="O2"><span>经营期限至：{{ formatDate(authInfo.company.limitTime) }}</span></p>
+        <p class="O2"><span>经营期限至：{{ +authInfo.company.isTime===0? formatDate(authInfo.company.limitTime):'长期' }}</span></p>
+        <p class="O3"><span>营业执照：</span><img :src="authInfo.company.companyImg" alt="" srcset="" width="60" height="60" @click="showImg"></p>
 
       </div>
+      <el-dialog
+        title=""
+        :visible.sync="ImgdialogVisible"
+        width="320px"
+        top="260px"
+      >
+        <div class="imgShow">
+          <img :src="authInfo.company.companyImg" alt="" srcset="">
+        </div>
+      </el-dialog>
     </div>
     <Footer />
   </div>
@@ -134,7 +146,15 @@ export default {
     Footer
   },
   data() {
+    const validateLimit = (rule, value, callback) => {
+      if (!value && !this.authForm.isTime) {
+        callback(new Error('请输入或选择经营到期时间'))
+      } else {
+        callback()
+      }
+    }
     return {
+      ImgdialogVisible: false,
       authInfo: getUserInfo(),
       stepBg1: step_bg,
       stepBg2: +getUserInfo().user.companyStatus === 1 || +getUserInfo().user.companyStatus === 3 ? step_bg : '',
@@ -144,8 +164,9 @@ export default {
         companyCode: '', // 信用代码
         companyName: '', // 公司名字
         companyTime: '', // 注册日期
-        company_img: '', // 营业执照
-        limitTime: ''// 经营限期
+        companyImg: '', // 营业执照
+        limitTime: '', // 经营限期
+        isTime: false// 长期
       },
       uploadData: null,
       setNewRules: { // 修改表单验证
@@ -162,9 +183,9 @@ export default {
           { required: true, message: '请输入注册日期', trigger: 'change' }
         ],
         limitTime: [
-          { required: true, message: '请输入经营到期时间', trigger: 'blur' }
+          { required: true, trigger: 'blur', validator: validateLimit }
         ],
-        company_img: [
+        companyImg: [
           { required: true, message: '请上传营业执照', trigger: 'blur' }
         ]
       }
@@ -178,6 +199,9 @@ export default {
     this.getCompany()
   },
   methods: {
+    showImg() {
+      this.ImgdialogVisible = true
+    },
     recertification() {
       testHttpInteractor.resetCompany().then(info => {
         location.reload()
@@ -215,7 +239,8 @@ export default {
       this.$refs.authForm.validate(valid => {
         if (valid) {
           this.authForm.companyTime = new Date(this.authForm.companyTime).toLocaleDateString().replace(/\//g, '-')
-          this.authForm.limitTime = new Date(this.authForm.limitTime).toLocaleDateString().replace(/\//g, '-')
+          this.authForm.limitTime = this.authForm.limitTime ? new Date(this.authForm.limitTime).toLocaleDateString().replace(/\//g, '-') : null
+          this.authForm.isTime = this.authForm.isTime ? 1 : 0
           const data = {
             param: this.authForm
           }
@@ -242,7 +267,7 @@ export default {
       testHttpInteractor.fileUpload(this.uploadData).then(res => {
         if (res) {
           console.log(res)
-          this.authForm.company_img = res
+          this.authForm.companyImg = res
           this.$message({
             message: '上传成功',
             type: 'success'
@@ -333,6 +358,16 @@ export default {
       background:rgba(99,163,230,1);
     }
   }
+  .imgShow{
+    // width: 300px;
+    // height: 200px;
+    // overflow: hidden;
+    margin: 0 auto;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
   .showTrue{
      cursor: pointer;
     margin: 50px 100px;
@@ -367,6 +402,40 @@ export default {
         width: 500px;
         display: inline-block;
         // margin-right: 205px;
+      }
+    }
+      .O3{
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start ;
+      width: 300px;
+      margin: 0 auto;
+      font-size:14px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(45,45,45,1);
+      line-height:45px;
+
+      span{
+        margin-left: 10px;
+        // width: 500px;
+        display: inline-block;
+        // margin-right: 205px;
+      }
+      img{
+        margin-left: 10px;
+      //  position: absolute;
+      }
+      .show{
+        width: 70px;
+        height: 26px;
+        background: #0E4D90;
+        border-radius: 3px;
+        font-size: 12px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #F2F2F2;
+        line-height: 26px;
       }
     }
 

@@ -56,6 +56,10 @@
           </div>
         </div>
       </div>
+
+    </div>
+    <div class="fotImg">
+      <img src="@/assets/six.png" alt="" srcset="">
     </div>
     <Footer />
   </div>
@@ -173,6 +177,15 @@ export default {
   padding: 0;
 }
 .ttOfferCont{
+  .fotImg{
+      width: 100%;
+      height: 507px;
+      overflow: hidden;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
   .ttOfferBanner{
     width: 100%;
     height: 540px;
@@ -251,6 +264,8 @@ export default {
   }
   .ttyOfferMid{
     width: 1350px;
+    height: 650px;
+
     margin: 0 auto;
     .O1{
  text-align: center;
@@ -262,6 +277,7 @@ export default {
     padding-top: 99px;
     padding-bottom: 66px;
     }
+
     .Oline{
       display: flex;
   justify-content: space-between;

@@ -140,6 +140,7 @@ export default {
   },
   methods: {
     goPay(row) {
+      setUserOrder(row.id)
       this.$router.push({ name: 'Srue', params: { orderId: row.id }})
     },
     async delOrder(row) {

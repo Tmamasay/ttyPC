@@ -30,6 +30,7 @@
             <div v-if="isshow">
               <tableft />
             </div>
+            <el-dropdown-menu style="display:none" />
 
             <!-- <tableft /> -->
             <!-- <el-dropdown-menu slot="dropdown" class="user-dropdown">

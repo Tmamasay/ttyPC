@@ -12,8 +12,8 @@ export const getUserInfo = () => JSON.parse(Cookies.get(USERINFO) ? Cookies.get(
 export const setUserInfo = (info) => Cookies.set(USERINFO, JSON.stringify(info))
 export const removeUserInfo = () => Cookies.remove(USERINFO)
 // 订单信息
-export const getUserOrder = () => JSON.parse(Cookies.get(SHOWORDER) ? Cookies.get(SHOWORDER) : null)
-export const setUserOrder = (info) => Cookies.set(SHOWORDER, JSON.stringify(info))
+export const getUserOrder = () => Cookies.get(SHOWORDER)
+export const setUserOrder = (info) => Cookies.set(SHOWORDER, info)
 export const removeUserOrder = () => Cookies.remove(SHOWORDER)
 
 // 刷新token

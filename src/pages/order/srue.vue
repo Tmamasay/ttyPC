@@ -7,7 +7,7 @@
       <p class="navTit"><span>价格</span>><span>订单填写</span>><span>确认订单</span></p>
     </div>
     <div class="ttOrderDet">
-      <div v-if="userInfo.company&&orderInfo.productVO.priceList.length" class="ttOrtit">
+      <div v-if="userInfo.company&&orderInfo&& orderInfo.productVO" class="ttOrtit">
         <!-- <p class="O1"><span />订单信息</p> -->
         <p class="O2"><span>公司名称：{{ userInfo.company.companyName }}</span></p>
         <p class="O2"><span>订购版本：{{ orderInfo.productVO.productName }}</span></p>
@@ -47,10 +47,10 @@
         </div>
       </div>
     </div>
-    <div class="payCont">
-      <p class="P1">订单金额：<span>￥{{ toNum(orderInfo.price) ||'0' }}</span></p>
+    <div v-if="orderInfo&& orderInfo.productVO" class="payCont">
+      <p class="P1">订单金额：<span>￥{{ toNum(orderInfo?orderInfo.price:0) ||'0' }}</span></p>
       <p class="P2">支付完成后可申请发票，购买后到期日为{{ getDQTime( orderInfo.productVO.priceList[0].years) }}</p>
-      <p class="goDill" @click="goBill">确认订单</p>
+      <p class="goDill" @click.prevent="goBill">确认订单</p>
     </div>
     <Footer />
     <el-dialog
@@ -94,7 +94,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo } from '@/core/services/cache'
+import { getUserInfo, getUserOrder } from '@/core/services/cache'
 import QRCode from 'qrcode'
 export default {
   name: 'Home',
@@ -134,7 +134,7 @@ export default {
     async getOrderOne() {
       await testHttpInteractor.getOrderOne({
         data: {
-          orderId: this.$route.params.orderId
+          orderId: this.$route.params.orderId || getUserOrder()
         }
       }).then(res => {
         if (res) {
@@ -179,7 +179,7 @@ export default {
             this.$router.push({ name: 'Order' })
           }, 1000)
         } else {
-          clearInterval(this.interval)
+          // clearInterval(this.interval)
         }
       })
     },
@@ -224,7 +224,7 @@ export default {
             this.generateQR(res)
           } else if (+this.checkPay === 0) {
             document.querySelector('body').innerHTML = res
-            document.forms[0].target = ' _blank'// 在新页面弹出支付宝页面
+            document.forms[0].target = '_blank'// 在新页面弹出支付宝页面
             // document.forms[0].acceptCharset='GBK';//如果后台返回form的charset=GBK，需要做此修改
             document.forms[0].submit()
             setTimeout(() => {

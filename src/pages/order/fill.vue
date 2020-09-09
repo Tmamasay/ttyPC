@@ -135,7 +135,7 @@ export default {
           }
         }).then(res => {
           if (res) {
-            setUserOrder(res)
+            setUserOrder(res.orderId)
             this.$router.push({ name: 'Srue', params: { orderId: res.orderId }})
           }
         })

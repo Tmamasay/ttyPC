@@ -54,7 +54,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo } from '@/core/services/cache'
+import { getUserInfo, setUserOrder } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -77,7 +77,7 @@ export default {
     }
   },
   async created() {
-    this.getTestList()
+    this.getUpInfo()
   },
   mounted() {
     this.isTry = this.$route.params.isTry
@@ -124,28 +124,25 @@ export default {
       }).then(res => {
         if (res) {
           console.log(res)
+          setUserOrder(res.orderId)
           this.$router.push({ name: 'Srue', params: { orderId: res.orderId }})
         }
       })
     },
-    async getTestList() {
-      try {
-        if (this.$route.params.orderId) {
-          await testHttpInteractor.upgradeOrder({
-            data: {
-              orderId: this.$route.params.orderId
-            }
-          }).then(res => {
-            if (res) {
-              console.log(res)
-              this.testInfo = res
-            }
-          })
-        } else {
-          this.$router.push({ name: 'Home' })
-        }
-      } catch (error) {
-        console.log(error)
+    async getUpInfo() {
+      if (this.$route.params.orderId) {
+        await testHttpInteractor.upgradeOrder({
+          data: {
+            orderId: this.$route.params.orderId
+          }
+        }).then(res => {
+          if (res) {
+            console.log(res)
+            this.testInfo = res
+          }
+        })
+      } else {
+        this.$router.push({ name: 'Home' })
       }
     },
     showItem(e) {
