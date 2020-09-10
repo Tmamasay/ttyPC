@@ -36,7 +36,7 @@
               <el-input
                 ref="username"
                 v-model="loginForm.username"
-                placeholder="请输入用户名"
+                placeholder="请输入手机号"
                 name="username"
                 type="text"
                 auto-complete="on"
@@ -85,7 +85,7 @@
             >登 陆</el-button>
             <p v-if="active===1" class="login-form-forgetL" @click="visible = true">忘记密码？</p>
             <p v-if="active===1" class="login-form-forgetP" @click="goregist">立即注册</p>
-            <p class="login-bottom-text">泰霆云高效的智能办公平台</p>
+            <p class="login-bottom-text" @click="goHome">泰霆云高效的智能办公平台</p>
           </div>
         </el-col>
       </el-row>
@@ -153,7 +153,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value.trim()) {
-        callback(new Error('请输入账号'))
+        callback(new Error('请输入手机号'))
       } else {
         callback()
       }
@@ -236,30 +236,8 @@ export default {
       content: '发送验证码', // 按钮里显示的内容
       totalTime: 120, // 记录具体倒计时时间
       clock: null,
-      resetCont: {},
-      textArray: [
-        { content: '要学会沟通，但沟通要掌握尺度，让沟通变成同事之间增加信任、默契、熟悉度的媒介。', name: '颜真卿' },
-        {
-          content: '别轻易做好人，也别轻易做坏人，先做好本职工作再学做人。',
-          name: '八月长安'
-        },
-        { content: '懂得求同存异，理解包容、以事为先、以人为本。', name: '刘昚虚' },
-        { content: '师夷长技以制夷，模仿别人不是错，可怕的是不知道自己错在哪。', name: '苏轼' },
-        { content: '遇事先自己想办法解决，解决不了再寻求帮助，别总坐享其成。', name: '杜甫' },
-        { content: '面对批评，得体的第一反应是“不急于解释，不反唇相讥”。', name: '韩愈' },
-        {
-          content: '每天，或者最长每周养成习惯，把自己存在的问题和造成的麻烦用最重的形容词想一遍，诚实的对待自己。',
-          name: '安东尼'
-        },
-        { content: '选择大于能力，有人管这个就叫“命运”。其实是一种长期被忽略的能力：关键时刻快速做出最优选择的能力。', name: '程颢' },
-        {
-          content:
-            '既然我已经踏上这条道路，那么，任何东西都不应妨碍我沿着这条路走下去。',
-          name: '唐德'
-        }
-      ], // 登录随机题词
-      textTips: '旧书不厌百回读，熟读深思子自知',
-      textName: '苏轼'
+      resetCont: {}
+
     }
   },
   watch: {
@@ -291,11 +269,11 @@ export default {
         _this.handleLogin('loginForm')
       }
     }
-    var index = Math.floor(Math.random() * this.textArray.length)
-    this.textTips = this.textArray[index].content
-    this.textName = this.textArray[index].name
   },
   methods: {
+    goHome() {
+      this.$router.push({ name: 'Home' })
+    },
     getCompany() {
       if (+this.active === 2) {
         this.getCompanies()
@@ -638,6 +616,7 @@ $light_gray: #000;
         font-size: 14px;
       }
       .login-bottom-text {
+        cursor: pointer;
         margin-bottom: 0;
         margin-top: 90px;
         font-size: 14px;

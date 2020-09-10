@@ -2,7 +2,7 @@
   <div class="TabCnu">
     <div class="tabContent">
       <div class="tabName">
-        <p class="L1">{{ info.user.username||'小可爱' }}</p>
+        <p class="L1">{{ info.user.name||'小可爱' }}</p>
         <p class="L2">{{ info.user.companyName||'泰霆科技' }}</p>
       </div>
       <div class="tabGn">

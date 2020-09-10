@@ -73,16 +73,17 @@ instance.interceptors.response.use(
   (response) => {
     responseLog(response)
     const codeTy = response.data.code
+    // const codeSX = response.data.status
     const code = response.data.statusCode
     if (code && code !== '00000') {
       if (+code === 401) {
         Message({
-          message: '登录时间失效，请重新登录',
+          message: '登录时间失效，即将重新登录',
           type: 'error',
-          duration: 5 * 1000
+          duration: 3 * 1000
         })
         setTimeout(() => {
-          store.dispatch('user/resetToken').then(() => {
+          store.dispatch('user/logout').then(() => {
             this.$router.push({ name: 'Home' })
             location.reload()
           })
