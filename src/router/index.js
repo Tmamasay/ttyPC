@@ -135,6 +135,12 @@ export const routes = [
         component: () => import('@/pages/user/agreement'),
         name: 'Agreement',
         meta: { title: '服务协议', hideNav: true }
+      },
+      {
+        path: 'agreeYs',
+        component: () => import('@/pages/user/agreeYS'),
+        name: 'AgreeYs',
+        meta: { title: '隐私协议', hideNav: true }
       }
     ]
   },

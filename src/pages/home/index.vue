@@ -178,9 +178,15 @@ export default {
 
   },
   mounted() {
+    this.addRealIp()
     this.userInfo = getUserInfo() ? getUserInfo() : null
   },
   methods: {
+    async addRealIp() {
+      await testHttpInteractor.addRealIp().then(res => {
+
+      })
+    },
     goTry() {
       if (!this.userInfo) {
         this.$router.push({ name: 'Login' })

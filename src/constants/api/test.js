@@ -63,3 +63,9 @@ export const UPORDER = '/th-auth-biz/user-order/upgradeOrder'
 
 // 升级订单确认下单
 export const UPORDERCONFIRM = '/th-auth-biz/user-order/upgradeOrderConfirm'
+// 续费订单预请求
+export const DELAYORDER = '/th-auth-biz/user-order/delayOrder'
+// 统计tab
+export const ADDTABLE = '/th-auth-biz/auth-login/addTable'
+// 真实IP统计
+export const ADDREALIP = '/th-auth-biz/auth-login/addRealIp'

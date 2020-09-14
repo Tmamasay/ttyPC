@@ -21,7 +21,7 @@
         </div>
         <div v-else class="right-menu">
 
-          <el-dropdown class="avatar-container">
+          <div class="avatar-container">
             <div class="avatar-wrapper" @click="showMenu">
               <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class="user-avatar" style="margin-top:6px">
               <!-- <svg-icon style="width:45px;height:45px" icon-class="touxiang" /> -->
@@ -30,7 +30,7 @@
             <div v-if="isshow">
               <tableft />
             </div>
-            <el-dropdown-menu style="display:none" />
+            <!-- <el-dropdown-menu disabled style="display:none" /> -->
 
             <!-- <tableft /> -->
             <!-- <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -42,7 +42,7 @@
                 <span style="display:block;">退出登录</span>
               </el-dropdown-item>
             </el-dropdown-menu> -->
-          </el-dropdown>
+          </div>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
 <script>
 import { getUserInfo } from '@/core/services/cache'
 import tableft from '@/components/tabMenu'
-import TestHttpInteractor from '@/core/interactors/common-interactor'
+import { testHttpInteractor } from '@/core'
 
 export default {
   name: 'Navbar',
@@ -76,12 +76,22 @@ export default {
     console.log('------------')
   },
   methods: {
+    async pushTab(tab) {
+      await testHttpInteractor.addTable({
+        data: {
+          tableId: tab
+        }
+      }).then(res => {
+
+      })
+    },
     jumpTyteen() {
       TestHttpInteractor.jumpTyteen().then(res => {
         res = JSON.parse(res)
         console.log(res.data)
         if (res.data.accessToken) {
           window.location.href = `http://www.tyteenyun.com/ttbuild/#/workbench/approvalProcess?accessToken=${res.data.accessToken}`
+          this.pushTab(e)
         } else {
           this.$message({
             message: '跳转工作台失败~',
@@ -110,14 +120,16 @@ export default {
         case 1:
 
           this.$router.push({ name: 'Home' })
+          this.pushTab(e)
           break
         case 2:
 
           this.$router.push({ name: 'Price' })
+          this.pushTab(e)
           break
         case 3:
-
           this.$router.push({ name: 'News' })
+          this.pushTab(e)
           break
         case 4:
           if (!this.info) {

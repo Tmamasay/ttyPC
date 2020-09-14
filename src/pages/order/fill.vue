@@ -41,7 +41,7 @@
       <p class="P1">订单金额：<span>￥{{ toNum(checkTh?checkTh.price:0) ||'0' }} </span></p>
       <p v-if="checkTh&&!isTry" class="P2">支付完成后可申请发票，购买后到期日为{{ getDQTime( checkTh?checkTh.years:'1') }}</p>
       <p v-if="checkTh&&isTry" class="P2">确认后试用到期日为{{ getDQTime( checkTh?checkTh.years:'1') }}</p>
-      <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span>《服务协议》</span></el-checkbox></p>
+      <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span @click="goYs">《服务协议》</span></el-checkbox></p>
       <p class="goDill" @click="goTryDill">{{ isTry?'确认支付':'提交订单' }}</p>
     </div>
     <Footer />
@@ -81,6 +81,11 @@ export default {
     // alert(this.$route.params.isTry)
   },
   methods: {
+    goYs() {
+      const routeData = this.$router.resolve({ path: '/user/agreement' })
+      window.open(routeData.href, '_blank')
+      // this.$router.push({ name: 'Agreement' })
+    },
     toNum(num) {
       if (!num) return 0
       return (+num / 100).toFixed(2)
@@ -114,11 +119,11 @@ export default {
         return
       }
 
-      if (!this.$route.params.productId) {
+      if (!this.$route.params.productId && !this.$route.params.orderId) {
         await testHttpInteractor.createProductPriceTest().then(res => {
           if (res) {
             this.$message({
-              message: '试用申请提交成功，等待管理员审核~',
+              message: '试用申请成功~',
               type: 'success',
               duration: 5 * 1000
             })
@@ -130,7 +135,7 @@ export default {
       } else {
         await testHttpInteractor.createProductOrder({
           data: {
-            productId: this.$route.params.productId,
+            productId: this.$route.params.productId || this.$route.params.orderId,
             productPriceId: this.checkTh.id
           }
         }).then(res => {
@@ -151,6 +156,14 @@ export default {
           const data = await testHttpInteractor.getProductPriceList({
             param: {
               productId: this.$route.params.productId
+            }
+          })
+          console.log(data)
+          this.testInfo = data
+        } else if (this.$route.params.orderId) {
+          const data = await testHttpInteractor.delayOrder({
+            param: {
+              orderId: this.$route.params.orderId
             }
           })
           console.log(data)

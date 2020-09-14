@@ -16,7 +16,7 @@
         <p class="tF3" @click="goAbout">关于我们</p>
         <p class="tF3">加入我们</p>
         <p class="tF3" @click="goRoute(4)">服务协议</p>
-        <p class="tF3">隐私协议</p>
+        <p class="tF3" @click="goRoute(5)">隐私协议</p>
       </div>
       <div class="ttF1">
         <p class="tF2">泰霆科技（重庆）有限公司</p>
@@ -51,6 +51,8 @@ export default {
   },
   methods: {
     goRoute(e) {
+      const routeData = this.$router.resolve({ path: '/user/agreement' })
+      const routeData2 = this.$router.resolve({ path: '/user/agreeYs' })
       switch (e) {
         case 1:
           this.$router.push({ name: 'Offer' })
@@ -62,7 +64,12 @@ export default {
           this.$router.push({ name: 'About' })
           break
         case 4:
-          this.$router.push({ name: 'Agreement' })
+          window.open(routeData.href, '_blank')
+          // this.$router.push({ name: 'Agreement' })
+          break
+        case 5:
+          window.open(routeData2.href, '_blank')
+          // this.$router.push({ name: 'Agreement' })
           break
 
         default:

@@ -44,7 +44,7 @@
       <p class="P1">订单金额：<span>￥{{ toNum(checkTh?checkTh.price:0) ||'0' }} </span></p>
       <p v-if="checkTh&&!isTry" class="P2">支付完成后可申请发票，购买后到期日为{{ getDQTime( checkTh?checkTh.years:'1') }}</p>
       <p v-if="checkTh&&isTry" class="P2">确认后试用到期日为{{ getDQTime( checkTh?checkTh.years:'1') }}</p>
-      <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span>《服务协议》</span></el-checkbox></p>
+      <p class="P3"><el-checkbox v-model="checked"> 我已阅读并同意<span @click="goYs">《服务协议》</span></el-checkbox></p>
       <p class="goDill" @click="goTryDill">{{ isTry?'确认支付':'提交订单' }}</p>
     </div>
     <Footer />
@@ -84,6 +84,11 @@ export default {
     // alert(this.$route.params.isTry)
   },
   methods: {
+    goYs() {
+      const routeData = this.$router.resolve({ path: '/user/agreement' })
+      window.open(routeData.href, '_blank')
+      // this.$router.push({ name: 'Agreement' })
+    },
     toNum(num) {
       if (!num) return 0
       return (+num / 100).toFixed(2)

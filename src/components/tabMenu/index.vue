@@ -60,8 +60,8 @@ export default {
   cursor: pointer;
   // margin-top: 250px;;
   position: absolute;
-  right: -85px;
-  top:63px;
+  right: 35px;
+  top:73px;
   z-index: 99;
  .tabContent{
    width: 180px;

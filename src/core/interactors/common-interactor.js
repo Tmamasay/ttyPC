@@ -1,5 +1,5 @@
 import { Request } from '@/core/services/http/request'
-import { CARDS, DELORDER, UPORDER, UPORDERCONFIRM, GETORDERONE, BANKPAY, ORDERSTATUS, ORDERCODE, PRODUCTORDER, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
+import { CARDS, ADDTABLE, ADDREALIP, DELAYORDER, DELORDER, UPORDER, UPORDERCONFIRM, GETORDERONE, BANKPAY, ORDERSTATUS, ORDERCODE, PRODUCTORDER, NOTICEONE, BILL, JUMPTYTEEN, SETMES, NOTICES, PROUSE, RESETCOM, ORDERLIST, LOGINOUT, CREATTEST, TESTPRILIST, TESTPRO, COMPANYAUTH, UPLOAD, PRODUCT, RESETCODE, LOGIN, COMPANY, SEND, REGISTER, RESETPW } from '@/constants/api/test'
 
 class TestHttpInteractor {
   service
@@ -206,6 +206,34 @@ class TestHttpInteractor {
   async getProductPriceTest(data) {
     try {
       const optons = { url: TESTPRO, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 统计Tab
+  async addTable(data) {
+    try {
+      const optons = { url: ADDTABLE, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+  // 真实IP统计
+  async addRealIp(data) {
+    try {
+      const optons = { url: ADDREALIP, data }
+      return await this.service.post(optons)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // 续费订单预请求
+  async delayOrder(data) {
+    try {
+      const optons = { url: DELAYORDER, data }
       return await this.service.post(optons)
     } catch (error) {
       throw error
