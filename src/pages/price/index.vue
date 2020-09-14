@@ -202,7 +202,9 @@ export default {
   }
   .ttQs{
     width: 100%;
-    height: 563px;
+    // height: 563px;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
     background:rgba(243,243,247,1);
   .Q1{
     text-align: center;

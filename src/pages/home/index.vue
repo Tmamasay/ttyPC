@@ -155,7 +155,7 @@
 </template>
 
 <script>
-// import { testHttpInteractor } from '@/core'
+import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
 import { getUserInfo } from '@/core/services/cache'
 
@@ -178,11 +178,11 @@ export default {
 
   },
   mounted() {
-    this.addRealIp()
+    this.addRealIpOne()
     this.userInfo = getUserInfo() ? getUserInfo() : null
   },
   methods: {
-    async addRealIp() {
+    async addRealIpOne() {
       await testHttpInteractor.addRealIp().then(res => {
 
       })
