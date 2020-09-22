@@ -58,7 +58,8 @@ export default {
   },
   data() {
     const validatePhone = (rule, value, callback) => {
-      const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+      // const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+      const reg = /^[0-9]*$/
       const ss = reg.test(value)
       if (!value) {
         callback(new Error('请输入手机号码'))
