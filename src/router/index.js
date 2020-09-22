@@ -141,6 +141,12 @@ export const routes = [
         component: () => import('@/pages/user/agreeYS'),
         name: 'AgreeYs',
         meta: { title: '隐私协议', hideNav: true }
+      },
+      {
+        path: 'agreeFw',
+        component: () => import('@/pages/user/agreeFW'),
+        name: 'AgreeFw',
+        meta: { title: '服务协议', hideNav: true }
       }
     ]
   },

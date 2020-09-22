@@ -125,8 +125,15 @@ export default {
       }
     }
     const validatePass = (rule, value, callback) => {
+      const regPw = /^[0-9]*$/
       if (value.length < 1) {
         callback(new Error('请输入密码！'))
+      } else if (value.length < 8) {
+        callback(new Error('密码不能低于8位！'))
+      } else if (value.length > 16) {
+        callback(new Error('密码不能高于16位！'))
+      } else if (regPw.test(value)) {
+        callback(new Error('密码不能是纯数字哦！'))
       } else {
         callback()
       }

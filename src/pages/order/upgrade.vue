@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     goYs() {
-      const routeData = this.$router.resolve({ path: '/user/agreement' })
+      const routeData = this.$router.resolve({ path: '/user/agreeFw' })
       window.open(routeData.href, '_blank')
       // this.$router.push({ name: 'Agreement' })
     },

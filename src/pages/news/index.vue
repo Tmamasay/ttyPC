@@ -12,7 +12,7 @@
         <div class="ttCont">
           <p class="C1">{{ item.title }}</p>
           <p class="C2">来源：{{ item.source }}  发布时间：{{ formatDate(item.releaseTime) }}</p>
-          <p class="C3" v-html="item.textBody" />
+          <!-- <p class="C3" v-html="item.textBody" /> -->
           <p class="C4" @click="goNews(item.id)">查看详情</p>
         </div>
       </div>
@@ -32,6 +32,7 @@
         <el-pagination
           :background="true"
           layout="prev, pager, next"
+          :page-size="6"
           :total="total"
           @current-change="handleCurrentChange"
         />

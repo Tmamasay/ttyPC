@@ -6,7 +6,17 @@
       </div>
       <p class="navTit"><span>我的订单</span>><span>订单记录</span></p>
     </div>
+    <div v-if="userInfo&&userInfo.user" class="ttAvrCont">
+      <div class="ttavrImg">
+        <img src="@/assets/PITAO-15.png" alt="" srcset="">
+      </div>
+      <div class="ttyCont">
+        <p class="A1">{{ userInfo.user.name||'小可爱' }}</p>
+        <p class="A2">{{ userInfo.user.companyName||'泰霆科技' }}</p>
+      </div>
+    </div>
     <div class="ttOrderDet">
+
       <div v-if="userInfo.company" class="ttOrtit">
         <el-table
           :data="tableData"
@@ -25,10 +35,11 @@
             prop="productName"
             label="订购版本"
           />
-          <el-table-column
-            prop="peopleNum"
-            label="使用人数"
-          />
+          <el-table-column label="使用人数">
+            <template slot-scope="scope">
+              {{ scope.row.minNum }}-{{ scope.row.maxNum }}人
+            </template>
+          </el-table-column>
           <el-table-column prop="payTime" width="180" label="支付时间">
             <template slot-scope="scope">
               {{ formatDate(scope.row.payTime) }}
@@ -37,11 +48,19 @@
           <el-table-column
             prop="price"
             label="支付金额"
-          />
+          >
+            <template slot-scope="scope">
+              {{ (scope.row.price/100).toFixed(2) }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="payType"
             label="支付方式"
-          />
+          >
+            <template
+              slot-scope="scope"
+            >{{ +scope.row.payType===0?'支付宝':+scope.row.payType===1?'微信':+scope.row.payType===2?'银行卡':+scope.row.payType===3?'试用':'未知' }}</template>
+          </el-table-column>
           <el-table-column
             prop="capacity"
             label="预计容量"
@@ -50,7 +69,11 @@
             prop="payType"
             label="到期时间"
             width="180"
-          />
+          >
+            <template slot-scope="scope">
+              {{ formatDate(scope.row.endTime) }}
+            </template>
+          </el-table-column>
 
           <el-table-column
             label="操作"
@@ -63,6 +86,9 @@
               </span>
               <span v-if="+scope.row.payStatus===1&&+scope.row.billStatus===0">
                 <span class="qxOr" @click="getInvoice(scope.row)">申请发票</span>
+              </span>
+              <span v-if="+scope.row.payStatus===1&&+scope.row.billStatus===2">
+                <span class="qxOrOver">已提交</span>
               </span>
               <span v-if="+scope.row.payStatus===1&&+scope.row.billStatus===1">
                 <span class="qxOrOver">已开票</span>
@@ -92,7 +118,7 @@
 import Invoice from '@/components/invoice'
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo } from '@/core/services/cache'
+import { getUserInfo, setUserOrder } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -165,6 +191,7 @@ export default {
     },
     // 时间戳转换
     formatDate(value) {
+      if (!value) return ''
       const date = new Date(value)
       const y = date.getFullYear()
       let MM = date.getMonth() + 1
@@ -265,6 +292,42 @@ export default {
       color:#ffffff;
     }
   }
+  .ttAvrCont{
+    width: 1350px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .ttavrImg{
+      width: 70px;
+      height: 70%;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .ttyCont{
+      margin-left: 20px;
+      .A1{
+
+font-size: 20px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #2E2E2E;
+line-height: 30px;
+      }
+      .A2{
+
+font-size: 16px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #2E2E2E;
+line-height: 30px;
+
+      }
+    }
+
+  }
 .ttOrderDet{
   width:1350px;
   height:376px;
@@ -272,6 +335,7 @@ export default {
   background:rgba(255,255,255,1);
   border:1px solid rgba(211,211,211,1);
   border-radius:10px;
+
   .ttOrtit{
     cursor: pointer;
     margin: 50px 60px;

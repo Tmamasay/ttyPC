@@ -157,7 +157,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo } from '@/core/services/cache'
+import { getUserInfo, setUserInfo } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -192,11 +192,15 @@ export default {
         this.$router.push({ name: 'Login' })
         return
       }
-      if (this.userInfo && +this.userInfo.user.companyStatus !== 2) {
-        this.$router.push({ name: 'Auth' })
-        return
-      }
-      this.$router.push({ name: 'Fill', params: { isTry: true }})
+      testHttpInteractor.getCompanyOne().then(info => {
+        setUserInfo(info)
+        this.userInfo = info
+        if (this.userInfo && +this.userInfo.user.companyStatus !== 2) {
+          this.$router.push({ name: 'Auth' })
+          return
+        }
+        this.$router.push({ name: 'Fill', params: { isTry: true }})
+      })
     }
 
   }

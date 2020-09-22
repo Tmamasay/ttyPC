@@ -1,6 +1,6 @@
 <template>
   <div class="ttNewsDetailCont">
-    <div class="showDetail">
+    <div v-if="detail" class="showDetail">
       <p class="D1">{{ detail.title }}</p>
       <p class="D2">来源：{{ detail.source }}     <span style="padding-left:57px">发布时间：{{ formatDate(detail.releaseTime) }}</span> </p>
       <p class="D3" v-html="detail.textBody" /></div>

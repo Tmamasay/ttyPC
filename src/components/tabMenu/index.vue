@@ -6,17 +6,19 @@
         <p class="L2">{{ info.user.companyName||'泰霆科技' }}</p>
       </div>
       <div class="tabGn">
-        <div class="Gn1" @click="ttyAuth">
+        <div class="Gn1" @click="ttyAuth" @mouseenter="activeItem" @mouseleave="leftItem">
           <div class="n1">
-            <img src="@/assets/qy.png" alt="" srcset="">
+            <img v-if="activeT" src="@/assets/qy.png" alt="" srcset="">
+            <img v-else src="@/assets/authR.png" alt="" srcset="">
           </div>
-          <p class="q1">企业认证</p>
+          <p :class="{'q1':1,'activeT':activeT}">企业认证</p>
         </div>
-        <div class="Gn1" @click="logout">
+        <div class="Gn2" @click="logout" @mouseenter="activeOut" @mouseleave="leftOut">
           <div class="n1">
-            <img src="@/assets/out.png" alt="" srcset="">
+            <img v-if="activeL" src="@/assets/outA.png" alt="" srcset="">
+            <img v-else src="@/assets/out.png" alt="" srcset="">
           </div>
-          <p class="q2">退出登录</p>
+          <p :class="{'q2':1,'activeL':activeL}" class="q2">退出登录</p>
         </div>
       </div>
     </div>
@@ -30,7 +32,9 @@ export default {
   name: 'TabMenu',
   data() {
     return {
-      info: getUserInfo()
+      info: getUserInfo(),
+      activeT: false,
+      activeL: false
     }
   },
   mounted() {
@@ -38,6 +42,18 @@ export default {
   },
 
   methods: {
+    activeItem() {
+      this.activeT = true
+    },
+    leftItem() {
+      this.activeT = !this.activeT
+    },
+    activeOut() {
+      this.activeL = true
+    },
+    leftOut() {
+      this.activeL = !this.activeL
+    },
     logout() {
       this.$store.dispatch('user/logout')
       setTimeout(() => {
@@ -61,7 +77,7 @@ export default {
   // margin-top: 250px;;
   position: absolute;
   right: 35px;
-  top:73px;
+  top:65px;
   z-index: 99;
  .tabContent{
    width: 180px;
@@ -103,22 +119,51 @@ margin-left: 16px
     justify-content: flex-start;
     align-items: center;
      .q1{
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: 500;
+color: #2E2E2E;
+          line-height: 50px;
+          padding-left: 10px;
+      }
+      .activeT{
+  color: #1769C0;
+      }
+    .n1{
+      width: 17px;
+      height: 17px;
+      overflow:hidden;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+
+    }
+  }
+  .Gn2{
+    margin-left: 16px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+     .q1{
 
           font-size: 14px;
           font-family: PingFang SC;
           font-weight: 500;
-          color: #1769C0;
+
           line-height: 50px;
           padding-left: 10px;
       }
       .q2{
-
       font-size: 14px;
       font-family: PingFang SC;
       font-weight: 500;
       color: #2E2E2E;
       padding-left: 10px;
       // line-height: 53px;
+      }
+      .activeL{
+       color: #1769C0;
       }
     .n1{
       width: 17px;

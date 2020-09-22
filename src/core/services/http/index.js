@@ -77,17 +77,16 @@ instance.interceptors.response.use(
     const code = response.data.statusCode
     if (code && code !== '00000') {
       if (+code === 401) {
-        Message({
-          message: '登录时间失效，即将重新登录',
-          type: 'error',
-          duration: 3 * 1000
-        })
+        // Message({
+        //   message: '登录时间失效，即将重新登录',
+        //   type: 'error',
+        //   duration: 3 * 1000
+        // })
+        store.dispatch('user/logout')
         setTimeout(() => {
-          store.dispatch('user/logout').then(() => {
-            this.$router.push({ name: 'Home' })
-            location.reload()
-          })
-        }, 2000)
+          this.$router.push({ name: 'Home' })
+          location.reload()
+        }, 1000)
       } else {
         Message({
           message: response.data.message,

@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <div class="conTent">
+    <div class="conTent" @mouseleave="mouseLeave">
       <div class="conLogo">
         <img src="@/assets/logo.png" alt srcset>
       </div>
@@ -19,15 +19,19 @@
           <p class="login" @click="login">登录</p>
           <p class="resgite" @click="register">注册</p>
         </div>
-        <div v-else class="right-menu">
+        <div
+          v-else
+          class="right-menu"
+          @mouseover="mouseOver"
+        >
 
           <div class="avatar-container">
-            <div class="avatar-wrapper" @click="showMenu">
-              <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class="user-avatar" style="margin-top:6px">
+            <div class="avatar-wrapper">
+              <img src="@/assets/PITAO-15.png" class="user-avatar" style="margin-top:6px">
               <!-- <svg-icon style="width:45px;height:45px" icon-class="touxiang" /> -->
               <img :class="{'xlC':1,'close':isshow}" src="@/assets/sl.png" alt="" srcset="">
             </div>
-            <div v-if="isshow">
+            <div v-if="isshow" @mouseleave="mouseLeave">
               <tableft />
             </div>
             <!-- <el-dropdown-menu disabled style="display:none" /> -->
@@ -86,7 +90,7 @@ export default {
       })
     },
     jumpTyteen() {
-      TestHttpInteractor.jumpTyteen().then(res => {
+      testHttpInteractor.jumpTyteen().then(res => {
         res = JSON.parse(res)
         console.log(res.data)
         if (res.data.accessToken) {
@@ -105,6 +109,13 @@ export default {
     },
     showMenu() {
       this.isshow = !this.isshow
+    },
+    mouseOver() {
+      this.isshow = true
+    },
+    mouseLeave() {
+      // alert(1)
+      this.isshow = false
     },
 
     // 注册

@@ -14,7 +14,7 @@
       <div class="ttF1">
         <p class="tF2">关于</p>
         <p class="tF3" @click="goAbout">关于我们</p>
-        <p class="tF3">加入我们</p>
+        <p class="tF3" @click="goRoute(6)">加入我们</p>
         <p class="tF3" @click="goRoute(4)">服务协议</p>
         <p class="tF3" @click="goRoute(5)">隐私协议</p>
       </div>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     goRoute(e) {
-      const routeData = this.$router.resolve({ path: '/user/agreement' })
+      const routeData = this.$router.resolve({ path: '/user/agreeFw' })
       const routeData2 = this.$router.resolve({ path: '/user/agreeYs' })
       switch (e) {
         case 1:
@@ -69,6 +69,11 @@ export default {
           break
         case 5:
           window.open(routeData2.href, '_blank')
+          // this.$router.push({ name: 'Agreement' })
+          break
+        case 6:
+          window.open('https://www.zhipin.com/gongsir/973f7b0076a370b60HN-3t-1GA~~.html?ka=company-jobs', '_blank')
+
           // this.$router.push({ name: 'Agreement' })
           break
 
@@ -98,7 +103,7 @@ export default {
      width: 1348px;
     //  height: 558px;
      margin: 0 auto;
-     border-top: 1px solid rgba(229,229,229,1);
+    //  border-top: 1px solid rgba(229,229,229,1);
      display: flex;
      justify-content: space-between;
 

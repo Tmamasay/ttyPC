@@ -47,7 +47,7 @@
               <span class="svg-container">
                 <svg-icon icon-class="icon" />
               </span>
-              <el-select v-model="loginForm.company" placeholder="请选择" style="width:400px">
+              <el-select v-model="loginForm.company" :disabled="companies&&+companies.length===1" placeholder="请选择" style="width:400px">
                 <el-option
                   v-for="item in companies"
                   :key="item.id"
@@ -281,6 +281,11 @@ export default {
     },
     checkItem(e) {
       this.active = e
+      this.loginForm = {
+        username: '',
+        password: '',
+        company: ''
+      }
     },
     async getCompanies() {
       const _params = {
@@ -290,6 +295,9 @@ export default {
       }
       const data = await TestHttpInteractor.getCompanies(_params)
       this.companies = data
+      if (+data.length === 1) {
+        this.loginForm.company = data[0].id
+      }
       // console.log(data)
     },
     goregist() {

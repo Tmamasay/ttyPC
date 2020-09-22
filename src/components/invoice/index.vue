@@ -22,6 +22,9 @@
       <el-form-item prop="bankName" label="开户银行：">
         <el-input v-model="invoForm.bankName" autocomplete="off" placeholder="请输入开户银行" style="width: 75%;" />
       </el-form-item>
+      <el-form-item prop="bankCode" label="银行账号：">
+        <el-input v-model="invoForm.bankCode" autocomplete="off" placeholder="请输入银行账号" style="width: 75%;" />
+      </el-form-item>
       <el-form-item prop="sendPhone" label="收货电话：">
         <el-input v-model="invoForm.sendPhone" autocomplete="off" placeholder="请输入收货电话" style="width: 75%;" />
       </el-form-item>
@@ -33,7 +36,7 @@
       </el-form-item>
       <div class="showPrice">
         <p>发票内容：<span class="Pr1">软件服务费</span> </p>
-        <p>开票金额：<span class="Pr2">¥{{ money }}</span> </p>
+        <p>开票金额：<span class="Pr2">¥{{ money/100 }}</span> </p>
       </div>
       <p class="makeSrue" @click="findSubmit('invoForm')">确 定</p>
 
@@ -92,6 +95,9 @@ export default {
         bankName: [
           { required: true, message: '请输入开户银行', trigger: 'blur' }
         ],
+        bankCode: [
+          { required: true, message: '请输入银行账号', trigger: 'blur' }
+        ],
         sendPhone: [
           { required: true, trigger: 'blur', validator: validatePhone }
         ],
@@ -111,7 +117,7 @@ export default {
       this.invoForm.id = this.info.order.id
       this.money = this.info.order.price
     } else {
-      this.invoForm.id = this.info.orderId
+      this.invoForm.id = this.info.id
       this.money = this.info.price
     }
   },
@@ -126,12 +132,13 @@ export default {
             data: this.invoForm
           }
           TestHttpInteractor.setBill(_param).then(res => {
-            if (data) {
+            if (res) {
               this.$message({
                 message: '操作成功',
                 type: 'success',
                 duration: 3 * 1000
               })
+              location.reload()
             }
           })
         }

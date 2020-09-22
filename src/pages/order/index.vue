@@ -5,9 +5,9 @@
         <p class="O1"><span />订单信息</p>
         <p class="O2"><span>公司名称：{{ orderInfo.user.companyName }}</span><span>购买年限：{{ orderInfo.order.years }}</span></p>
         <p class="O2"><span>订购版本：{{ orderInfo.order.productName }}</span><span>到期时间：{{ formatDate(orderInfo.order.endTime) }}</span></p>
-        <p class="O2"><span>使用人数：{{ orderInfo.productPrice.peopleNum }}人</span><span>支付金额：¥{{ orderInfo.order.price }}</span></p>
-        <p class="O2"><span>预计容量：{{ orderInfo.order.capacity }}T</span><span>支付方式：{{ +orderInfo.order.payType===0?'支付宝支付':+orderInfo.order.payType===1?'支付宝':+orderInfo.order.payType===2?'银行卡支付':+orderInfo.order.payType===3?'试用':'未知' }}</span></p>
-        <p class="O4"><span class="Bt1" @click="goRenew">立即续费</span><span class="Bt1" @click="goUP">升级人数</span><span class="Bt2" @click="goRecord">订单记录</span><span class="Bt2" @click="getInvoice">申请发票</span></p>
+        <p class="O2"><span>使用人数：{{ orderInfo.productPrice.peopleNum }}人</span><span>支付金额：¥{{ (orderInfo.order.price/100).toFixed(2) }}</span></p>
+        <p class="O2"><span>预计容量：{{ orderInfo.order.capacity }}</span><span>支付方式：{{ +orderInfo.order.payType===0?'支付宝支付':+orderInfo.order.payType===1?'支付宝':+orderInfo.order.payType===2?'银行卡支付':+orderInfo.order.payType===3?'试用':'未知' }}</span></p>
+        <p class="O4"><span class="Bt1" @click="goRenew">立即续费</span><span class="Bt1" @click="goUP">升级人数</span><span class="Bt2" @click="goRecord">订单记录</span><span v-if="+orderInfo.order.payType!==3" class="Bt2" @click="getInvoice">申请发票</span></p>
       </div>
     </div>
     <Footer />
@@ -87,7 +87,7 @@ export default {
           if (res) {
             this.orderInfo = res
           } else {
-            this.$router.push({ name: 'Price' })
+            this.$router.push({ name: 'Record' })
           }
         })
 

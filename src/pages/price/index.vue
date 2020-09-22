@@ -3,7 +3,7 @@
     <div class="ttPriBanner">
       <img src="@/assets/r1.png" alt="" srcset="">
       <p class="tt1">选择适合您的套餐</p>
-      <p class="tt2">能满足不同规模、各层级需求的智能化办公品台</p>
+      <p class="tt2">能满足不同规模、各层级需求的智能化办公平台</p>
     </div>
     <div class="ttPriMeal">
       <div v-for="(item,index) in list" :key="item.id" class="ttPM1">
@@ -83,7 +83,7 @@
 <script>
 import { testHttpInteractor } from '@/core'
 import Footer from '@/components/Footer'
-import { getUserInfo } from '@/core/services/cache'
+import { getUserInfo, setUserInfo } from '@/core/services/cache'
 
 export default {
   name: 'Home',
@@ -133,11 +133,20 @@ export default {
         this.$router.push({ name: 'Login' })
         return
       }
-      if (this.info.user && +this.info.user.companyStatus === 2) {
-        this.$router.push({ name: 'Fill', params: { productId: id }})
-        return
-      }
-      this.centerDialogVisible = true
+      testHttpInteractor.getCompanyOne().then(info => {
+        setUserInfo(info)
+        this.info = info
+        if (this.info.user && +this.info.user.companyStatus === 2) {
+          this.$router.push({ name: 'Fill', params: { productId: id }})
+          return
+        }
+        this.centerDialogVisible = true
+      })
+
+      // if (this.info.user && +this.info.user.companyStatus === 2) {
+      //   this.$router.push({ name: 'Fill', params: { productId: id }})
+      //   return
+      // }
     },
     getImgUrl(index) {
       return require(`@/assets/r${index + 2}.png`)
