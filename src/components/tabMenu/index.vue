@@ -3,7 +3,7 @@
     <div class="tabContent">
       <div class="tabName">
         <p class="L1">{{ info.user.name||'小可爱' }}</p>
-        <p class="L2">{{ info.user.companyName||'泰霆科技' }}</p>
+        <p class="L2">{{ info.company.companyName||info.user.companyName||'泰霆科技' }}</p>
       </div>
       <div class="tabGn">
         <div class="Gn1" @click="ttyAuth" @mouseenter="activeItem" @mouseleave="leftItem">
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/core/services/cache'
+import { testHttpInteractor } from '@/core'
+import { getUserInfo, setUserInfo } from '@/core/services/cache'
 export default {
   name: 'TabMenu',
   data() {
@@ -38,10 +39,17 @@ export default {
     }
   },
   mounted() {
+    this.getCompanyOne()
     this.info = getUserInfo()
   },
 
   methods: {
+    getCompanyOne() {
+      testHttpInteractor.getCompanyOne().then(info => {
+        setUserInfo(info)
+        this.info = info
+      })
+    },
     activeItem() {
       this.activeT = true
     },

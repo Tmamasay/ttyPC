@@ -40,7 +40,7 @@
               {{ scope.row.minNum }}-{{ scope.row.maxNum }}人
             </template>
           </el-table-column>
-          <el-table-column prop="payTime" width="180" label="支付时间">
+          <el-table-column prop="payTime" width="160" label="支付时间">
             <template slot-scope="scope">
               {{ formatDate(scope.row.payTime) }}
             </template>
@@ -65,10 +65,11 @@
             prop="capacity"
             label="预计容量"
           />
+          <el-table-column prop="explainRemarks" label="订单备注" />
           <el-table-column
             prop="payType"
             label="到期时间"
-            width="180"
+            width="160"
           >
             <template slot-scope="scope">
               {{ formatDate(scope.row.endTime) }}
@@ -86,6 +87,9 @@
               </span>
               <span v-if="+scope.row.payStatus===1&&+scope.row.billStatus===0">
                 <span class="qxOr" @click="getInvoice(scope.row)">申请发票</span>
+              </span>
+              <span v-if="+scope.row.payStatus===2&&+scope.row.billStatus===0">
+                <span class="qxOrOver">付款审核中</span>
               </span>
               <span v-if="+scope.row.payStatus===1&&+scope.row.billStatus===2">
                 <span class="qxOrOver">已提交</span>

@@ -29,10 +29,12 @@
         <el-input v-model="invoForm.sendPhone" autocomplete="off" placeholder="请输入收货电话" style="width: 75%;" />
       </el-form-item>
       <el-form-item prop="sendAddress" label="收货地址：">
-        <el-input v-model="invoForm.sendAddress" autocomplete="off" placeholder="请输入收货地址" style="width: 75%;" />
+        <textarea v-model="invoForm.sendAddress" placeholder="请输入收货地址" autocomplete="off" cols="50" rows="2" style="width: 75%;" />
+        <!-- <el-input v-model="invoForm.sendAddress" autocomplete="off" placeholder="请输入收货地址" style="width: 75%;" /> -->
       </el-form-item>
       <el-form-item prop="registerAddress" label="注册地址：">
-        <el-input v-model="invoForm.registerAddress" autocomplete="off" placeholder="请输入注册地址" style="width: 75%;" />
+        <textarea v-model="invoForm.registerAddress" placeholder="请输入注册地址" autocomplete="off" cols="50" rows="2" style="width: 75%;" />
+        <!-- <el-input v-model="invoForm.registerAddress" autocomplete="off" placeholder="请输入注册地址" style="width: 75%;" /> -->
       </el-form-item>
       <div class="showPrice">
         <p>发票内容：<span class="Pr1">软件服务费</span> </p>
