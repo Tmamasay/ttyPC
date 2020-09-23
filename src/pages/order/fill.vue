@@ -135,7 +135,7 @@ export default {
       } else {
         await testHttpInteractor.createProductOrder({
           data: {
-            productId: this.$route.params.productId || this.$route.params.orderId,
+            productId: this.$route.params.productId || this.testInfo.productId,
             productPriceId: this.checkTh.id
           }
         }).then(res => {
